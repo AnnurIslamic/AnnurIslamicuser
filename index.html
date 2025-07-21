@@ -1705,16 +1705,44 @@ body.dark-mode .theme-action-btn.insufficient {
         { level: "sulit", question: "اِنَّمَا حَرَّمَ عَلَيْكُمُ الْمَيْتَةَ وَالدَّمَ وَلَحْمَ الْخِنْزِيْرِ", options: ["وَمَآ اُهِلَّ لِغَيْرِ اللّٰهِ بِهٖۚ", "فَمَنِ اضْطُرَّ غَيْرَ بَاغٍ وَّلَا عَادٍ", "فَاِنَّ اللّٰهَ غَفُوْرٌ رَّحِيْمٌ", "وَلَا تَقُوْلُوْا لِمَا تَصِفُ اَلْسِنَتُكُمُ الْكَذِبَ"], correctAnswer: 0, surahInfo: "QS. An-Nahl: 115" }
     ];
     
+// [MODIFIKASI] Data untuk Toko Tema diubah agar lebih lengkap
+const themes = [
+    // Tema sebelumnya...
+    { id: 'default', name: 'Standar', price: 0, colors: ['#0d264a', '#f0f4f8', '#f9d788', '#ffffff'] },
+    { id: 'forest', name: 'Hutan Senja', price: 200, colors: ['#2d5a2d', '#f0fff0', '#ffcf40', '#ffffff'] },
+    { id: 'ocean', name: 'Biru Samudra', price: 250, colors: ['#1e3a5f', '#e6f7ff', '#6ab0de', '#fcfcfc'] },
+    { id: 'royal', name: 'Ungu Royal', price: 300, colors: ['#4c2a85', '#f3e5f5', '#d1c4e9', '#ffffff'] },
+    { id: 'desert', name: 'Gurun Emas', price: 350, colors: ['#8c5a2b', '#fff8e1', '#ffc107', '#fffdf7'] },
+
+    // Tema modern
+    { id: 'midnight', name: 'Midnight Glow', price: 400, colors: ['#0f0f1a', '#1a1a2e', '#ff4081', '#2e2e3a'] },
+    { id: 'sunset', name: 'Senja Cerah', price: 420, colors: ['#ff5e62', '#ffe7d1', '#ff9a8b', '#fff2ec'] },
+    { id: 'aqua', name: 'Aqua Mint', price: 380, colors: ['#00bfa6', '#e0f7f4', '#66d9cc', '#ffffff'] },
+    { id: 'blossom', name: 'Bunga Sakura', price: 390, colors: ['#f8bbd0', '#fff0f6', '#f06292', '#ffffff'] },
+    { id: 'tech', name: 'Cyber Neon', price: 450, colors: ['#000000', '#121212', '#00ffff', '#1e1e1e'] },
+
+    // Modern klasik
+    { id: 'classicblue', name: 'Biru Klasik', price: 500, colors: ['#002147', '#e3eaf2', '#6c91bf', '#ffffff'] },
+    { id: 'vintagegold', name: 'Emas Vintage', price: 750, colors: ['#3e2c00', '#fff8e5', '#d4af37', '#fbf6e8'] },
+    { id: 'rosewood', name: 'Rosewood', price: 1000, colors: ['#65000b', '#f9f2f2', '#b76e79', '#fff8f8'] },
+    { id: 'imperial', name: 'Imperial Elegance', price: 2000, colors: ['#2c2a4a', '#f6f6f6', '#d4a373', '#ffffff'] },
+    { id: 'onyxbronze', name: 'Onyx Bronze', price: 3000, colors: ['#1c1c1c', '#f5f5f5', '#cd7f32', '#f9f9f9'] },
+
+    // 🕌 Tema Islami
+    { id: 'nabawi_green', name: 'Hijau Nabawi', price: 550, colors: ['#014421', '#f5f5dc', '#d4af37', '#ffffff'] },
+    { id: 'mecca_twilight', name: 'Senja di Mekkah', price: 850, colors: ['#2c2a4a', '#ead1dc', '#c0c0c0', '#f5f5f5'] },
+    { id: 'islamic_geometry', name: 'Geometri Islami', price: 900, colors: ['#008080', '#f5f5dc', '#daa520', '#ffffff'] },
+    { id: 'ramadan_lantern', name: 'Lentera Ramadan', price: 1200, colors: ['#8b4513', '#fffacd', '#ffbf00', '#fafafa'] },
+    { id: 'kaaba_gold', name: 'Kiswah Ka\'bah', price: 3500, colors: ['#000000', '#1c1c1c', '#b8860b', '#f0f0f0'] },
     
-    // [MODIFIKASI] Data untuk Toko Tema diubah agar lebih lengkap
-    const themes = [
-        // urutan warna: [--header-bg, --primary-bg, --accent-color, --card-bg]
-        { id: 'default', name: 'Standar', price: 0, colors: ['#0d264a', '#f0f4f8', '#f9d788', '#ffffff'] },
-        { id: 'forest', name: 'Hutan Senja', price: 200, colors: ['#2d5a2d', '#f0fff0', '#ffcf40', '#ffffff'] },
-        { id: 'ocean', name: 'Biru Samudra', price: 250, colors: ['#1e3a5f', '#e6f7ff', '#6ab0de', '#fcfcfc'] },
-        { id: 'royal', name: 'Ungu Royal', price: 300, colors: ['#4c2a85', '#f3e5f5', '#d1c4e9', '#ffffff'] },
-        { id: 'desert', name: 'Gurun Emas', price: 350, colors: ['#8c5a2b', '#fff8e1', '#ffc107', '#fffdf7'] }
-    ];
+    // 🌐 Tema Masa Depan
+    { id: 'neoncore', name: 'Neon Core', price: 5000, colors: ['#0a0a0a', '#121212', '#ff00ff', '#222222'] },
+    { id: 'quantum', name: 'Quantum Pulse', price: 10000, colors: ['#1a0033', '#330066', '#66ffcc', '#1e0033'] },
+    { id: 'hologram', name: 'Hologram Light', price: 15000, colors: ['#ffffff', '#f0f0ff', '#cc99ff', '#e6e6ff'] },
+    { id: 'ultrachrome', name: 'Ultra Chrome', price: 18000, colors: ['#101010', '#202020', '#00e6e6', '#1c1c1c'] },
+    { id: 'hypernova', name: 'Hypernova', price: 20000, colors: ['#14002e', '#1f003f', '#ff5ef7', '#250045'] }
+    
+];
     
     
     // --- FUNGSI PERMINTAAN PENYIMPANAN PERMANEN ---
