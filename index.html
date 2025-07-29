@@ -8,28 +8,6 @@
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-/* [BARU] CSS untuk Copyright Footer di Sidebar */
-.sidebar-footer {
-    margin-top: 2rem; /* Memberi jarak dari menu di atasnya */
-    padding-top: 1.5rem;
-    text-align: center;
-    border-top: 1px solid #e0e0e0;
-}
-body.dark-mode .sidebar-footer {
-    border-top-color: #333;
-}
-.sidebar-footer .sidebar-logo {
-    width: 35px; /* Logo dibuat sedikit lebih kecil */
-    height: 35px;
-    opacity: 0.8;
-    margin-bottom: 0.5rem;
-}
-.sidebar-footer p {
-    font-size: 0.75rem; /* Font dibuat lebih kecil agar sesuai */
-    color: var(--text-light);
-    line-height: 1.4;
-    margin: 0; /* Menghapus margin default paragraf */
-}
 /* [BARU] CSS Tambahan untuk Score Board Duet */
 #duet-score-board h4 {
     font-size: 1rem;
@@ -1072,24 +1050,17 @@ body.dark-mode .theme-action-btn.insufficient {
   </style>
 </head>
 <body>
-<nav id="sidebar">
-  <h3 data-key="nav_title">Menu</h3>
-  <ul>
-    <li><a href="#" id="prayer-times-btn">🕒 Jadwal Sholat</a></li>
-    <li><a href="#" id="doa-harian-btn" data-key="nav_doa">🤲 Doa Harian</a></li>
-    <li><a href="#" id="quran-btn" data-key="nav_quran">📖 Al-Qur'an</a></li>
-    <li><a href="#" id="dzikir-btn" data-key="nav_dzikir">📿 Dzikir & Tasbih</a></li>
-    <li><a href="#" id="qibla-btn" data-key="nav_kiblat">🕋 Kiblat</a></li>
-    <li><a href="#" id="quiz-btn">🧠 Kuis Ayat</a></li>
-    <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
-  </ul>
-  <ul>
-    
-<div>
-  <div class="sidebar-footer">
-    <img src="logo-annur.jpg" alt="Logo Annur Islamic" class="sidebar-logo">
-    
-  </div>
+  <nav id="sidebar">
+    <h3 data-key="nav_title">Menu</h3>
+    <ul>
+      <li><a href="#" id="prayer-times-btn">🕒 Jadwal Sholat</a></li>
+      <li><a href="#" id="doa-harian-btn" data-key="nav_doa">🤲 Doa Harian</a></li>
+      <li><a href="#" id="quran-btn" data-key="nav_quran">📖 Al-Qur'an</a></li>
+      <li><a href="#" id="dzikir-btn" data-key="nav_dzikir">📿 Dzikir & Tasbih</a></li>
+      <li><a href="#" id="qibla-btn" data-key="nav_kiblat">🕋 Kiblat</a></li>
+      <li><a href="#" id="quiz-btn">🧠 Kuis Ayat</a></li>
+      <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
+    </ul>
   </nav>
 
   <div class="app-container">
@@ -1497,26 +1468,24 @@ body.dark-mode .theme-action-btn.insufficient {
       <span class="back-button" data-target-view="app-detail-view">‹</span>
       <h2>Informasi Tambahan</h2>
     </div>
-<div class="content-body">
-  <div class="content-card">
-    <h3 class="content-title"><span class="content-title-icon">📊</span>Sumber Data</h3>
-    <ul class="styled-list">
-      <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA.</li>
-      <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
-      <li><strong>Arah Kiblat:</strong> Dihitung menggunakan koordinat geografis dan data sensor perangkat.</li>
-      <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
-    </ul>
-  </div>
-<div class="content-card">
-  <h3 class="content-title"><span class="content-title-icon">🤝</span>Dukungan</h3>
-  <p>Pengembangan aplikasi ini didukung oleh <strong>PT. Medan Mediaga Group, lensamedan.id, Studioofficialridho</strong>, sebagai bentuk <strong>dukungan aktif</strong> dalam menghadirkan solusi digital Islami yang bermanfaat dan mudah diakses oleh semua kalangan umat islam.</p>
-</div>
-  <div class="content-card">
-    <h3 class="content-title"><span class="content-title-icon">❤️</span>Proyek Non-Komersial</h3>
-    <p>Aplikasi ini adalah proyek non-komersial, dibuat untuk membantu umat Muslim dalam ibadah sehari-hari. Aplikasi ini sepenuhnya <strong>gratis dan tidak mengandung iklan</strong>.</p>
-  </div>
-  </div>
-</div>
+    <div class="content-body">
+      <div class="content-card">
+        <h3 class="content-title"><span class="content-title-icon">📊</span>Sumber Data</h3>
+        <ul class="styled-list">
+          <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA.</li>
+          <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
+          <li><strong>Arah Kiblat:</strong> Dihitung menggunakan koordinat geografis dan data sensor perangkat.</li>
+          <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
+        </ul>
+      </div>
+      <div class="content-card">
+        <h3 class="content-title"><span class="content-title-icon">🤝</span>Dukungan</h3>
+        <p>Pengembangan aplikasi ini didukung oleh <strong>PT. Medan Mediaga Group, lensamedan.id, Studioofficialridho</strong>, sebagai bentuk <strong>dukungan aktif</strong> dalam menghadirkan solusi digital Islami yang bermanfaat dan mudah diakses oleh semua kalangan umat islam.</p>
+      </div>
+        <div class="content-card">
+          <h3 class="content-title"><span class="content-title-icon">❤️</span>Proyek Non-Komersial</h3>
+          <p>Aplikasi ini adalah proyek non-komersial, dibuat untuk membantu umat Muslim dalam ibadah sehari-hari. Aplikasi ini sepenuhnya <strong>gratis dan tidak mengandung iklan</strong>.</p>
+        </div>
     </div>
   </div>
 
