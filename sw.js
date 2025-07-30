@@ -15,13 +15,13 @@ const APP_SHELL_ASSETS = [
 
 // Daftar host API dan sumber daya eksternal yang akan di-cache secara dinamis.
 const DYNAMIC_HOSTS = [
-    'api.aladhan.com',          // Untuk jadwal sholat
-    'api.quran.gading.dev',     // Untuk teks dan metadata Al-Qur'an
-    'api.alquran.cloud',        // [BARU] Untuk audio Murottal per ayat
-    'nominatim.openstreetmap.org', // [BARU] Untuk mendapatkan nama kota dari koordinat
-    'fonts.gstatic.com',        // Untuk file font
-    'fonts.googleapis.com',     // Untuk CSS font
-    'raw.githubusercontent.com' // Untuk file audio Adzan & notifikasi
+    'api.aladhan.com',           // Untuk jadwal sholat
+    'api.quran.gading.dev',      // Untuk teks dan metadata Al-Qur'an
+    'api.alquran.cloud',         // Untuk audio Murottal per ayat
+    'nominatim.openstreetmap.org', // Untuk mendapatkan nama kota dari koordinat
+    'fonts.gstatic.com',         // Untuk file font
+    'fonts.googleapis.com',      // Untuk CSS font
+    'raw.githubusercontent.com'  // Untuk file audio Adzan & notifikasi
 ];
 
 // Event 'install': Menyimpan App Shell ke dalam cache statis.
