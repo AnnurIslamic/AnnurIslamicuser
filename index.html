@@ -8,1559 +8,1707 @@
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-/* [BARU] CSS Tambahan untuk Score Board Duet */
-#duet-score-board h4 {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-body.dark-mode #duet-score-board h4 {
-    color: var(--accent-color);
-}
-#duet-turn-indicator {
-    font-weight: 600;
-    color: var(--header-bg);
-}
-body.dark-mode #duet-turn-indicator {
-    color: var(--accent-color);
-}
-  
-    :root {
-      --primary-bg: #f0f4f8;
-      --header-bg: #0d264a;
-      --header-text: #ffffff;
-      --accent-color: #f9d788;
-      --text-color: #333333;
-      --text-light: #888;
-      --card-bg: #ffffff;
-      --card-shadow: rgba(0, 0, 0, 0.08);
-      --radius: 12px;
-      --transition: 0.3s ease;
-      --active-tab: #0d264a;
-      --bookmark-active: #ffc107;
-      --tap-area-bg: #e9eef2;
-      --button-bg: #0d264a;
-      --button-text: #ffffff;
+    /* [BARU] CSS Tambahan untuk Score Board Duet */
+    #duet-score-board h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
     }
-
-    .ayah-item.ayah-playing {
-        background-color: var(--tap-area-bg);
-        border-radius: var(--radius);
-    }
-    body.dark-mode .ayah-item.ayah-playing {
-        background-color: #2c2c3a;
-    }
-
-    .app-footer {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: var(--text-light);
-      font-weight: 500;
-    }
-
-    body.dark-mode {
-      --primary-bg: #121212;
-      --header-bg: #1a1a2e;
-      --header-text: #e0e0e0;
-      --text-color: #e0e0e0;
-      --text-light: #aaa;
-      --card-bg: #1e1e1e;
-      --card-shadow: rgba(255, 255, 255, 0.05);
-      --active-tab: #f9d788;
-      --tap-area-bg: #2c2c3a;
-      --button-bg: #f9d788;
-      --button-text: #1a1a2e;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      color: var(--text-color);
-      background-color: var(--primary-bg);
-      -webkit-user-select: none; user-select: none;
-      transition: background-color var(--transition), color var(--transition);
-    }
-    .app-container { width: 100%; max-width: 420px; margin: 0 auto; overflow-x: hidden; }
-    .loading-indicator { text-align: center; padding: 2rem; color: var(--text-light); }
-
-    /* --- COMMON VIEW STYLES --- */
-    .view-header { display: flex; align-items: center; margin-bottom: 1.5rem; position: relative; justify-content: space-between; padding: 0 1rem; }
-    .back-button { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; cursor: pointer; color: var(--text-color); padding: 0.5rem; z-index: 5; }
-    .view-header h2 { font-size: 1.2rem; font-weight: 600; text-align: center; flex-grow: 1; }
-    .view-header .action-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-light); padding: 0.5rem; }
-    .view-header .action-icon.bookmarked { color: var(--bookmark-active); }
-    
-
-    /* --- LAYAR UTAMA (JADWAL SHOLAT) --- */
-    #prayer-times-view { padding-bottom: 2rem; }
-    #prayer-times-view .main-header {
-      background: var(--header-bg); color: var(--header-text); padding: 1.5rem 1.5rem 2.5rem 1.5rem;
-      border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; text-align: center;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative; transition: background-color var(--transition);
-    }
-    #prayer-times-view .main-header h1 { font-size: 1.5rem; font-weight: 700; color: var(--accent-color); margin-bottom: 0.25rem; }
-    #prayer-times-view .main-header p { font-size: 0.9rem; color: var(--header-text); opacity: 0.9; margin-bottom: 0.5rem; }
-    #prayer-times-view #countdown-timer { font-size: 2.25rem; font-weight: 700; color: var(--header-text); letter-spacing: 2px; }
-    
-    #prayer-times-view .main-header #location-display {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding-top: 1.5rem;
-        text-align: left;
-        font-size: 0.9rem;
-        font-weight: 500;
-        color: var(--header-text);
-        opacity: 0.9;
-    }
-    
-    #prayer-times-view .calendar-section {
-        background-color: var(--card-bg);
-        border-radius: var(--radius);
-        margin: -2.5rem 1rem 1.5rem 1rem;
-        padding: 1rem;
-        box-shadow: 0 4px 10px var(--card-shadow);
-        position: relative;
-        z-index: 10;
-        transition: background-color var(--transition);
-    }
-
-    #prayer-times-view #location-display .icon { margin-right: 0.4rem; }
-    #prayer-times-view .date-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.9rem; font-weight: 600; }
-    #prayer-times-view .date-header .hijri-date { color: var(--header-bg); }
-    #prayer-times-view .date-header .gregorian-date { color: var(--text-light); font-weight: 400; }
-    #prayer-times-view .calendar-view { display: flex; justify-content: space-around; text-align: center; }
-    #prayer-times-view .day { display: flex; flex-direction: column; align-items: center; }
-    #prayer-times-view .day .day-name { font-size: 0.75rem; color: #999; margin-bottom: 0.5rem; }
-    #prayer-times-view .day .day-number { font-size: 1rem; font-weight: 600; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-    #prayer-times-view .day.today .day-number { background-color: var(--header-bg); color: var(--header-text); }
-    #prayer-times-view .prayer-list-section { padding: 0 1rem; }
-    #prayer-times-view .prayer-item { display: flex; align-items: center; justify-content: space-between; background-color: var(--card-bg); padding: 1rem; border-radius: var(--radius); margin-bottom: 0.75rem; box-shadow: 0 2px 5px var(--card-shadow); transition: transform var(--transition), background-color var(--transition); }
-    #prayer-times-view .prayer-details { flex-grow: 1; min-width: 0; }
-    #prayer-times-view .prayer-details .prayer-name { font-weight: 600; font-size: 1rem; }
-    #prayer-times-view .prayer-time-value { font-size: 1.1rem; font-weight: 600; }
-    
-
-
-    /* --- GENERIC LIST VIEW STYLES (DOA, QURAN, DZIKIR) --- */
-    .generic-list-view { padding-top: 1.5rem; padding-bottom: 2rem; }
-    .last-read-card { background-color: var(--card-bg); border-radius: var(--radius); padding: 1rem; margin: 0 1rem 1.5rem 1rem; box-shadow: 0 2px 5px var(--card-shadow); cursor: pointer;}
-    .last-read-card h3 { font-size: 0.8rem; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.5rem; font-weight: 500; }
-    .last-read-card p { font-weight: 600; font-size: 1rem; }
-    .tabs-container { display: flex; border-bottom: 2px solid #e0e0e0; margin: 0 1rem 1rem 1rem; }
-    body.dark-mode .tabs-container { border-bottom-color: #333; }
-    .tab-item { flex: 1; text-align: center; padding: 0.8rem 0; font-weight: 600; font-size: 0.9rem; color: var(--text-light); cursor: pointer; position: relative; }
-    .tab-item.active { color: var(--active-tab); }
-    .tab-item.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background-color: var(--active-tab); }
-    .list-container { padding: 0 0.5rem; }
-    .list-item { display: flex; align-items: center; padding: 0.8rem 0.5rem; border-bottom: 1px solid #eee; cursor: pointer; }
-    body.dark-mode .list-item { border-bottom-color: #333; }
-    .list-item .num { font-weight: 500; color: var(--text-light); width: 2.5rem; flex-shrink: 0; text-align: center; }
-    .list-item .details { flex-grow: 1; min-width: 0; margin-right: 0.5rem; }
-    .list-item .details .title { font-weight: 600; }
-    .list-item .details .subtitle { font-size: 0.8rem; color: var(--text-light); }
-    .list-item .arabic { font-size: 1.2rem; font-weight: 500; color: var(--text-color); white-space: nowrap; }
-    
-    /* --- TAMPILAN DZIKIR (List view is now generic) --- */
-    #dzikir-view { padding-top: 1.5rem; padding-bottom: 2rem; }
-
-    /* --- TAMPILAN TASBIH --- */
-    #tasbih-view { display: none; flex-direction: column; height: 100vh; padding-top: 1.5rem; }
-    #tasbih-view .view-header { flex-shrink: 0; margin-bottom: 0; }
-    #tasbih-view .tasbih-main { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; padding: 1rem; }
-    #tasbih-counter-display { text-align: center; }
-    #tasbih-counter-display .count { font-size: 4rem; font-weight: 700; line-height: 1; }
-    #tasbih-counter-display .target { font-size: 1.2rem; color: var(--text-light); }
-    #tasbih-text-display { text-align: center; padding: 0 1rem; }
-    #tasbih-text-display .tasbih-arabic { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem; }
-    #tasbih-text-display .tasbih-latin { font-size: 1rem; font-style: italic; color: var(--text-light); margin-bottom: 0.25rem; }
-    #tasbih-text-display .tasbih-arti { font-size: 0.9rem; color: var(--text-light); }
-    #tasbih-tap-area { width: 180px; height: 180px; background-color: var(--tap-area-bg); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 5px 15px var(--card-shadow); transition: transform 0.1s ease; }
-    #tasbih-tap-area:active { transform: scale(0.95); }
-    #tasbih-tap-area .tap-icon { font-size: 4rem; color: var(--text-light); }
-    #tasbih-reset-btn { background: none; border: 2px solid var(--text-light); color: var(--text-light); font-size: 1rem; padding: 0.6rem 1.5rem; border-radius: 2rem; cursor: pointer; transition: background-color var(--transition); }
-    #tasbih-reset-btn:active { background-color: rgba(136, 136, 136, 0.2); }
-
-    /* --- SIDEBAR & MODAL (CSS UMUM) --- */
-    #menu-toggle { position: absolute; top: 1.2rem; left: 1.2rem; width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius); cursor: pointer; z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 8px; transition: all var(--transition); }
-    #menu-toggle .bar { display: block; width: 100%; height: 2px; background: var(--header-text); margin: 3px 0; transition: all var(--transition); border-radius: 2px; }
-    #sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--card-bg); box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); padding: 1.5rem; transition: left var(--transition), background-color var(--transition); z-index: 1500; overflow-y: auto; }
-    #sidebar.open { left: 0; }
-    #sidebar h3 { font-size: 1.2rem; font-weight: 600; color: var(--header-bg); margin-top: 3rem; margin-bottom: 1.5rem; }
-    #sidebar ul { list-style: none; padding: 0; }
-    #sidebar ul li a { display: block; padding: 0.8rem 1rem; text-decoration: none; color: var(--text-color); font-weight: 500; border-radius: var(--radius); transition: background-color var(--transition), color var(--transition); }
-    #sidebar ul li a:hover, #sidebar ul li a.active { background-color: var(--header-bg); color: var(--header-text); }
-    
-    .full-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; }
-    .full-modal .modal-content { background-color: var(--primary-bg); color: var(--text-color); padding: 0; border-radius: var(--radius); width: 90%; max-width: 400px; max-height: 85%; box-shadow: 0 5px 20px rgba(0,0,0,0.2); animation: modal-appear 0.4s ease; display: flex; flex-direction: column; }
-    @keyframes modal-appear { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .full-modal .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #ddd; }
-    body.dark-mode .full-modal .modal-header { border-bottom-color: #444; }
-    .full-modal .modal-header h3 { color: var(--header-bg); font-size: 1.1rem; flex-grow: 1; text-align: center; margin: 0 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .full-modal .close-button { font-size: 2rem; color: #aaa; cursor: pointer; font-weight: 300; }
-    .full-modal .modal-header .action-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
-    .full-modal .modal-header .action-icon.bookmarked { color: var(--bookmark-active); }
-    .full-modal .modal-body { padding: 1.5rem; overflow-y: auto; flex-grow: 1; }
-
-    /* --- [BARU] CSS untuk Modal Izin Kustom --- */
-    .permission-modal-content {
-        padding: 1.5rem;
-        text-align: center;
-    }
-    .permission-modal-content h3 {
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
-        color: var(--header-bg);
-    }
-    body.dark-mode .permission-modal-content h3 {
+    body.dark-mode #duet-score-board h4 {
         color: var(--accent-color);
     }
-    .permission-modal-content p {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-        color: var(--text-color);
-        opacity: 0.9;
+    #duet-turn-indicator {
+        font-weight: 600;
+        color: var(--header-bg);
     }
-    .permission-modal-actions {
+    body.dark-mode #duet-turn-indicator {
+        color: var(--accent-color);
+    }
+      
+        :root {
+          --primary-bg: #f0f4f8;
+          --header-bg: #0d264a;
+          --header-text: #ffffff;
+          --accent-color: #f9d788;
+          --text-color: #333333;
+          --text-light: #888;
+          --card-bg: #ffffff;
+          --card-shadow: rgba(0, 0, 0, 0.08);
+          --radius: 12px;
+          --transition: 0.3s ease;
+          --active-tab: #0d264a;
+          --bookmark-active: #ffc107;
+          --tap-area-bg: #e9eef2;
+          --button-bg: #0d264a;
+          --button-text: #ffffff;
+        }
+    
+        .ayah-item.ayah-playing {
+            background-color: var(--tap-area-bg);
+            border-radius: var(--radius);
+        }
+        body.dark-mode .ayah-item.ayah-playing {
+            background-color: #2c2c3a;
+        }
+    
+        .app-footer {
+          text-align: center;
+          margin-top: 2rem;
+          font-size: 0.9rem;
+          color: var(--text-light);
+          font-weight: 500;
+        }
+    
+        body.dark-mode {
+          --primary-bg: #121212;
+          --header-bg: #1a1a2e;
+          --header-text: #e0e0e0;
+          --text-color: #e0e0e0;
+          --text-light: #aaa;
+          --card-bg: #1e1e1e;
+          --card-shadow: rgba(255, 255, 255, 0.05);
+          --active-tab: #f9d788;
+          --tap-area-bg: #2c2c3a;
+          --button-bg: #f9d788;
+          --button-text: #1a1a2e;
+        }
+    
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+        body {
+          font-family: 'Poppins', sans-serif;
+          color: var(--text-color);
+          background-color: var(--primary-bg);
+          -webkit-user-select: none; user-select: none;
+          transition: background-color var(--transition), color var(--transition);
+        }
+        .app-container { width: 100%; max-width: 420px; margin: 0 auto; overflow-x: hidden; }
+        .loading-indicator { text-align: center; padding: 2rem; color: var(--text-light); }
+    
+        /* --- COMMON VIEW STYLES --- */
+        .view-header { display: flex; align-items: center; margin-bottom: 1.5rem; position: relative; justify-content: space-between; padding: 0 1rem; }
+        .back-button { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.5rem; cursor: pointer; color: var(--text-color); padding: 0.5rem; z-index: 5; }
+        .view-header h2 { font-size: 1.2rem; font-weight: 600; text-align: center; flex-grow: 1; }
+        .view-header .action-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-light); padding: 0.5rem; }
+        .view-header .action-icon.bookmarked { color: var(--bookmark-active); }
+        
+    
+        /* --- LAYAR UTAMA (JADWAL SHOLAT) --- */
+        #prayer-times-view { padding-bottom: 2rem; }
+        #prayer-times-view .main-header {
+          background: var(--header-bg); color: var(--header-text); padding: 1.5rem 1.5rem 2.5rem 1.5rem;
+          border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; text-align: center;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); position: relative; transition: background-color var(--transition);
+        }
+        #prayer-times-view .main-header h1 { font-size: 1.5rem; font-weight: 700; color: var(--accent-color); margin-bottom: 0.25rem; }
+        #prayer-times-view .main-header p { font-size: 0.9rem; color: var(--header-text); opacity: 0.9; margin-bottom: 0.5rem; }
+        #prayer-times-view #countdown-timer { font-size: 2.25rem; font-weight: 700; color: var(--header-text); letter-spacing: 2px; }
+        
+        #prayer-times-view .main-header #location-display {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 1.5rem;
+            text-align: left;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--header-text);
+            opacity: 0.9;
+        }
+        
+        #prayer-times-view .calendar-section {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            margin: -2.5rem 1rem 1.5rem 1rem;
+            padding: 1rem;
+            box-shadow: 0 4px 10px var(--card-shadow);
+            position: relative;
+            z-index: 10;
+            transition: background-color var(--transition);
+        }
+    
+        #prayer-times-view #location-display .icon { margin-right: 0.4rem; }
+        #prayer-times-view .date-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-size: 0.9rem; font-weight: 600; }
+        #prayer-times-view .date-header .hijri-date { color: var(--header-bg); }
+        #prayer-times-view .date-header .gregorian-date { color: var(--text-light); font-weight: 400; }
+        #prayer-times-view .calendar-view { display: flex; justify-content: space-around; text-align: center; }
+        #prayer-times-view .day { display: flex; flex-direction: column; align-items: center; }
+        #prayer-times-view .day .day-name { font-size: 0.75rem; color: #999; margin-bottom: 0.5rem; }
+        #prayer-times-view .day .day-number { font-size: 1rem; font-weight: 600; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        #prayer-times-view .day.today .day-number { background-color: var(--header-bg); color: var(--header-text); }
+        #prayer-times-view .prayer-list-section { padding: 0 1rem; }
+        #prayer-times-view .prayer-item { display: flex; align-items: center; justify-content: space-between; background-color: var(--card-bg); padding: 1rem; border-radius: var(--radius); margin-bottom: 0.75rem; box-shadow: 0 2px 5px var(--card-shadow); transition: transform var(--transition), background-color var(--transition); }
+        #prayer-times-view .prayer-details { flex-grow: 1; min-width: 0; }
+        #prayer-times-view .prayer-details .prayer-name { font-weight: 600; font-size: 1rem; }
+        #prayer-times-view .prayer-time-value { font-size: 1.1rem; font-weight: 600; }
+        
+    
+    
+        /* --- GENERIC LIST VIEW STYLES (DOA, QURAN, DZIKIR) --- */
+        .generic-list-view { padding-top: 1.5rem; padding-bottom: 2rem; }
+        .last-read-card { background-color: var(--card-bg); border-radius: var(--radius); padding: 1rem; margin: 0 1rem 1.5rem 1rem; box-shadow: 0 2px 5px var(--card-shadow); cursor: pointer;}
+        .last-read-card h3 { font-size: 0.8rem; text-transform: uppercase; color: var(--text-light); margin-bottom: 0.5rem; font-weight: 500; }
+        .last-read-card p { font-weight: 600; font-size: 1rem; }
+        .tabs-container { display: flex; border-bottom: 2px solid #e0e0e0; margin: 0 1rem 1rem 1rem; }
+        body.dark-mode .tabs-container { border-bottom-color: #333; }
+        .tab-item { flex: 1; text-align: center; padding: 0.8rem 0; font-weight: 600; font-size: 0.9rem; color: var(--text-light); cursor: pointer; position: relative; }
+        .tab-item.active { color: var(--active-tab); }
+        .tab-item.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background-color: var(--active-tab); }
+        .list-container { padding: 0 0.5rem; }
+        .list-item { display: flex; align-items: center; padding: 0.8rem 0.5rem; border-bottom: 1px solid #eee; cursor: pointer; }
+        body.dark-mode .list-item { border-bottom-color: #333; }
+        .list-item .num { font-weight: 500; color: var(--text-light); width: 2.5rem; flex-shrink: 0; text-align: center; }
+        .list-item .details { flex-grow: 1; min-width: 0; margin-right: 0.5rem; }
+        .list-item .details .title { font-weight: 600; }
+        .list-item .details .subtitle { font-size: 0.8rem; color: var(--text-light); }
+        .list-item .arabic { font-size: 1.2rem; font-weight: 500; color: var(--text-color); white-space: nowrap; }
+        
+        /* --- TAMPILAN DZIKIR (List view is now generic) --- */
+        #dzikir-view { padding-top: 1.5rem; padding-bottom: 2rem; }
+    
+        /* --- TAMPILAN TASBIH --- */
+        #tasbih-view { display: none; flex-direction: column; height: 100vh; padding-top: 1.5rem; }
+        #tasbih-view .view-header { flex-shrink: 0; margin-bottom: 0; }
+        #tasbih-view .tasbih-main { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-evenly; align-items: center; padding: 1rem; }
+        #tasbih-counter-display { text-align: center; }
+        #tasbih-counter-display .count { font-size: 4rem; font-weight: 700; line-height: 1; }
+        #tasbih-counter-display .target { font-size: 1.2rem; color: var(--text-light); }
+        #tasbih-text-display { text-align: center; padding: 0 1rem; }
+        #tasbih-text-display .tasbih-arabic { font-size: 1.8rem; font-weight: 500; margin-bottom: 0.5rem; }
+        #tasbih-text-display .tasbih-latin { font-size: 1rem; font-style: italic; color: var(--text-light); margin-bottom: 0.25rem; }
+        #tasbih-text-display .tasbih-arti { font-size: 0.9rem; color: var(--text-light); }
+        #tasbih-tap-area { width: 180px; height: 180px; background-color: var(--tap-area-bg); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 5px 15px var(--card-shadow); transition: transform 0.1s ease; }
+        #tasbih-tap-area:active { transform: scale(0.95); }
+        #tasbih-tap-area .tap-icon { font-size: 4rem; color: var(--text-light); }
+        #tasbih-reset-btn { background: none; border: 2px solid var(--text-light); color: var(--text-light); font-size: 1rem; padding: 0.6rem 1.5rem; border-radius: 2rem; cursor: pointer; transition: background-color var(--transition); }
+        #tasbih-reset-btn:active { background-color: rgba(136, 136, 136, 0.2); }
+    
+        /* --- SIDEBAR & MODAL (CSS UMUM) --- */
+        #menu-toggle { position: absolute; top: 1.2rem; left: 1.2rem; width: 40px; height: 40px; background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: var(--radius); cursor: pointer; z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 8px; transition: all var(--transition); }
+        #menu-toggle .bar { display: block; width: 100%; height: 2px; background: var(--header-text); margin: 3px 0; transition: all var(--transition); border-radius: 2px; }
+        #sidebar { position: fixed; top: 0; left: -300px; width: 280px; height: 100%; background: var(--card-bg); box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1); padding: 1.5rem; transition: left var(--transition), background-color var(--transition); z-index: 1500; overflow-y: auto; }
+        #sidebar.open { left: 0; }
+        #sidebar h3 { font-size: 1.2rem; font-weight: 600; color: var(--header-bg); margin-top: 3rem; margin-bottom: 1.5rem; }
+        #sidebar ul { list-style: none; padding: 0; }
+        #sidebar ul li a { display: block; padding: 0.8rem 1rem; text-decoration: none; color: var(--text-color); font-weight: 500; border-radius: var(--radius); transition: background-color var(--transition), color var(--transition); }
+        #sidebar ul li a:hover, #sidebar ul li a.active { background-color: var(--header-bg); color: var(--header-text); }
+        
+        .full-modal { position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; }
+        .full-modal .modal-content { background-color: var(--primary-bg); color: var(--text-color); padding: 0; border-radius: var(--radius); width: 90%; max-width: 400px; max-height: 85%; box-shadow: 0 5px 20px rgba(0,0,0,0.2); animation: modal-appear 0.4s ease; display: flex; flex-direction: column; }
+        @keyframes modal-appear { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .full-modal .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #ddd; }
+        body.dark-mode .full-modal .modal-header { border-bottom-color: #444; }
+        .full-modal .modal-header h3 { color: var(--header-bg); font-size: 1.1rem; flex-grow: 1; text-align: center; margin: 0 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .full-modal .close-button { font-size: 2rem; color: #aaa; cursor: pointer; font-weight: 300; }
+        .full-modal .modal-header .action-icon { font-size: 1.5rem; cursor: pointer; color: var(--text-light); }
+        .full-modal .modal-header .action-icon.bookmarked { color: var(--bookmark-active); }
+        .full-modal .modal-body { padding: 1.5rem; overflow-y: auto; flex-grow: 1; }
+    
+        /* --- CSS untuk Modal Izin Kustom --- */
+        .permission-modal-content {
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .permission-modal-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--header-bg);
+        }
+        body.dark-mode .permission-modal-content h3 {
+            color: var(--accent-color);
+        }
+        .permission-modal-content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+        .permission-modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .permission-modal-actions .modal-action-btn {
+            flex-grow: 1;
+        }
+        .permission-modal-actions .deny-btn {
+            background-color: var(--tap-area-bg);
+            color: var(--text-color);
+        }
+    
+        /* STYLE KONTEN MODAL & SURAH VIEW */
+        .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
+        body.dark-mode .settings-item { border-bottom-color: #333; }
+        .settings-item:last-child { border-bottom: none; }
+        .settings-item label { font-weight: 500; flex-shrink: 0; margin-right: 1rem; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; border-radius: 28px; transition: var(--transition); }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: var(--transition); }
+        input:checked + .slider { background-color: var(--header-bg); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        .custom-select, #enable-notifications-btn {
+            padding: 0.5rem; border-radius: 8px; border: 1px solid #ccc; background-color: var(--card-bg); color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        #enable-notifications-btn { cursor: pointer; }
+        #enable-notifications-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+        body.dark-mode .custom-select, body.dark-mode #enable-notifications-btn { border-color: #555; }
+        .single-item-arabic { font-size: 2rem; line-height: 3rem; text-align: right; direction: rtl; margin-bottom: 1.5rem; }
+        .single-item-latin { font-size: 1rem; font-style: italic; color: #666; line-height: 1.6rem; margin-bottom: 1rem; }
+        .single-item-arti { font-size: 0.9rem; color: #666; line-height: 1.5rem; }
+        body.dark-mode .single-item-latin { color: #ccc; }
+        body.dark-mode .single-item-arti { color: #ccc; }
+        .modal-action-btn {
+            display: block; width: 100%; padding: 0.8rem; margin-top: 1.5rem;
+            background-color: var(--button-bg); color: var(--button-text);
+            border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 600;
+            cursor: pointer; text-align: center; transition: transform 0.2s ease;
+        }
+        .modal-action-btn:active { transform: scale(0.98); }
+    
+        /* STYLE UNTUK GRUP PENGATURAN */
+        .settings-group {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 2px 5px var(--card-shadow);
+        }
+        .settings-group:last-child {
+            margin-bottom: 0;
+        }
+        body.dark-mode .settings-group { border-top-color: #444; }
+        .settings-group h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--header-bg);
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+        body.dark-mode .settings-group h4 { color: var(--accent-color); border-bottom-color: #444;}
+    
+    
+        /* STYLE UNTUK MENU DETAIL APLIKASI & PENGATURAN ADZAN BARU */
+        .settings-menu-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.9rem 0;
+          border-bottom: 1px solid #eee;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+        }
+        .settings-menu-item:last-child {
+          border-bottom: none;
+        }
+        body.dark-mode .settings-menu-item { border-bottom-color: #333; }
+        .settings-menu-item:hover { background-color: rgba(0, 0, 0, 0.03); }
+        body.dark-mode .settings-menu-item:hover { background-color: rgba(255, 255, 255, 0.05); }
+        .settings-menu-item span:first-child { font-weight: 500; }
+        .settings-menu-item .arrow { font-size: 1.5rem; font-weight: 400; color: var(--text-light); }
+        
+        /* --- Style Pengaturan Suara Adzan --- */
+        .selection-item-wrapper {
+            padding: 0.2rem 0.5rem;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease;
+        }
+        .selection-item-wrapper:last-child {
+            border-bottom: none;
+        }
+        body.dark-mode .selection-item-wrapper {
+            border-bottom-color: #333;
+        }
+        .selection-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.7rem 0;
+            cursor: pointer;
+        }
+        .selection-item:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+        }
+        body.dark-mode .selection-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        .selection-item span:first-child { font-weight: 500; }
+        .selection-item .checkmark {
+            font-size: 1.2rem;
+            color: var(--header-bg);
+            font-weight: bold;
+            visibility: hidden;
+        }
+        body.dark-mode .selection-item .checkmark { color: var(--accent-color); }
+        .selection-item.selected .checkmark { visibility: visible; }
+    
+        /* --- Style untuk Volume Control & Tombol Test --- */
+        .volume-control-container {
+            display: none;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 0 0.8rem 0;
+            animation: fadeIn 0.3s ease;
+        }
+        .volume-control-container.active {
+            display: flex;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .volume-control-container .volume-icon {
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+        .volume-slider {
+            -webkit-appearance: none; appearance: none;
+            flex-grow: 1; height: 6px;
+            background: #ddd; outline: none;
+            border-radius: 3px; opacity: 0.9;
+            transition: opacity .2s;
+        }
+        .volume-slider:hover { opacity: 1; }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 18px; height: 18px;
+            background: var(--header-bg); cursor: pointer;
+            border-radius: 50%;
+        }
+        .volume-slider::-moz-range-thumb {
+            width: 18px; height: 18px;
+            background: var(--header-bg); cursor: pointer;
+            border-radius: 50%; border: none;
+        }
+        .test-sound-btn {
+            background: none; border: none;
+            font-size: 1.5rem; color: var(--header-bg);
+            cursor: pointer; padding: 0.2rem;
+            line-height: 1;
+        }
+        body.dark-mode .volume-slider { background: #444; }
+        body.dark-mode .volume-slider::-webkit-slider-thumb { background: var(--accent-color); }
+        body.dark-mode .volume-slider::-moz-range-thumb { background: var(--accent-color); }
+        body.dark-mode .test-sound-btn { color: var(--accent-color); }
+        
+        /* CSS UNTUK TOMBOL PLAY STORE */
+        .playstore-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0.8rem 1rem;
+            margin-top: 1.5rem;
+            background-color: #000000;
+            color: #ffffff;
+            border-radius: var(--radius);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .playstore-btn:active {
+            transform: scale(0.97);
+        }
+        .playstore-btn .playstore-icon {
+            width: 24px;
+            height: 24px;
+        }
+        body.dark-mode .playstore-btn {
+            background-color: #ffffff;
+            color: #000000;
+        }
+    
+    
+        /* STYLE UNTUK TOMBOL DETAIL APLIKASI */
+        .detail-app-container {
+          text-align: center;
+          padding: 1.5rem 0 0.5rem 0;
+        }
+    
+        #detail-app-btn {
+          background-color: var(--header-bg);
+          color: var(--header-text);
+          border: none;
+          border-radius: var(--radius);
+          padding: 0.7rem 1.5rem;
+          font-size: 0.9rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: transform 0.2s ease, background-color var(--transition);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+    
+        #detail-app-btn:active {
+          transform: scale(0.96);
+        }
+        
+        body.dark-mode #detail-app-btn {
+            background-color: var(--tap-area-bg);
+            color: var(--text-color);
+        }
+    
+        /* STYLE UNTUK KONTEN HALAMAN DETAIL */
+        .content-body {
+            padding: 0 1rem 1.5rem 1rem; 
+        }
+    
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px var(--card-shadow);
+            transition: background-color var(--transition);
+        }
+    
+        .content-card p, .content-card li {
+            line-height: 1.7; 
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+    
+        .content-card p:last-child, .content-card li:last-child {
+            margin-bottom: 0;
+        }
+    
+        .content-card strong {
+            color: var(--header-bg);
+            font-weight: 600;
+        }
+    
+        body.dark-mode .content-card strong {
+            color: var(--accent-color);
+        }
+    
+        .content-title-icon {
+            font-size: 1.5rem;
+            margin-right: 0.75rem;
+            color: var(--header-bg);
+            vertical-align: middle;
+        }
+    
+        body.dark-mode .content-title-icon {
+            color: var(--accent-color);
+        }
+    
+        h3.content-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        
+    .surah-audio-player {
         display: flex;
-        gap: 1rem;
+        align-items: center;
         justify-content: center;
-    }
-    .permission-modal-actions .modal-action-btn {
-        flex-grow: 1;
-    }
-    .permission-modal-actions .deny-btn {
+        gap: 1rem;
+        padding: 1rem 0.5rem;
+        margin-bottom: 1rem;
         background-color: var(--tap-area-bg);
-        color: var(--text-color);
+        border-radius: var(--radius);
     }
-
-    /* STYLE KONTEN MODAL & SURAH VIEW */
-    .settings-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid #eee; }
-    body.dark-mode .settings-item { border-bottom-color: #333; }
-    .settings-item:last-child { border-bottom: none; }
-    .settings-item label { font-weight: 500; flex-shrink: 0; margin-right: 1rem; }
-    .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
-    .switch input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; border-radius: 28px; transition: var(--transition); }
-    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; border-radius: 50%; transition: var(--transition); }
-    input:checked + .slider { background-color: var(--header-bg); }
-    input:checked + .slider:before { transform: translateX(22px); }
-    .custom-select, #enable-notifications-btn {
-        padding: 0.5rem; border-radius: 8px; border: 1px solid #ccc; background-color: var(--card-bg); color: var(--text-color);
-        font-family: 'Poppins', sans-serif;
+    #surah-play-btn {
+        background-color: var(--card-bg);
+        border: 1px solid #ddd;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        font-size: 1.5rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+        box-shadow: 0 2px 4px var(--card-shadow);
+    }
+    body.dark-mode #surah-play-btn {
+        border-color: #444;
     }
     
-    #enable-notifications-btn { cursor: pointer; }
-    #enable-notifications-btn:disabled { cursor: not-allowed; opacity: 0.6; }
-    body.dark-mode .custom-select, body.dark-mode #enable-notifications-btn { border-color: #555; }
-    .single-item-arabic { font-size: 2rem; line-height: 3rem; text-align: right; direction: rtl; margin-bottom: 1.5rem; }
-    .single-item-latin { font-size: 1rem; font-style: italic; color: #666; line-height: 1.6rem; margin-bottom: 1rem; }
-    .single-item-arti { font-size: 0.9rem; color: #666; line-height: 1.5rem; }
-    body.dark-mode .single-item-latin { color: #ccc; }
-    body.dark-mode .single-item-arti { color: #ccc; }
-    .modal-action-btn {
-        display: block; width: 100%; padding: 0.8rem; margin-top: 1.5rem;
-        background-color: var(--button-bg); color: var(--button-text);
-        border: none; border-radius: var(--radius); font-size: 1rem; font-weight: 600;
-        cursor: pointer; text-align: center; transition: transform 0.2s ease;
+        ul.styled-list {
+            list-style: none;
+            padding-left: 0;
+        }
+    
+        ul.styled-list li {
+            position: relative;
+            padding-left: 1.8rem;
+            margin-bottom: 1rem;
+        }
+    
+        ul.styled-list li::before {
+            content: '✓'; 
+            position: absolute;
+            left: 0;
+            top: 2px;
+            color: var(--header-bg);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+    
+        body.dark-mode ul.styled-list li::before {
+            color: var(--accent-color);
+        }
+    
+        .email-link-wrapper {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+    
+        /* --- SURAH VIEW STYLES --- */
+        #surah-view, #juz-detail-view { padding-top: 1.5rem; padding-bottom: 2rem; }
+        #surah-view .view-header { position: sticky; top: 0; background-color: var(--primary-bg); padding-top: 1.5rem; padding-bottom: 1rem; z-index: 100; transition: background-color var(--transition); }
+        #surah-view-body { padding: 0 1rem; }
+        .surah-detail-header { text-align: center; margin-bottom: 1.5rem; padding: 1.5rem; background-color: var(--card-bg); border-radius: var(--radius); box-shadow: 0 2px 5px var(--card-shadow); }
+        .surah-detail-header h2 { font-size: 1.8rem; font-weight: 600; color: var(--header-bg); margin-bottom: 0.25rem; }
+        .surah-detail-header p { font-size: 1rem; color: var(--text-color); margin-bottom: 0.5rem; }
+        .surah-detail-header .meta { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; }
+        
+        .basmala { text-align: center; padding-bottom: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; }
+        body.dark-mode .basmala { border-bottom-color: #444; }
+        .basmala .basmala-arabic { font-size: 1.8rem; direction: rtl; margin: 0; padding: 0; }
+        .basmala .basmala-translation { font-size: 0.9rem; font-style: italic; color: var(--text-light); margin-top: 0.5rem; }
+        
+        .ayah-item { padding: 1.2rem 0; border-bottom: 1px solid #eee; }
+        body.dark-mode .ayah-item { border-bottom-color: #333; }
+        .ayah-item:last-child { border-bottom: none; }
+        .ayah-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .ayah-number { font-weight: 600; background: var(--tap-area-bg); color: var(--text-light); padding: 0.2rem 0.6rem; border-radius: 8px; font-size: 0.9rem; }
+        .ayah-arabic { font-size: 1.8rem; text-align: right; direction: rtl; line-height: 2.8rem; margin-bottom: 1rem; }
+        .ayah-latin { font-size: 0.95rem; font-style: italic; color: #555; line-height: 1.6rem; margin-bottom: 1rem; }
+        .ayah-translation { font-size: 0.9rem; line-height: 1.5rem; }
+        body.dark-mode .ayah-latin { color: #ddd; }
+        body.dark-mode .ayah-translation { color: #ccc; }
+        
+        /* --- TAMPILAN KIBLAT --- */
+        #qibla-view {
+          display: none;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          height: 100vh;
+          box-sizing: border-box;
+          background-color: #000000;
+          color: #ffffff;
+          padding: 1rem;
+        }
+        #qibla-view .view-header {
+          position: absolute;
+          top: 0;
+          width: 100%;
+          color: white;
+        }
+         #qibla-view .view-header h2, #qibla-view .back-button {
+            color: #ffffff;
+           }
+    
+        #qibla-compass-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #qibla-compass-circle {
+            width: 100%;
+            height: 100%;
+            background-color: #F0E68C; /* Khaki - pale yellow */
+            border: 5px solid #5C4033; /* Dark brown border */
+            border-radius: 50%;
+            transition: background-color 0.4s ease;
+            position: relative;
+        }
+        #qibla-compass-circle.aligned {
+            background-color: #FFD700; /* Gold */
+        }
+        
+        #qibla-lubber-line {
+          position: absolute;
+          top: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 4px;
+          height: 30px;
+          background-color: #FF4500; /* OrangeRed */
+          border-radius: 2px;
+          z-index: 3;
+        }
+    
+        #qibla-needle {
+            position: absolute;
+            width: 4px;
+            height: 120px;
+            background-color: #333333;
+            top: 30px;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(0deg);
+            transition: transform 0.2s linear;
+            border-radius: 2px;
+            z-index: 2;
+        }
+        
+        #qibla-info-box {
+          margin-top: 2rem;
+          text-align: center;
+          max-width: 320px;
+        }
+        #qibla-info-box .direction-degree {
+          font-size: 1.2rem;
+          font-weight: 500;
+          margin-bottom: 1rem;
+        }
+        #qibla-info-box .calibration-info {
+          font-size: 0.8rem;
+          color: #ccc;
+          line-height: 1.4;
+          margin-bottom: 1rem;
+        }
+        #qibla-recalibrate-btn {
+          background: none;
+          border: 1px solid #f9d788;
+          color: #f9d788;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          cursor: pointer;
+        }
+        
+        /* --- CSS untuk Fitur Kuis Sambung Ayat --- */
+        .quiz-points-display {
+            font-size: 1rem;
+            font-weight: 600;
+            background-color: var(--tap-area-bg);
+            padding: 0.4rem 0.8rem;
+            border-radius: var(--radius);
+            color: var(--header-bg);
+        }
+        body.dark-mode .quiz-points-display {
+            color: var(--accent-color);
+        }
+    
+        .quiz-intro {
+            text-align: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 2px 5px var(--card-shadow);
+        }
+        .quiz-intro h3 {
+            font-size: 1.2rem;
+            color: var(--header-bg);
+            margin-bottom: 0.5rem;
+        }
+        body.dark-mode .quiz-intro h3 {
+            color: var(--accent-color);
+        }
+        .quiz-intro p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+    
+        .quiz-mode-selection {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+    
+        .quiz-mode-card {
+            background-color: var(--card-bg);
+            padding: 1.2rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 10px var(--card-shadow);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border-left: 5px solid var(--header-bg);
+        }
+        body.dark-mode .quiz-mode-card {
+            border-left-color: var(--accent-color);
+        }
+        .quiz-mode-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px var(--card-shadow);
+        }
+        .quiz-mode-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .quiz-mode-card p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        .quiz-mode-card[data-disabled="true"], #theme-store-btn[data-disabled="true"] {
+            opacity: 0.6;
+            cursor: not-allowed;
+            border-left-color: #ccc;
+        }
+        .quiz-mode-card[data-disabled="true"]:hover, #theme-store-btn[data-disabled="true"]:hover {
+            transform: none;
+            box-shadow: 0 4px 10px var(--card-shadow);
+        }
+    
+        /* Tampilan Permainan Kuis */
+        .quiz-game-area {
+            margin-top: 1.5rem;
+        }
+        .quiz-question-card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 5px var(--card-shadow);
+        }
+        .quiz-question-card p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 0.75rem;
+        }
+        .quiz-question-card h3 {
+            font-size: 1.5rem;
+            direction: rtl; /* Teks Arab dari kanan ke kiri */
+            font-weight: 500;
+        }
+        .quiz-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .quiz-option {
+            background-color: var(--card-bg);
+            border: 2px solid var(--tap-area-bg);
+            padding: 1rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            text-align: right;
+            direction: rtl;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover {
+            background-color: var(--tap-area-bg);
+        }
+        .quiz-option.correct {
+            background-color: #d4edda; /* Hijau */
+            border-color: #28a745;
+            color: #155724;
+        }
+        .quiz-option.incorrect {
+            background-color: #f8d7da; /* Merah */
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .quiz-option.disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+    
+        .quiz-feedback {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            height: 30px;
+        }
+        .quiz-feedback.correct {
+            color: #28a745;
+        }
+        .quiz-feedback.incorrect {
+            color: #dc3545;
+        }
+        
+    /* --- [FUNGSI DUET] Styling Tambahan untuk Mode Duet --- */
+    #duet-score-board .player-container {
+        padding: 0.5rem;
+        border-radius: var(--radius);
+        transition: all 0.4s ease;
+        border-bottom: 4px solid transparent;
     }
-    .modal-action-btn:active { transform: scale(0.98); }
-
-    /* STYLE UNTUK GRUP PENGATURAN */
-    .settings-group {
-        margin-bottom: 1.5rem;
-        padding: 1rem;
+    #duet-score-board .player-container.active {
+        transform: scale(1.05);
+        background-color: var(--tap-area-bg);
+        border-bottom-color: var(--header-bg);
+    }
+    body.dark-mode #duet-score-board .player-container.active {
+        border-bottom-color: var(--accent-color);
+    }
+    #duet-score-board .player-container.active h4 {
+        color: var(--header-bg);
+    }
+    body.dark-mode #duet-score-board .player-container.active h4 {
+        color: var(--accent-color);
+    }
+    
+    
+    /* --- [FUNGSI TOKO] Styling untuk Halaman Toko Tema --- */
+    #theme-store-btn:not([data-disabled="true"]) {
+        background-color: var(--accent-color);
+        color: var(--header-bg);
+        font-weight: 700;
+        box-shadow: 0 4px 10px rgba(249, 215, 136, 0.4);
+    }
+    body.dark-mode #theme-store-btn:not([data-disabled="true"]) {
+        background-color: var(--button-bg);
+        color: var(--button-text);
+        box-shadow: 0 4px 10px rgba(249, 215, 136, 0.2);
+    }
+    #theme-store-modal .modal-header {
+        flex-wrap: wrap; 
+        padding-bottom: 0.5rem;
+    }
+    #store-user-points {
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-top: 0.5rem;
+        padding: 0.4rem;
+        background-color: var(--tap-area-bg);
+        border-radius: 8px;
+        color: var(--header-bg);
+    }
+    body.dark-mode #store-user-points {
+        color: var(--accent-color);
+    }
+    #theme-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        padding-top: 1rem;
+    }
+    .theme-card {
         background-color: var(--card-bg);
         border-radius: var(--radius);
         box-shadow: 0 2px 5px var(--card-shadow);
+        padding: 1rem;
+        text-align: center;
+        border: 3px solid transparent;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
-    .settings-group:last-child {
-        margin-bottom: 0;
+    .theme-card.applied {
+        border-color: var(--header-bg);
+        transform: translateY(-5px);
     }
-    body.dark-mode .settings-group { border-top-color: #444; }
-    .settings-group h4 {
-        font-size: 1.1rem;
+    body.dark-mode .theme-card.applied {
+        border-color: var(--accent-color);
+    }
+    .theme-card.applied::before {
+        content: '✓ Digunakan';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--header-bg);
+        color: var(--header-text);
+        font-size: 0.7rem;
         font-weight: 600;
+        padding: 0.2rem 0;
+    }
+    body.dark-mode .theme-card.applied::before {
+        background-color: var(--accent-color);
         color: var(--header-bg);
-        margin-bottom: 1rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid #eee;
     }
-    body.dark-mode .settings-group h4 { color: var(--accent-color); border-bottom-color: #444;}
-
-
-    /* STYLE UNTUK MENU DETAIL APLIKASI & PENGATURAN ADZAN BARU */
-    .settings-menu-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.9rem 0;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      transition: background-color 0.2s ease;
+    .theme-preview {
+        display: flex;
+        justify-content: center;
+        height: 60px;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 0.75rem;
+        border: 1px solid var(--tap-area-bg);
     }
-    .settings-menu-item:last-child {
-      border-bottom: none;
+    .theme-preview .color-swatch {
+        width: 25%;
+        height: 100%;
     }
-    body.dark-mode .settings-menu-item { border-bottom-color: #333; }
-    .settings-menu-item:hover { background-color: rgba(0, 0, 0, 0.03); }
-    body.dark-mode .settings-menu-item:hover { background-color: rgba(255, 255, 255, 0.05); }
-    .settings-menu-item span:first-child { font-weight: 500; }
-    .settings-menu-item .arrow { font-size: 1.5rem; font-weight: 400; color: var(--text-light); }
+    .theme-name {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+    }
+    .theme-price {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-light);
+        margin-bottom: 0.75rem;
+        height: 20px;
+    }
+    .theme-price .price-icon {
+        color: #ffc107;
+    }
+    .theme-action-btn {
+        width: 100%;
+        padding: 0.6rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-transform: uppercase;
+    }
+    .theme-action-btn.buy {
+        background-color: var(--button-bg);
+        color: var(--button-text);
+    }
+    .theme-action-btn.apply {
+        background-color: var(--tap-area-bg);
+        color: var(--text-color);
+    }
+    .theme-action-btn.insufficient {
+        background-color: #aaa;
+        color: #fff;
+        cursor: not-allowed;
+    }
+    body.dark-mode .theme-action-btn.insufficient {
+        background-color: #444;
+        color: #888;
+    }
+    .theme-card.locked .theme-preview {
+        filter: grayscale(80%);
+    }
+    .theme-card.locked::after {
+        content: '🔒';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.5rem;
+        color: white;
+        border-radius: var(--radius);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+    }
     
-    /* --- Style Pengaturan Suara Adzan --- */
-    .selection-item-wrapper {
-        padding: 0.2rem 0.5rem;
-        border-bottom: 1px solid #eee;
-        transition: background-color 0.2s ease;
+    /* --- CSS UNTUK FITUR MOTIVASI ISLAMI --- */
+    .motivation-carousel-container {
+        position: relative;
+        overflow: hidden;
+        padding: 0;
+        margin-bottom: 1.5rem;
+        height: 180px;
     }
-    .selection-item-wrapper:last-child {
-        border-bottom: none;
+    .motivation-carousel-track {
+        display: flex;
+        height: 100%;
+        transition: transform 0.5s ease-in-out;
     }
-    body.dark-mode .selection-item-wrapper {
-        border-bottom-color: #333;
+    .motivation-slide {
+        flex: 0 0 100%;
+        width: 100%;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(135deg, var(--header-bg), #1a3a5f);
+        color: var(--header-text);
+        box-sizing: border-box;
     }
-    .selection-item {
+    .motivation-slide p {
+        font-size: 1.1rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+    }
+    .motivation-slide .quote-author {
+        font-size: 0.9rem;
+        font-style: italic;
+        opacity: 0.8;
+    }
+    .carousel-control {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(255, 255, 255, 0.2);
+        border: none;
+        color: white;
+        font-size: 1.8rem;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        z-index: 10;
+        line-height: 40px;
+        text-align: center;
+    }
+    .carousel-control.prev { left: 10px; }
+    .carousel-control.next { right: 10px; }
+    .carousel-indicators {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+    }
+    .indicator-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .indicator-dot.active {
+        background-color: white;
+    }
+    .motivation-quote-card {
+        background-color: var(--card-bg);
+        border-radius: var(--radius);
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 8px var(--card-shadow);
+        border-left: 4px solid var(--header-bg);
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInQuote 0.5s forwards;
+    }
+    @keyframes fadeInQuote {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    body.dark-mode .motivation-quote-card {
+        border-left-color: var(--accent-color);
+    }
+    .motivation-quote-card .quote-text {
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        font-style: italic;
+        color: var(--text-color);
+    }
+    .motivation-quote-card .quote-author {
+        font-weight: 600;
+        text-align: right;
+        color: var(--header-bg);
+        margin-bottom: 1.2rem;
+    }
+    body.dark-mode .motivation-quote-card .quote-author {
+        color: var(--accent-color);
+    }
+    .quote-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.7rem 0;
-        cursor: pointer;
+        border-top: 1px solid var(--tap-area-bg);
+        padding-top: 1rem;
     }
-    .selection-item:hover {
-        background-color: rgba(0, 0, 0, 0.03);
+    body.dark-mode .quote-footer {
+        border-top-color: #333;
     }
-    body.dark-mode .selection-item:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-    }
-    .selection-item span:first-child { font-weight: 500; }
-    .selection-item .checkmark {
-        font-size: 1.2rem;
-        color: var(--header-bg);
-        font-weight: bold;
-        visibility: hidden;
-    }
-    body.dark-mode .selection-item .checkmark { color: var(--accent-color); }
-    .selection-item.selected .checkmark { visibility: visible; }
-
-    /* --- Style untuk Volume Control & Tombol Test --- */
-    .volume-control-container {
-        display: none;
-        align-items: center;
-        gap: 0.8rem;
-        padding: 0.5rem 0 0.8rem 0;
-        animation: fadeIn 0.3s ease;
-    }
-    .volume-control-container.active {
+    .quote-tags {
         display: flex;
+        gap: 0.5rem;
     }
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-5px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .volume-control-container .volume-icon {
-        font-size: 1.2rem;
-        color: var(--text-light);
-    }
-    .volume-slider {
-        -webkit-appearance: none; appearance: none;
-        flex-grow: 1; height: 6px;
-        background: #ddd; outline: none;
-        border-radius: 3px; opacity: 0.9;
-        transition: opacity .2s;
-    }
-    .volume-slider:hover { opacity: 1; }
-    .volume-slider::-webkit-slider-thumb {
-        -webkit-appearance: none; appearance: none;
-        width: 18px; height: 18px;
-        background: var(--header-bg); cursor: pointer;
-        border-radius: 50%;
-    }
-    .volume-slider::-moz-range-thumb {
-        width: 18px; height: 18px;
-        background: var(--header-bg); cursor: pointer;
-        border-radius: 50%; border: none;
-    }
-    .test-sound-btn {
-        background: none; border: none;
-        font-size: 1.5rem; color: var(--header-bg);
-        cursor: pointer; padding: 0.2rem;
-        line-height: 1;
-    }
-    body.dark-mode .volume-slider { background: #444; }
-    body.dark-mode .volume-slider::-webkit-slider-thumb { background: var(--accent-color); }
-    body.dark-mode .volume-slider::-moz-range-thumb { background: var(--accent-color); }
-    body.dark-mode .test-sound-btn { color: var(--accent-color); }
-    
-    /* CSS UNTUK TOMBOL PLAY STORE */
-    .playstore-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        padding: 0.8rem 1rem;
-        margin-top: 1.5rem;
-        background-color: #000000;
-        color: #ffffff;
-        border-radius: var(--radius);
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1rem;
-        transition: transform 0.2s ease, background-color 0.2s ease;
-    }
-    .playstore-btn:active {
-        transform: scale(0.97);
-    }
-    .playstore-btn .playstore-icon {
-        width: 24px;
-        height: 24px;
-    }
-    body.dark-mode .playstore-btn {
-        background-color: #ffffff;
-        color: #000000;
-    }
-
-
-    /* STYLE UNTUK TOMBOL DETAIL APLIKASI */
-    .detail-app-container {
-      text-align: center;
-      padding: 1.5rem 0 0.5rem 0;
-    }
-
-    #detail-app-btn {
-      background-color: var(--header-bg);
-      color: var(--header-text);
-      border: none;
-      border-radius: var(--radius);
-      padding: 0.7rem 1.5rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s ease, background-color var(--transition);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    #detail-app-btn:active {
-      transform: scale(0.96);
-    }
-    
-    body.dark-mode #detail-app-btn {
+    .quote-tag-badge {
         background-color: var(--tap-area-bg);
-        color: var(--text-color);
-    }
-
-    /* STYLE UNTUK KONTEN HALAMAN DETAIL */
-    .content-body {
-        padding: 0 1rem 1.5rem 1rem; 
-    }
-
-    .content-card {
-        background-color: var(--card-bg);
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 2px 8px var(--card-shadow);
-        transition: background-color var(--transition);
-    }
-
-    .content-card p, .content-card li {
-        line-height: 1.7; 
-        color: var(--text-color);
-        opacity: 0.9;
-        margin-bottom: 1rem;
-    }
-
-    .content-card p:last-child, .content-card li:last-child {
-        margin-bottom: 0;
-    }
-
-    .content-card strong {
-        color: var(--header-bg);
-        font-weight: 600;
-    }
-
-    body.dark-mode .content-card strong {
-        color: var(--accent-color);
-    }
-
-    .content-title-icon {
-        font-size: 1.5rem;
-        margin-right: 0.75rem;
-        color: var(--header-bg);
-        vertical-align: middle;
-    }
-
-    body.dark-mode .content-title-icon {
-        color: var(--accent-color);
-    }
-
-    h3.content-title {
-        display: flex;
-        align-items: center;
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--text-color);
-    }
-    
-/* TAMBAHKAN BLOK CSS BARU INI */
-.surah-audio-player {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 1rem 0.5rem;
-    margin-bottom: 1rem;
-    background-color: var(--tap-area-bg);
-    border-radius: var(--radius);
-}
-#surah-play-btn {
-    background-color: var(--card-bg);
-    border: 1px solid #ddd;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-color);
-    box-shadow: 0 2px 4px var(--card-shadow);
-}
-body.dark-mode #surah-play-btn {
-    border-color: #444;
-}
-
-    ul.styled-list {
-        list-style: none;
-        padding-left: 0;
-    }
-
-    ul.styled-list li {
-        position: relative;
-        padding-left: 1.8rem;
-        margin-bottom: 1rem;
-    }
-
-    ul.styled-list li::before {
-        content: '✓'; 
-        position: absolute;
-        left: 0;
-        top: 2px;
-        color: var(--header-bg);
-        font-weight: 700;
-        font-size: 1.1rem;
-    }
-
-    body.dark-mode ul.styled-list li::before {
-        color: var(--accent-color);
-    }
-
-    .email-link-wrapper {
-        text-align: center;
-        margin-top: 1.5rem;
-    }
-
-    /* --- SURAH VIEW STYLES --- */
-    #surah-view, #juz-detail-view { padding-top: 1.5rem; padding-bottom: 2rem; }
-    #surah-view .view-header { position: sticky; top: 0; background-color: var(--primary-bg); padding-top: 1.5rem; padding-bottom: 1rem; z-index: 100; transition: background-color var(--transition); }
-    #surah-view-body { padding: 0 1rem; }
-    .surah-detail-header { text-align: center; margin-bottom: 1.5rem; padding: 1.5rem; background-color: var(--card-bg); border-radius: var(--radius); box-shadow: 0 2px 5px var(--card-shadow); }
-    .surah-detail-header h2 { font-size: 1.8rem; font-weight: 600; color: var(--header-bg); margin-bottom: 0.25rem; }
-    .surah-detail-header p { font-size: 1rem; color: var(--text-color); margin-bottom: 0.5rem; }
-    .surah-detail-header .meta { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; }
-    
-    .basmala { text-align: center; padding-bottom: 1.5rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; }
-    body.dark-mode .basmala { border-bottom-color: #444; }
-    .basmala .basmala-arabic { font-size: 1.8rem; direction: rtl; margin: 0; padding: 0; }
-    .basmala .basmala-translation { font-size: 0.9rem; font-style: italic; color: var(--text-light); margin-top: 0.5rem; }
-    
-    .ayah-item { padding: 1.2rem 0; border-bottom: 1px solid #eee; }
-    body.dark-mode .ayah-item { border-bottom-color: #333; }
-    .ayah-item:last-child { border-bottom: none; }
-    .ayah-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-    .ayah-number { font-weight: 600; background: var(--tap-area-bg); color: var(--text-light); padding: 0.2rem 0.6rem; border-radius: 8px; font-size: 0.9rem; }
-    .ayah-arabic { font-size: 1.8rem; text-align: right; direction: rtl; line-height: 2.8rem; margin-bottom: 1rem; }
-    .ayah-latin { font-size: 0.95rem; font-style: italic; color: #555; line-height: 1.6rem; margin-bottom: 1rem; }
-    .ayah-translation { font-size: 0.9rem; line-height: 1.5rem; }
-    body.dark-mode .ayah-latin { color: #ddd; }
-    body.dark-mode .ayah-translation { color: #ccc; }
-    
-    /* --- TAMPILAN KIBLAT --- */
-    #qibla-view {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      box-sizing: border-box;
-      background-color: #000000;
-      color: #ffffff;
-      padding: 1rem;
-    }
-    #qibla-view .view-header {
-      position: absolute;
-      top: 0;
-      width: 100%;
-      color: white;
-    }
-     #qibla-view .view-header h2, #qibla-view .back-button {
-        color: #ffffff;
-       }
-
-    #qibla-compass-container {
-        position: relative;
-        width: 300px;
-        height: 300px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    #qibla-compass-circle {
-        width: 100%;
-        height: 100%;
-        background-color: #F0E68C; /* Khaki - pale yellow */
-        border: 5px solid #5C4033; /* Dark brown border */
-        border-radius: 50%;
-        transition: background-color 0.4s ease;
-        position: relative;
-    }
-    #qibla-compass-circle.aligned {
-        background-color: #FFD700; /* Gold */
-    }
-    
-    #qibla-lubber-line {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 4px;
-      height: 30px;
-      background-color: #FF4500; /* OrangeRed */
-      border-radius: 2px;
-      z-index: 3;
-    }
-
-    #qibla-needle {
-        position: absolute;
-        width: 4px;
-        height: 120px;
-        background-color: #333333;
-        top: 30px;
-        left: 50%;
-        transform-origin: bottom center;
-        transform: translateX(-50%) rotate(0deg);
-        transition: transform 0.2s linear;
-        border-radius: 2px;
-        z-index: 2;
-    }
-    
-    #qibla-info-box {
-      margin-top: 2rem;
-      text-align: center;
-      max-width: 320px;
-    }
-    #qibla-info-box .direction-degree {
-      font-size: 1.2rem;
-      font-weight: 500;
-      margin-bottom: 1rem;
-    }
-    #qibla-info-box .calibration-info {
-      font-size: 0.8rem;
-      color: #ccc;
-      line-height: 1.4;
-      margin-bottom: 1rem;
-    }
-    #qibla-recalibrate-btn {
-      background: none;
-      border: 1px solid #f9d788;
-      color: #f9d788;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-    
-    /* [BARU] CSS untuk Fitur Kuis Sambung Ayat */
-    .quiz-points-display {
-        font-size: 1rem;
-        font-weight: 600;
-        background-color: var(--tap-area-bg);
-        padding: 0.4rem 0.8rem;
-        border-radius: var(--radius);
-        color: var(--header-bg);
-    }
-    body.dark-mode .quiz-points-display {
-        color: var(--accent-color);
-    }
-
-    .quiz-intro {
-        text-align: center;
-        margin: 1.5rem 0;
-        padding: 1rem;
-        background-color: var(--card-bg);
-        border-radius: var(--radius);
-        box-shadow: 0 2px 5px var(--card-shadow);
-    }
-    .quiz-intro h3 {
-        font-size: 1.2rem;
-        color: var(--header-bg);
-        margin-bottom: 0.5rem;
-    }
-    body.dark-mode .quiz-intro h3 {
-        color: var(--accent-color);
-    }
-    .quiz-intro p {
-        font-size: 0.9rem;
-        line-height: 1.6;
         color: var(--text-light);
-    }
-
-    .quiz-mode-selection {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .quiz-mode-card {
-        background-color: var(--card-bg);
-        padding: 1.2rem;
-        border-radius: var(--radius);
-        box-shadow: 0 4px 10px var(--card-shadow);
-        cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        border-left: 5px solid var(--header-bg);
-    }
-    body.dark-mode .quiz-mode-card {
-        border-left-color: var(--accent-color);
-    }
-    .quiz-mode-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 15px var(--card-shadow);
-    }
-    .quiz-mode-card h4 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 0.4rem;
-    }
-    .quiz-mode-card p {
-        font-size: 0.85rem;
-        color: var(--text-light);
-    }
-    .quiz-mode-card[data-disabled="true"], #theme-store-btn[data-disabled="true"] {
-        opacity: 0.6;
-        cursor: not-allowed;
-        border-left-color: #ccc;
-    }
-    .quiz-mode-card[data-disabled="true"]:hover, #theme-store-btn[data-disabled="true"]:hover {
-        transform: none;
-        box-shadow: 0 4px 10px var(--card-shadow);
-    }
-
-    /* Tampilan Permainan Kuis */
-    .quiz-game-area {
-        margin-top: 1.5rem;
-    }
-    .quiz-question-card {
-        background-color: var(--card-bg);
-        border-radius: var(--radius);
-        padding: 1.5rem;
-        text-align: center;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 2px 5px var(--card-shadow);
-    }
-    .quiz-question-card p {
-        font-size: 0.9rem;
-        color: var(--text-light);
-        margin-bottom: 0.75rem;
-    }
-    .quiz-question-card h3 {
-        font-size: 1.5rem;
-        direction: rtl; /* Teks Arab dari kanan ke kiri */
+        font-size: 0.75rem;
         font-weight: 500;
+        padding: 0.3rem 0.6rem;
+        border-radius: 1rem;
     }
-    .quiz-options-container {
+    .quote-actions {
         display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
+        gap: 1rem;
     }
-    .quiz-option {
-        background-color: var(--card-bg);
-        border: 2px solid var(--tap-area-bg);
-        padding: 1rem;
-        border-radius: var(--radius);
+    .quote-actions .action-icon {
+        font-size: 1.4rem;
         cursor: pointer;
-        text-align: right;
-        direction: rtl;
-        font-size: 1.2rem;
-        transition: all 0.2s ease;
+        color: var(--text-light);
+        transition: color 0.2s, transform 0.2s;
     }
-    .quiz-option:hover {
-        background-color: var(--tap-area-bg);
+    .quote-actions .action-icon:hover {
+        transform: scale(1.1);
     }
-    .quiz-option.correct {
-        background-color: #d4edda; /* Hijau */
-        border-color: #28a745;
-        color: #155724;
+    .quote-actions .action-icon.favorited {
+        color: #e91e63;
     }
-    .quiz-option.incorrect {
-        background-color: #f8d7da; /* Merah */
-        border-color: #dc3545;
-        color: #721c24;
+    .motivation-toast {
+        position: fixed;
+        bottom: -100px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: var(--header-bg);
+        color: var(--header-text);
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        font-weight: 500;
+        z-index: 5000;
+        transition: bottom 0.5s ease-in-out;
     }
-    .quiz-option.disabled {
-        pointer-events: none;
-        opacity: 0.7;
+    .motivation-toast.show {
+        bottom: 80px;
     }
-
-    .quiz-feedback {
-        text-align: center;
-        margin-top: 1.5rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-        height: 30px;
-    }
-    .quiz-feedback.correct {
-        color: #28a745;
-    }
-    .quiz-feedback.incorrect {
-        color: #dc3545;
-    }
+    </style>
+    <body>
+      <nav id="sidebar">
+        <h3 data-key="nav_title">Menu</h3>
+        <ul>
+          <li><a href="#" id="prayer-times-btn">🕒 Jadwal Sholat</a></li>
+          <li><a href="#" id="doa-harian-btn" data-key="nav_doa">🤲 Doa Harian</a></li>
+          <li><a href="#" id="quran-btn" data-key="nav_quran">📖 Al-Qur'an</a></li>
+          <li><a href="#" id="dzikir-btn" data-key="nav_dzikir">📿 Dzikir & Tasbih</a></li>
+          <li><a href="#" id="qibla-btn" data-key="nav_kiblat">🕋 Kiblat</a></li>
+          <li><a href="#" id="quiz-btn">🧠 Kuis Ayat</a></li>
+          <li><a href="#" id="motivasi-btn">🌟 Motivasi Islami</a></li> 
+          <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
+        </ul>
+      </nav>
     
-/* [KODE BARU DARI SAYA] */
-
-/* --- [FUNGSI DUET] Styling Tambahan untuk Mode Duet --- */
-
-/* Gaya untuk papan skor agar menyorot giliran pemain aktif */
-#duet-score-board .player-container {
-    padding: 0.5rem;
-    border-radius: var(--radius);
-    transition: all 0.4s ease;
-    border-bottom: 4px solid transparent;
-}
-#duet-score-board .player-container.active {
-    transform: scale(1.05);
-    background-color: var(--tap-area-bg);
-    border-bottom-color: var(--header-bg);
-}
-body.dark-mode #duet-score-board .player-container.active {
-    border-bottom-color: var(--accent-color);
-}
-#duet-score-board .player-container.active h4 {
-    color: var(--header-bg);
-}
-body.dark-mode #duet-score-board .player-container.active h4 {
-    color: var(--accent-color);
-}
-
-
-/* --- [FUNGSI TOKO] Styling untuk Halaman Toko Tema --- */
-/*
-    CATATAN: CSS di bawah ini dibuat untuk struktur HTML modal toko yang belum ada.
-    Kamu perlu membuat modalnya terlebih dahulu, contohnya:
-    <div id="theme-store-modal" class="full-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Toko Tema</h3>
-                <span id="store-user-points">Poin Anda: 100 💎</span>
-                <span class="close-button">&times;</span>
+      <div class="app-container">
+        <div id="prayer-times-view" class="main-view">
+          <header class="main-header">
+            <button id="menu-toggle"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
+            <h1 id="next-prayer-name">Imsak</h1>
+            <p data-key="remaining_time">Waktu Tersisa</p>
+            <div id="countdown-timer">00:00:00</div>
+            <div id="location-display"><span class="icon">📍</span><span id="city-name">Memuat...</span>
             </div>
-            <div class="modal-body">
-                <div id="theme-grid">
-                    </div>
+          </header>
+          <section class="calendar-section">
+            <div class="date-header">
+              <span class="hijri-date" id="hijri-date-display">...</span>
+              <span class="gregorian-date" id="gregorian-date-display">...</span>
             </div>
+            <div class="calendar-view" id="calendar-view-container"></div>
+          </section>
+          <main class="prayer-list-section" id="prayer-list-container"></main>
+          <footer class="app-footer">Annur Islamic</footer>
         </div>
-    </div>
-*/
-
-/* Tombol Toko Tema jika sudah aktif */
-#theme-store-btn:not([data-disabled="true"]) {
-    background-color: var(--accent-color);
-    color: var(--header-bg);
-    font-weight: 700;
-    box-shadow: 0 4px 10px rgba(249, 215, 136, 0.4);
-}
-body.dark-mode #theme-store-btn:not([data-disabled="true"]) {
-    background-color: var(--button-bg);
-    color: var(--button-text);
-    box-shadow: 0 4px 10px rgba(249, 215, 136, 0.2);
-}
-
-/* Tampilan Poin Pengguna di Header Toko */
-#theme-store-modal .modal-header {
-    flex-wrap: wrap; /* Agar bisa turun ke bawah di layar kecil */
-    padding-bottom: 0.5rem;
-}
-#store-user-points {
-    width: 100%;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 600;
-    margin-top: 0.5rem;
-    padding: 0.4rem;
-    background-color: var(--tap-area-bg);
-    border-radius: 8px;
-    color: var(--header-bg);
-}
-body.dark-mode #store-user-points {
-    color: var(--accent-color);
-}
-
-
-/* Grid untuk daftar tema */
-#theme-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 1rem;
-    padding-top: 1rem;
-}
-
-/* Setiap kartu tema */
-.theme-card {
-    background-color: var(--card-bg);
-    border-radius: var(--radius);
-    box-shadow: 0 2px 5px var(--card-shadow);
-    padding: 1rem;
-    text-align: center;
-    border: 3px solid transparent;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Status: Tema sedang diterapkan */
-.theme-card.applied {
-    border-color: var(--header-bg);
-    transform: translateY(-5px);
-}
-body.dark-mode .theme-card.applied {
-    border-color: var(--accent-color);
-}
-.theme-card.applied::before {
-    content: '✓ Digunakan';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: var(--header-bg);
-    color: var(--header-text);
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.2rem 0;
-}
-body.dark-mode .theme-card.applied::before {
-    background-color: var(--accent-color);
-    color: var(--header-bg);
-}
-
-
-/* Pratinjau warna tema */
-.theme-preview {
-    display: flex;
-    justify-content: center;
-    height: 60px;
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    border: 1px solid var(--tap-area-bg);
-}
-.theme-preview .color-swatch {
-    width: 25%;
-    height: 100%;
-}
-
-/* Nama tema */
-.theme-name {
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.25rem;
-}
-
-/* Harga tema */
-.theme-price {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-light);
-    margin-bottom: 0.75rem;
-    height: 20px;
-}
-.theme-price .price-icon {
-    color: #ffc107;
-}
-
-/* Tombol di kartu (Beli/Terapkan) */
-.theme-action-btn {
-    width: 100%;
-    padding: 0.6rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-}
-
-.theme-action-btn.buy {
-    background-color: var(--button-bg);
-    color: var(--button-text);
-}
-
-.theme-action-btn.apply {
-    background-color: var(--tap-area-bg);
-    color: var(--text-color);
-}
-
-/* Status: Tombol tidak cukup poin */
-.theme-action-btn.insufficient {
-    background-color: #aaa;
-    color: #fff;
-    cursor: not-allowed;
-}
-body.dark-mode .theme-action-btn.insufficient {
-    background-color: #444;
-    color: #888;
-}
-
-/* Status: Tema terkunci */
-.theme-card.locked .theme-preview {
-    filter: grayscale(80%);
-}
-.theme-card.locked::after {
-    content: '🔒';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5rem;
-    color: white;
-    border-radius: var(--radius);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-}
-  </style>
-</head>
-<body>
-  <nav id="sidebar">
-    <h3 data-key="nav_title">Menu</h3>
-    <ul>
-      <li><a href="#" id="prayer-times-btn">🕒 Jadwal Sholat</a></li>
-      <li><a href="#" id="doa-harian-btn" data-key="nav_doa">🤲 Doa Harian</a></li>
-      <li><a href="#" id="quran-btn" data-key="nav_quran">📖 Al-Qur'an</a></li>
-      <li><a href="#" id="dzikir-btn" data-key="nav_dzikir">📿 Dzikir & Tasbih</a></li>
-      <li><a href="#" id="qibla-btn" data-key="nav_kiblat">🕋 Kiblat</a></li>
-      <li><a href="#" id="quiz-btn">🧠 Kuis Ayat</a></li>
-      <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
-    </ul>
-  </nav>
-
-  <div class="app-container">
-    <div id="prayer-times-view" class="main-view">
-      <header class="main-header">
-        <button id="menu-toggle"><span class="bar"></span><span class="bar"></span><span class="bar"></span></button>
-        <h1 id="next-prayer-name">Imsak</h1>
-        <p data-key="remaining_time">Waktu Tersisa</p>
-        <div id="countdown-timer">00:00:00</div>
-        <div id="location-display"><span class="icon">📍</span><span id="city-name">Memuat...</span>
-        </div>
-      </header>
-      <section class="calendar-section">
-        <div class="date-header">
-          <span class="hijri-date" id="hijri-date-display">...</span>
-          <span class="gregorian-date" id="gregorian-date-display">...</span>
-        </div>
-        <div class="calendar-view" id="calendar-view-container"></div>
-      </section>
-      <main class="prayer-list-section" id="prayer-list-container"></main>
-      <footer class="app-footer">Annur Islamic</footer>
-    </div>
-
-    <div id="doa-view" class="main-view generic-list-view" style="display: none;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="prayer-times-view">‹</span>
-        <h2>Doa Harian</h2>
-      </div>
-      <div class="last-read-card" id="last-read-doa-card">
-        <h3 data-key="last_read">TERAKHIR DIBACA</h3>
-        <p data-key="no_last_read">Belum ada doa yang dibaca</p>
-      </div>
-      <div class="tabs-container">
-        <div class="tab-item active" data-tab="all" data-key="all_doa">Semua Doa</div>
-        <div class="tab-item" data-tab="bookmarked" data-key="bookmarked">Ditandai</div>
-      </div>
-      <div class="list-container" id="doa-list-container-view"></div>
-    </div>
-
-    <div id="quran-view" class="main-view generic-list-view" style="display: none;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="prayer-times-view">‹</span>
-        <h2>Al-Qur'an</h2>
-      </div>
-      <div class="last-read-card" id="last-read-surah-card">
-        <h3>TERAKHIR DIBACA</h3>
-        <p>Belum ada surah yang dibaca</p>
-      </div>
-      <div class="tabs-container" id="quran-tabs">
-        <div class="tab-item active" data-tab="surah">Surah</div>
-        <div class="tab-item" data-tab="juz">Juz</div>
-        <div class="tab-item" data-tab="bookmarked">Ditandai</div>
-      </div>
-      <div class="list-container" id="quran-list-container"></div>
-    </div>
-
-    <div id="juz-detail-view" class="main-view" style="display: none;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="quran-view">‹</span>
-        <h2 id="juz-detail-title">Daftar Surah</h2>
-      </div>
-      <div class="list-container" id="juz-surah-list-container"></div>
-    </div>
-
-    <div id="surah-view" class="main-view" style="display: none;">
-      <div class="view-header">
-        <span class="back-button" id="surah-view-back-btn">‹</span>
-        <h2 id="surah-view-title">Nama Surah</h2>
-        <span class="action-icon" id="surah-view-bookmark-btn">⭐</span>
-      </div>
-      <div id="surah-view-body">
-      </div>
-    </div>
-
-    <div id="dzikir-view" class="main-view generic-list-view" style="display: none;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="prayer-times-view">‹</span>
-        <h2>Dzikir & Tasbih</h2>
-      </div>
-      <div class="list-container" id="dzikir-list-container"></div>
-    </div>
-
-    <div id="quiz-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="prayer-times-view">‹</span>
-        <h2>Kuis Sambung Ayat</h2>
-        <div class="quiz-points-display">
-          <span id="user-points">0</span> 💎
-        </div>
-      </div>
-
-      <div class="quiz-intro">
-        <h3>Asah Hafalan Al-Qur'an Anda!</h3>
-        <p>Pilih mode permainan untuk memulai. Dapatkan poin untuk setiap jawaban yang benar dan tukarkan dengan tema menarik.</p>
-      </div>
-
-      <div class="quiz-mode-selection">
-        <div class="quiz-mode-card" data-mode="individu">
-          <h4>👤 Mode Individu</h4>
-          <p>Bermain sendiri dan kumpulkan poin sebanyak-banyaknya.</p>
-        </div>
-        <div class="quiz-mode-card" data-mode="duet">
-          <h4>👥 Mode Duet</h4>
-          <p>Tantang teman dalam satu perangkat.</p>
-        </div>
-      </div>
-
-      <button id="theme-store-btn" class="modal-action-btn">
-        🛍️ Toko Tema
-      </button>
-    </div>
-
-    <div id="quiz-level-selection-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="quiz-view">‹</span>
-        <h2 id="quiz-level-title">Pilih Level</h2>
-      </div>
-      <div class="quiz-intro">
-        <h3>Tingkat Kesulitan</h3>
-        <p>Pilih tingkat kesulitan soal yang akan dimainkan.</p>
-      </div>
-      <div class="quiz-mode-selection" id="level-selection-container">
-        <div class="quiz-mode-card" data-level="mudah">
-          <h4>🟢 Mudah</h4>
-          <p>Soal dari surah-surah pendek dan ayat populer.</p>
-        </div>
-        <div class="quiz-mode-card" data-level="sedang">
-          <h4>🟡 Sedang</h4>
-          <p>Soal dari Juz 'Amma dan sekitarnya.</p>
-        </div>
-        <div class="quiz-mode-card" data-level="sulit">
-          <h4>🔴 Sulit</h4>
-          <p>Soal acak dari berbagai surah di Al-Qur'an.</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="quiz-game-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="quiz-level-selection-view">‹</span>
-        <h2 id="quiz-game-title">Mode Individu</h2>
-        <div class="quiz-points-display">
-          Skor: <span id="quiz-score">0</span>
-        </div>
-      </div>
-      <div class="quiz-game-area">
-        <div class="quiz-question-card">
-          <p>Lanjutkan potongan ayat berikut:</p>
-          <h3 id="quiz-question-text">...</h3>
-        </div>
-        <div class="quiz-options-container" id="quiz-options">
-        </div>
-        <div id="quiz-feedback" class="quiz-feedback"></div>
-      </div>
-    </div>
     
-    <div id="quiz-duet-game-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
-      <div class="view-header">
-        <span class="back-button" data-target-view="quiz-level-selection-view">‹</span>
-        <h2>Mode Duet</h2>
-      </div>
-      
-      <div id="duet-score-board" style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 1.5rem; background-color: var(--card-bg); padding: 1rem; border-radius: var(--radius); box-shadow: 0 2px 5px var(--card-shadow);">
-        <div class="player-container" id="player1-container">
-          <h4 style="color: var(--header-bg);">Pemain 1</h4>
-          <div class="quiz-points-display" id="player1-score">Skor: 0</div>
+        <div id="doa-view" class="main-view generic-list-view" style="display: none;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="prayer-times-view">‹</span>
+            <h2>Doa Harian</h2>
+          </div>
+          <div class="last-read-card" id="last-read-doa-card">
+            <h3 data-key="last_read">TERAKHIR DIBACA</h3>
+            <p data-key="no_last_read">Belum ada doa yang dibaca</p>
+          </div>
+          <div class="tabs-container">
+            <div class="tab-item active" data-tab="all" data-key="all_doa">Semua Doa</div>
+            <div class="tab-item" data-tab="bookmarked" data-key="bookmarked">Ditandai</div>
+          </div>
+          <div class="list-container" id="doa-list-container-view"></div>
         </div>
-        <div class="player-container" id="player2-container">
-          <h4 style="color: var(--header-bg);">Pemain 2</h4>
-          <div class="quiz-points-display" id="player2-score">Skor: 0</div>
+    
+        <div id="quran-view" class="main-view generic-list-view" style="display: none;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="prayer-times-view">‹</span>
+            <h2>Al-Qur'an</h2>
+          </div>
+          <div class="last-read-card" id="last-read-surah-card">
+            <h3>TERAKHIR DIBACA</h3>
+            <p>Belum ada surah yang dibaca</p>
+          </div>
+          <div class="tabs-container" id="quran-tabs">
+            <div class="tab-item active" data-tab="surah">Surah</div>
+            <div class="tab-item" data-tab="juz">Juz</div>
+            <div class="tab-item" data-tab="bookmarked">Ditandai</div>
+          </div>
+          <div class="list-container" id="quran-list-container"></div>
         </div>
-      </div>
-
-      <div class="quiz-game-area">
-        <div class="quiz-question-card">
-          <p id="duet-turn-indicator">Giliran Pemain 1</p>
-          <p>Lanjutkan potongan ayat berikut:</p>
-          <h3 id="duet-question-text">...</h3>
+    
+        <div id="juz-detail-view" class="main-view" style="display: none;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="quran-view">‹</span>
+            <h2 id="juz-detail-title">Daftar Surah</h2>
+          </div>
+          <div class="list-container" id="juz-surah-list-container"></div>
         </div>
-        <div class="quiz-options-container" id="duet-options">
-        </div>
-        <div id="duet-feedback" class="quiz-feedback"></div>
-      </div>
-    </div>
-  </div>
-
-  <div id="qibla-view" class="main-view">
-    <div class="view-header">
-      <span class="back-button" data-target-view="prayer-times-view">‹</span>
-      <h2>Arah Kiblat</h2>
-    </div>
-
-    <div id="qibla-compass-container">
-      <div id="qibla-compass-circle">
-        <div id="qibla-lubber-line"></div>
-        <div id="qibla-needle"></div>
-      </div>
-    </div>
-
-    <div id="qibla-info-box">
-      <p class="direction-degree">Arahkan jarum ke garis merah</p>
-      <p class="calibration-info">Jika arah tidak akurat, gerakkan HP membentuk angka 8 & jauhkan dari logam/magnet.</p>
-      <button id="qibla-recalibrate-btn">Kalibrasi Ulang</button>
-    </div>
-
-    <div id="qibla-permission-prompt" style="display: none; text-align:center; padding: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-      <p style="color:white; margin-bottom: 1rem;">Fitur ini memerlukan izin lokasi dan sensor gerak.</p>
-      <button id="qibla-permission-btn" class="modal-action-btn" style="max-width: 200px; margin:auto; background-color: #f9d788; color: #1a3a32;">Mulai</button>
-    </div>
-  </div>
-
-  <div id="tasbih-view" class="main-view">
-    <div class="view-header">
-      <span class="back-button" data-target-view="dzikir-view">‹</span>
-      <h2 id="tasbih-title">Penghitung Tasbih</h2>
-    </div>
-    <div class="tasbih-main">
-      <div id="tasbih-counter-display">
-        <div class="count" id="tasbih-current-count">0</div>
-        <div class="target" id="tasbih-target-count">/ 33</div>
-      </div>
-      <div id="tasbih-text-display">
-        <p class="tasbih-arabic"></p>
-        <p class="tasbih-latin"></p>
-        <p class="tasbih-arti"></p>
-      </div>
-      <div id="tasbih-tap-area">
-        <span class="tap-icon">🖐️</span>
-      </div>
-      <button id="tasbih-reset-btn">Reset</button>
-    </div>
-  </div>
-
-  <div id="settings-modal" class="full-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 data-key="settings_title">Pengaturan</h3>
-        <span class="close-button">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="settings-item">
-          <label for="dark-mode-toggle" data-key="settings_dark_mode">Mode Malam</label>
-          <label class="switch"><input type="checkbox" id="dark-mode-toggle"><span class="slider"></span></label>
-        </div>
-        <div class="settings-item">
-          <label for="enable-notifications-btn" data-key="settings_notifications">Notifikasi Adzan</label>
-          <button id="enable-notifications-btn">Aktifkan</button>
-        </div>
-        <div class="settings-item">
-          <label for="language-select" data-key="settings_language">Bahasa</label>
-          <select name="language" id="language-select" class="custom-select">
-            <option value="id">Bahasa Indonesia</option>
-            <option value="en">English</option>
-            <option value="ar">العربية (Arabic)</option>
-            <option value="tr">Türkçe (Turkish)</option>
-            <option value="fr">Français (French)</option>
-            <option value="es">Español (Spanish)</option>
-            <option value="de">Deutsch (German)</option>
-            <option value="ru">Русский (Russian)</option>
-            <option value="ur">اردو (Urdu)</option>
-            <option value="bn">বাংলা (Bengali)</option>
-          </select>
-        </div>
-
-        <div class="settings-group" style="margin-top: 1.5rem; padding: 0; background-color: transparent; box-shadow: none;">
-          <div id="adhan-settings-trigger-container">
+    
+        <div id="surah-view" class="main-view" style="display: none;">
+          <div class="view-header">
+            <span class="back-button" id="surah-view-back-btn">‹</span>
+            <h2 id="surah-view-title">Nama Surah</h2>
+            <span class="action-icon" id="surah-view-bookmark-btn">⭐</span>
+          </div>
+          <div id="surah-view-body">
           </div>
         </div>
-
-        <div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
-          <h4 style="font-size: 1rem; color: var(--header-bg); margin-bottom: 0.75rem; padding-bottom: 0; border: none;">Notifikasi Terlambat?</h4>
-          <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
-            Beberapa merk HP membatasi aplikasi di latar belakang. Jika notifikasi tidak tepat waktu, coba optimalkan.
-          </p>
-          <button onclick="Android.requestBatteryOptimization()" class="modal-action-btn" style="width: 100%; margin-top: 0;">
-            Optimalkan Notifikasi
+    
+        <div id="dzikir-view" class="main-view generic-list-view" style="display: none;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="prayer-times-view">‹</span>
+            <h2>Dzikir & Tasbih</h2>
+          </div>
+          <div class="list-container" id="dzikir-list-container"></div>
+        </div>
+    
+        <div id="quiz-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="prayer-times-view">‹</span>
+            <h2>Kuis Sambung Ayat</h2>
+            <div class="quiz-points-display">
+              <span id="user-points">0</span> 💎
+            </div>
+          </div>
+    
+          <div class="quiz-intro">
+            <h3>Asah Hafalan Al-Qur'an Anda!</h3>
+            <p>Pilih mode permainan untuk memulai. Dapatkan poin untuk setiap jawaban yang benar dan tukarkan dengan tema menarik.</p>
+          </div>
+    
+          <div class="quiz-mode-selection">
+            <div class="quiz-mode-card" data-mode="individu">
+              <h4>👤 Mode Individu</h4>
+              <p>Bermain sendiri dan kumpulkan poin sebanyak-banyaknya.</p>
+            </div>
+            <div class="quiz-mode-card" data-mode="duet">
+              <h4>👥 Mode Duet</h4>
+              <p>Tantang teman dalam satu perangkat.</p>
+            </div>
+          </div>
+    
+          <button id="theme-store-btn" class="modal-action-btn">
+            🛍️ Toko Tema
           </button>
         </div>
-        <div class="settings-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+    
+        <div id="quiz-level-selection-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="quiz-view">‹</span>
+            <h2 id="quiz-level-title">Pilih Level</h2>
+          </div>
+          <div class="quiz-intro">
+            <h3>Tingkat Kesulitan</h3>
+            <p>Pilih tingkat kesulitan soal yang akan dimainkan.</p>
+          </div>
+          <div class="quiz-mode-selection" id="level-selection-container">
+            <div class="quiz-mode-card" data-level="mudah">
+              <h4>🟢 Mudah</h4>
+              <p>Soal dari surah-surah pendek dan ayat populer.</p>
+            </div>
+            <div class="quiz-mode-card" data-level="sedang">
+              <h4>🟡 Sedang</h4>
+              <p>Soal dari Juz 'Amma dan sekitarnya.</p>
+            </div>
+            <div class="quiz-mode-card" data-level="sulit">
+              <h4>🔴 Sulit</h4>
+              <p>Soal acak dari berbagai surah di Al-Qur'an.</p>
+            </div>
+          </div>
+        </div>
+    
+        <div id="quiz-game-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="quiz-level-selection-view">‹</span>
+            <h2 id="quiz-game-title">Mode Individu</h2>
+            <div class="quiz-points-display">
+              Skor: <span id="quiz-score">0</span>
+            </div>
+          </div>
+          <div class="quiz-game-area">
+            <div class="quiz-question-card">
+              <p>Lanjutkan potongan ayat berikut:</p>
+              <h3 id="quiz-question-text">...</h3>
+            </div>
+            <div class="quiz-options-container" id="quiz-options">
+            </div>
+            <div id="quiz-feedback" class="quiz-feedback"></div>
+          </div>
+        </div>
+        
+        <div id="quiz-duet-game-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
+          <div class="view-header">
+            <span class="back-button" data-target-view="quiz-level-selection-view">‹</span>
+            <h2>Mode Duet</h2>
+          </div>
+          
+          <div id="duet-score-board" style="display: flex; justify-content: space-around; text-align: center; margin-bottom: 1.5rem; background-color: var(--card-bg); padding: 1rem; border-radius: var(--radius); box-shadow: 0 2px 5px var(--card-shadow);">
+            <div class="player-container" id="player1-container">
+              <h4 style="color: var(--header-bg);">Pemain 1</h4>
+              <div class="quiz-points-display" id="player1-score">Skor: 0</div>
+            </div>
+            <div class="player-container" id="player2-container">
+              <h4 style="color: var(--header-bg);">Pemain 2</h4>
+              <div class="quiz-points-display" id="player2-score">Skor: 0</div>
+            </div>
+          </div>
+    
+          <div class="quiz-game-area">
+            <div class="quiz-question-card">
+              <p id="duet-turn-indicator">Giliran Pemain 1</p>
+              <p>Lanjutkan potongan ayat berikut:</p>
+              <h3 id="duet-question-text">...</h3>
+            </div>
+            <div class="quiz-options-container" id="duet-options">
+            </div>
+            <div id="duet-feedback" class="quiz-feedback"></div>
+          </div>
+        </div>
+        
+        <div id="motivation-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
+            <div class="view-header">
+                <span class="back-button" data-target-view="prayer-times-view">‹</span>
+                <h2>Motivasi Islami</h2>
+                <span class="action-icon" id="motivation-bookmark-list-btn" title="Lihat Favorit">❤️</span>
+            </div>
+            <div id="featured-motivation-carousel" class="motivation-carousel-container content-card">
+                <div class="motivation-carousel-track">
+                </div>
+                <button class="carousel-control prev" aria-label="Sebelumnya">‹</button>
+                <button class="carousel-control next" aria-label="Selanjutnya">›</button>
+                <div class="carousel-indicators"></div>
+            </div>
+            <div class="tabs-container" id="motivation-tabs">
+                <div class="tab-item active" data-category="all">Semua</div>
+                <div class="tab-item" data-category="Sabar">Sabar</div>
+                <div class="tab-item" data-category="Syukur">Syukur</div>
+                <div class="tab-item" data-category="Semangat">Semangat</div>
+            </div>
+            <div id="motivation-list-container">
+            </div>
+            <button id="random-quote-btn" class="modal-action-btn" style="margin-top: 1.5rem;">
+                🔄 Tampilkan Kutipan Acak
+            </button>
+            <div id="motivation-toast" class="motivation-toast">
+                Teks berhasil disalin!
+            </div>
+        </div>
+    
+      </div>
+    
+      <div id="qibla-view" class="main-view">
+        <div class="view-header">
+          <span class="back-button" data-target-view="prayer-times-view">‹</span>
+          <h2>Arah Kiblat</h2>
+        </div>
+    
+        <div id="qibla-compass-container">
+          <div id="qibla-compass-circle">
+            <div id="qibla-lubber-line"></div>
+            <div id="qibla-needle"></div>
+          </div>
+        </div>
+    
+        <div id="qibla-info-box">
+          <p class="direction-degree">Arahkan jarum ke garis merah</p>
+          <p class="calibration-info">Jika arah tidak akurat, gerakkan HP membentuk angka 8 & jauhkan dari logam/magnet.</p>
+          <button id="qibla-recalibrate-btn">Kalibrasi Ulang</button>
+        </div>
+    
+        <div id="qibla-permission-prompt" style="display: none; text-align:center; padding: 2rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+          <p style="color:white; margin-bottom: 1rem;">Fitur ini memerlukan izin lokasi dan sensor gerak.</p>
+          <button id="qibla-permission-btn" class="modal-action-btn" style="max-width: 200px; margin:auto; background-color: #f9d788; color: #1a3a32;">Mulai</button>
+        </div>
+      </div>
+    
+      <div id="tasbih-view" class="main-view">
+        <div class="view-header">
+          <span class="back-button" data-target-view="dzikir-view">‹</span>
+          <h2 id="tasbih-title">Penghitung Tasbih</h2>
+        </div>
+        <div class="tasbih-main">
+          <div id="tasbih-counter-display">
+            <div class="count" id="tasbih-current-count">0</div>
+            <div class="target" id="tasbih-target-count">/ 33</div>
+          </div>
+          <div id="tasbih-text-display">
+            <p class="tasbih-arabic"></p>
+            <p class="tasbih-latin"></p>
+            <p class="tasbih-arti"></p>
+          </div>
+          <div id="tasbih-tap-area">
+            <span class="tap-icon">🖐️</span>
+          </div>
+          <button id="tasbih-reset-btn">Reset</button>
+        </div>
+      </div>
+    
+      <div id="settings-modal" class="full-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 data-key="settings_title">Pengaturan</h3>
+            <span class="close-button">&times;</span>
+          </div>
+          <div class="modal-body">
+            <div class="settings-item">
+              <label for="dark-mode-toggle" data-key="settings_dark_mode">Mode Malam</label>
+              <label class="switch"><input type="checkbox" id="dark-mode-toggle"><span class="slider"></span></label>
+            </div>
+            <div class="settings-item">
+              <label for="enable-notifications-btn" data-key="settings_notifications">Notifikasi Adzan</label>
+              <button id="enable-notifications-btn">Aktifkan</button>
+            </div>
+            <div class="settings-item">
+              <label for="language-select" data-key="settings_language">Bahasa</label>
+              <select name="language" id="language-select" class="custom-select">
+                <option value="id">Bahasa Indonesia</option>
+                <option value="en">English</option>
+                <option value="ar">العربية (Arabic)</option>
+                <option value="tr">Türkçe (Turkish)</option>
+                <option value="fr">Français (French)</option>
+                <option value="es">Español (Spanish)</option>
+                <option value="de">Deutsch (German)</option>
+                <option value="ru">Русский (Russian)</option>
+                <option value="ur">اردو (Urdu)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+              </select>
+            </div>
+    
+            <div class="settings-group" style="margin-top: 1.5rem; padding: 0; background-color: transparent; box-shadow: none;">
+              <div id="adhan-settings-trigger-container">
+              </div>
+            </div>
+    
+            <div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
+              <h4 style="font-size: 1rem; color: var(--header-bg); margin-bottom: 0.75rem; padding-bottom: 0; border: none;">Notifikasi Terlambat?</h4>
+              <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
+                Beberapa merk HP membatasi aplikasi di latar belakang. Jika notifikasi tidak tepat waktu, coba optimalkan.
+              </p>
+              <button onclick="Android.requestBatteryOptimization()" class="modal-action-btn" style="width: 100%; margin-top: 0;">
+                Optimalkan Notifikasi
+              </button>
+            </div>
+            <div class="settings-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
+              <div class="settings-item">
+                <label data-key="settings_about">Tentang Aplikasi</label>
+                <span>v18.02.2022 (25)</span>
+              </div>
+              <div class="detail-app-container">
+                <button id="detail-app-btn">Detail Aplikasi</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div id="single-doa-modal" class="full-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close-button">&times;</span>
+            <h3 id="single-doa-modal-title">Detail Doa</h3>
+            <span class="action-icon" id="bookmark-doa-btn">⭐</span>
+          </div>
+          <div class="modal-body" id="single-doa-modal-body"></div>
+        </div>
+      </div>
+    
+      <div id="dzikir-detail-modal" class="full-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <span class="close-button">&times;</span>
+            <h3 id="dzikir-detail-modal-title">Detail Dzikir</h3>
+          </div>
+          <div class="modal-body" id="dzikir-detail-modal-body"></div>
+        </div>
+      </div>
+    
+      <div id="adhan-settings-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+        <div class="view-header">
+          <span class="back-button" id="adhan-settings-back-btn">‹</span>
+          <h2>Pengaturan Suara Adzan</h2>
+        </div>
+        <div class="content-body" id="adhan-settings-body">
+        </div>
+      </div>
+    
+      <div id="app-detail-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+        <div class="view-header">
+          <span class="back-button" id="detail-view-back-btn">‹</span>
+          <h2>Detail Aplikasi</h2>
+        </div>
+        <div class="content-body" style="padding: 0 1.5rem;">
+          <div class="settings-menu-item" data-target-view="privacy-policy-view">
+            <span>Kebijakan Privasi</span>
+            <span class="arrow">&rsaquo;</span>
+          </div>
+          <div class="settings-menu-item" data-target-view="terms-of-use-view">
+            <span>Ketentuan Penggunaan</span>
+            <span class="arrow">&rsaquo;</span>
+          </div>
+          <div class="settings-menu-item" data-target-view="additional-info-view">
+            <span>Informasi Tambahan</span>
+            <span class="arrow">&rsaquo;</span>
+          </div>
+          <div class="settings-menu-item" data-target-view="feedback-view">
+            <span>Saran & Masukan</span>
+            <span class="arrow">&rsaquo;</span>
+          </div>
           <div class="settings-item">
-            <label data-key="settings_about">Tentang Aplikasi</label>
+            <label>Versi Aplikasi</label>
             <span>v18.02.2022 (25)</span>
           </div>
-          <div class="detail-app-container">
-            <button id="detail-app-btn">Detail Aplikasi</button>
+    
+          <a href="https://play.google.com/store/apps/details?id=com.nama.paket.anda" target="_blank" class="playstore-btn">
+            <svg class="playstore-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.57 2.15C2.37 2.27 2.25 2.5 2.25 2.75v18.5c0 .25.12.48.32.6l10.06-10.05L2.57 2.15z" fill="#00c0f3"></path>
+              <path d="M14.2 11.25L3.92 21.43c.19.07.4.12.63.12h.02c.26 0 .5-.09.7-.25l3.8-2.61 5.13-5.44z" fill="#4ffab9"></path>
+              <path d="M14.2 12.75l-5.13-5.44-3.8-2.61a1.24 1.24 0 0 1-.7-.25h-.02c-.23 0-.44.05-.63.12L14.2 12.75z" fill="#ffda44"></path>
+              <path d="M19.7 15.02c.7-.72.7-1.89 0-2.6l-3.32-3.32-2.18 2.31 5.5 3.61z" fill="#ff5555"></path>
+              <path d="M14.2 12l-10.1 9.98c.2.12.43.2.68.2a1.2 1.2 0 0 0 .99-.5l12.5-7.18-4.07-4.1z" fill="#ff7043" opacity=".6"></path>
+            </svg>
+            <span>Unduh di Google PlayStore</span>
+          </a>
+    
+        </div>
+      </div>
+    
+      <div id="privacy-policy-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+        <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Kebijakan Privasi</h2>
+        </div>
+        <div class="content-body">
+          <div class="content-card">
+            <p><strong>Pembaruan Terakhir: 20 Juli 2025</strong></p>
+            <p>Aplikasi <strong>Annur Islamic</strong> ("kami") berkomitmen untuk melindungi privasi Anda. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda.</p>
+          </div>
+    
+          <div class="content-card">
+            <h3 class="content-title"><span class="content-title-icon">📍</span>Pengumpulan Informasi Lokasi</h3>
+            <p>Aplikasi ini mengumpulkan data lokasi geografis Anda (latitude dan longitude) hanya untuk tujuan menghitung waktu sholat yang akurat dan menentukan arah Kiblat. Data ini <strong>tidak pernah disimpan</strong> di server kami atau dibagikan dengan pihak ketiga. Semua perhitungan dilakukan secara lokal di perangkat Anda.</p>
+          </div>
+    
+          <div class="content-card">
+            <h3 class="content-title"><span class="content-title-icon">💾</span>Penyimpanan Lokal</h3>
+            <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, pengaturan suara azan, dan data cache jadwal sholat untuk penggunaan offline. Data ini sepenuhnya tetap berada di perangkat Anda dan tidak dikirim ke mana pun.</p>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div id="single-doa-modal" class="full-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close-button">&times;</span>
-        <h3 id="single-doa-modal-title">Detail Doa</h3>
-        <span class="action-icon" id="bookmark-doa-btn">⭐</span>
-      </div>
-      <div class="modal-body" id="single-doa-modal-body"></div>
-    </div>
-  </div>
-
-  <div id="dzikir-detail-modal" class="full-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <span class="close-button">&times;</span>
-        <h3 id="dzikir-detail-modal-title">Detail Dzikir</h3>
-      </div>
-      <div class="modal-body" id="dzikir-detail-modal-body"></div>
-    </div>
-  </div>
-
-  <div id="adhan-settings-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" id="adhan-settings-back-btn">‹</span>
-      <h2>Pengaturan Suara Adzan</h2>
-    </div>
-    <div class="content-body" id="adhan-settings-body">
-    </div>
-  </div>
-
-  <div id="app-detail-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" id="detail-view-back-btn">‹</span>
-      <h2>Detail Aplikasi</h2>
-    </div>
-    <div class="content-body" style="padding: 0 1.5rem;">
-      <div class="settings-menu-item" data-target-view="privacy-policy-view">
-        <span>Kebijakan Privasi</span>
-        <span class="arrow">&rsaquo;</span>
-      </div>
-      <div class="settings-menu-item" data-target-view="terms-of-use-view">
-        <span>Ketentuan Penggunaan</span>
-        <span class="arrow">&rsaquo;</span>
-      </div>
-      <div class="settings-menu-item" data-target-view="additional-info-view">
-        <span>Informasi Tambahan</span>
-        <span class="arrow">&rsaquo;</span>
-      </div>
-      <div class="settings-menu-item" data-target-view="feedback-view">
-        <span>Saran & Masukan</span>
-        <span class="arrow">&rsaquo;</span>
-      </div>
-      <div class="settings-item">
-        <label>Versi Aplikasi</label>
-        <span>v18.02.2022 (25)</span>
-      </div>
-
-      <a href="https://play.google.com/store/apps/details?id=com.nama.paket.anda" target="_blank" class="playstore-btn">
-        <svg class="playstore-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2.57 2.15C2.37 2.27 2.25 2.5 2.25 2.75v18.5c0 .25.12.48.32.6l10.06-10.05L2.57 2.15z" fill="#00c0f3"></path>
-          <path d="M14.2 11.25L3.92 21.43c.19.07.4.12.63.12h.02c.26 0 .5-.09.7-.25l3.8-2.61 5.13-5.44z" fill="#4ffab9"></path>
-          <path d="M14.2 12.75l-5.13-5.44-3.8-2.61a1.24 1.24 0 0 1-.7-.25h-.02c-.23 0-.44.05-.63.12L14.2 12.75z" fill="#ffda44"></path>
-          <path d="M19.7 15.02c.7-.72.7-1.89 0-2.6l-3.32-3.32-2.18 2.31 5.5 3.61z" fill="#ff5555"></path>
-          <path d="M14.2 12l-10.1 9.98c.2.12.43.2.68.2a1.2 1.2 0 0 0 .99-.5l12.5-7.18-4.07-4.1z" fill="#ff7043" opacity=".6"></path>
-        </svg>
-        <span>Unduh di Google PlayStore</span>
-      </a>
-
-    </div>
-  </div>
-
-  <div id="privacy-policy-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Kebijakan Privasi</h2>
-    </div>
-    <div class="content-body">
-      <div class="content-card">
-        <p><strong>Pembaruan Terakhir: 20 Juli 2025</strong></p>
-        <p>Aplikasi <strong>Annur Islamic</strong> ("kami") berkomitmen untuk melindungi privasi Anda. Kebijakan ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi Anda.</p>
-      </div>
-
-      <div class="content-card">
-        <h3 class="content-title"><span class="content-title-icon">📍</span>Pengumpulan Informasi Lokasi</h3>
-        <p>Aplikasi ini mengumpulkan data lokasi geografis Anda (latitude dan longitude) hanya untuk tujuan menghitung waktu sholat yang akurat dan menentukan arah Kiblat. Data ini <strong>tidak pernah disimpan</strong> di server kami atau dibagikan dengan pihak ketiga. Semua perhitungan dilakukan secara lokal di perangkat Anda.</p>
-      </div>
-
-      <div class="content-card">
-        <h3 class="content-title"><span class="content-title-icon">💾</span>Penyimpanan Lokal</h3>
-        <p>Kami menggunakan penyimpanan lokal (localStorage) di browser Anda untuk menyimpan preferensi seperti tema (mode malam), bahasa, pengaturan suara azan, dan data cache jadwal sholat untuk penggunaan offline. Data ini sepenuhnya tetap berada di perangkat Anda dan tidak dikirim ke mana pun.</p>
-      </div>
-    </div>
-  </div>
-
-  <div id="terms-of-use-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Ketentuan Penggunaan</h2>
-    </div>
-    <div class="content-body">
-      <div class="content-card">
-        <p>Dengan mengunduh atau menggunakan aplikasi Annur Islamic, Anda secara otomatis menyetujui ketentuan berikut:</p>
-        <ul class="styled-list">
-          <li>Anda tidak diizinkan untuk menyalin, memodifikasi aplikasi, atau merek dagang kami dengan cara apa pun.</li>
-          <li>Aplikasi ini disediakan "sebagaimana adanya". Kami berusaha memastikan keakuratan data, namun tidak memberikan jaminan mutlak. Pengguna disarankan untuk verifikasi silang dengan sumber tepercaya.</li>
-          <li>Kami berhak untuk mengubah ketentuan ini kapan saja. Penggunaan aplikasi secara berkelanjutan dianggap sebagai penerimaan Anda terhadap ketentuan baru.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <div id="additional-info-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Informasi Tambahan</h2>
-    </div>
-    <div class="content-body">
-      <div class="content-card">
-        <h3 class="content-title"><span class="content-title-icon">📊</span>Sumber Data</h3>
-        <ul class="styled-list">
-          <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA.</li>
-          <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
-          <li><strong>Arah Kiblat:</strong> Dihitung menggunakan koordinat geografis dan data sensor perangkat.</li>
-          <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
-        </ul>
-      </div>
-      <div class="content-card">
-        <h3 class="content-title"><span class="content-title-icon">🤝</span>Dukungan</h3>
-        <p>Pengembangan aplikasi ini didukung oleh <strong>PT. Medan Mediaga Group</strong>, sebagai bentuk <strong>dukungan aktif</strong> dalam menghadirkan solusi digital Islami yang bermanfaat dan mudah diakses oleh semua kalangan umat islam.</p>
-      </div>
-        <div class="content-card">
-          <h3 class="content-title"><span class="content-title-icon">❤️</span>Proyek Non-Komersial</h3>
-          <p>Aplikasi ini adalah proyek non-komersial, dibuat untuk membantu umat Muslim dalam ibadah sehari-hari. Aplikasi ini sepenuhnya <strong>gratis dan tidak mengandung iklan</strong>.</p>
+    
+      <div id="terms-of-use-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+        <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Ketentuan Penggunaan</h2>
         </div>
-    </div>
-  </div>
-
-  <div id="feedback-view" class="main-view" style="display: none; padding-top: 1.5rem;">
-    <div class="view-header">
-      <span class="back-button" data-target-view="app-detail-view">‹</span>
-      <h2>Saran & Masukan</h2>
-    </div>
-    <div class="content-body">
-      <div class="content-card">
-        <h3 class="content-title"><span class="content-title-icon">💌</span>Hubungi Kami</h3>
-        <p>Kami sangat menghargai saran dan masukan dari Anda untuk membuat aplikasi ini menjadi lebih baik. Silakan kirimkan ide, laporan bug, atau masukan lainnya melalui email kepada pengembang.</p>
-        <div class="email-link-wrapper">
-          <a href="mailto:annurislamic60@gmail.com?subject=Masukan untuk Aplikasi Annur Islamic" class="modal-action-btn" style="text-decoration: none; display: inline-block; width: auto; padding: 0.8rem 1.5rem;">Kirim Email</a>
+        <div class="content-body">
+          <div class="content-card">
+            <p>Dengan mengunduh atau menggunakan aplikasi Annur Islamic, Anda secara otomatis menyetujui ketentuan berikut:</p>
+            <ul class="styled-list">
+              <li>Anda tidak diizinkan untuk menyalin, memodifikasi aplikasi, atau merek dagang kami dengan cara apa pun.</li>
+              <li>Aplikasi ini disediakan "sebagaimana adanya". Kami berusaha memastikan keakuratan data, namun tidak memberikan jaminan mutlak. Pengguna disarankan untuk verifikasi silang dengan sumber tepercaya.</li>
+              <li>Kami berhak untuk mengubah ketentuan ini kapan saja. Penggunaan aplikasi secara berkelanjutan dianggap sebagai penerimaan Anda terhadap ketentuan baru.</li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div id="custom-location-modal" class="full-modal">
-    <div class="modal-content permission-modal-content">
-      <h3>Butuh Izin Lokasi Anda</h3>
-      <p>Aplikasi ini memerlukan akses ke lokasi Anda untuk menampilkan jadwal sholat dan arah kiblat yang akurat. Data lokasi Anda tidak disimpan atau dibagikan.</p>
-      <div class="permission-modal-actions">
-        <button id="deny-location-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Nanti Saja</button>
-        <button id="allow-location-btn" class="modal-action-btn" style="margin-top: 0;">Izinkan</button>
+    
+      <div id="additional-info-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+        <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Informasi Tambahan</h2>
+        </div>
+        <div class="content-body">
+          <div class="content-card">
+            <h3 class="content-title"><span class="content-title-icon">📊</span>Sumber Data</h3>
+            <ul class="styled-list">
+              <li><strong>Waktu Sholat:</strong> Menggunakan API dari Aladhan.com dengan metode kalkulasi ISNA.</li>
+              <li><strong>Al-Qur'an:</strong> Teks, terjemahan, dan data surah diambil dari API publik Quran.gading.dev.</li>
+              <li><strong>Arah Kiblat:</strong> Dihitung menggunakan koordinat geografis dan data sensor perangkat.</li>
+              <li><strong>Lokasi:</strong> Nama kota didapatkan melalui layanan Nominatim (OpenStreetMap).</li>
+            </ul>
+          </div>
+          <div class="content-card">
+            <h3 class="content-title"><span class="content-title-icon">🤝</span>Dukungan</h3>
+            <p>Pengembangan aplikasi ini didukung oleh <strong>PT. Medan Mediaga Group</strong>, sebagai bentuk <strong>dukungan aktif</strong> dalam menghadirkan solusi digital Islami yang bermanfaat dan mudah diakses oleh semua kalangan umat islam.</p>
+          </div>
+            <div class="content-card">
+              <h3 class="content-title"><span class="content-title-icon">❤️</span>Proyek Non-Komersial</h3>
+              <p>Aplikasi ini adalah proyek non-komersial, dibuat untuk membantu umat Muslim dalam ibadah sehari-hari. Aplikasi ini sepenuhnya <strong>gratis dan tidak mengandung iklan</strong>.</p>
+            </div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div id="custom-notification-modal" class="full-modal">
-    <div class="modal-content permission-modal-content">
-      <h3>Aktifkan Notifikasi Adzan?</h3>
-      <p>Izinkan aplikasi mengirimkan notifikasi agar Anda tidak ketinggalan waktu sholat. Anda dapat mengatur suara dan jadwal notifikasi di menu Pengaturan.</p>
-      <div class="permission-modal-actions">
-        <button id="deny-notification-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Lain Kali</button>
-        <button id="allow-notification-btn" class="modal-action-btn" style="margin-top: 0;">Aktifkan</button>
+    
+      <div id="feedback-view" class="main-view" style="display: none; padding-top: 1.5rem;">
+        <div class="view-header">
+          <span class="back-button" data-target-view="app-detail-view">‹</span>
+          <h2>Saran & Masukan</h2>
+        </div>
+        <div class="content-body">
+          <div class="content-card">
+            <h3 class="content-title"><span class="content-title-icon">💌</span>Hubungi Kami</h3>
+            <p>Kami sangat menghargai saran dan masukan dari Anda untuk membuat aplikasi ini menjadi lebih baik. Silakan kirimkan ide, laporan bug, atau masukan lainnya melalui email kepada pengembang.</p>
+            <div class="email-link-wrapper">
+              <a href="mailto:annurislamic60@gmail.com?subject=Masukan untuk Aplikasi Annur Islamic" class="modal-action-btn" style="text-decoration: none; display: inline-block; width: auto; padding: 0.8rem 1.5rem;">Kirim Email</a>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
-  <div id="theme-store-modal" class="full-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Toko Tema</h3>
-        <span class="close-button">&times;</span>
-        <span id="store-user-points">Poin Anda: 0 💎</span>
+    
+      <div id="custom-location-modal" class="full-modal">
+        <div class="modal-content permission-modal-content">
+          <h3>Butuh Izin Lokasi Anda</h3>
+          <p>Aplikasi ini memerlukan akses ke lokasi Anda untuk menampilkan jadwal sholat dan arah kiblat yang akurat. Data lokasi Anda tidak disimpan atau dibagikan.</p>
+          <div class="permission-modal-actions">
+            <button id="deny-location-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Nanti Saja</button>
+            <button id="allow-location-btn" class="modal-action-btn" style="margin-top: 0;">Izinkan</button>
+          </div>
+        </div>
       </div>
-      <div class="modal-body">
-        <p style="font-size: 0.9rem; text-align: center; color: var(--text-light);">Tukarkan poin yang didapat dari kuis dengan tema-tema menarik!</p>
-        <div id="theme-grid">
+    
+      <div id="custom-notification-modal" class="full-modal">
+        <div class="modal-content permission-modal-content">
+          <h3>Aktifkan Notifikasi Adzan?</h3>
+          <p>Izinkan aplikasi mengirimkan notifikasi agar Anda tidak ketinggalan waktu sholat. Anda dapat mengatur suara dan jadwal notifikasi di menu Pengaturan.</p>
+          <div class="permission-modal-actions">
+            <button id="deny-notification-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Lain Kali</button>
+            <button id="allow-notification-btn" class="modal-action-btn" style="margin-top: 0;">Aktifkan</button>
+          </div>
+        </div>
+      </div>
+    
+      <div id="theme-store-modal" class="full-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Toko Tema</h3>
+            <span class="close-button">&times;</span>
+            <span id="store-user-points">Poin Anda: 0 💎</span>
+          </div>
+          <div class="modal-body">
+            <p style="font-size: 0.9rem; text-align: center; color: var(--text-light);">Tukarkan poin yang didapat dari kuis dengan tema-tema menarik!</p>
+            <div id="theme-grid">
+              </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="duet-result-modal" class="full-modal">
+          <div class="modal-content permission-modal-content">
+            <h3 id="duet-winner-text">Hasil Pertandingan!</h3>
+            <p id="duet-final-scores" style="margin-bottom: 1.5rem;"></p>
+            <div class="permission-modal-actions">
+              <button id="duet-play-again-btn" class="modal-action-btn" style="margin-top: 0;">Main Lagi</button>
+              <button id="duet-back-to-menu-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Kembali ke Menu</button>
+            </div>
           </div>
       </div>
-    </div>
-  </div>
-  
-  <div id="duet-result-modal" class="full-modal">
-      <div class="modal-content permission-modal-content">
-        <h3 id="duet-winner-text">Hasil Pertandingan!</h3>
-        <p id="duet-final-scores" style="margin-bottom: 1.5rem;"></p>
-        <div class="permission-modal-actions">
-          <button id="duet-play-again-btn" class="modal-action-btn" style="margin-top: 0;">Main Lagi</button>
-          <button id="duet-back-to-menu-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Kembali ke Menu</button>
-        </div>
-      </div>
-  </div>
-
-
-  <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
-  <audio id="audio-adhan-fajr" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3" preload="auto"></audio>
-  <audio id="audio-adhan-mishary" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3" preload="auto"></audio>
-  <audio id="audio-adhan-madinah" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzankota.mp3" preload="auto"></audio>
-  <audio id="murottal-player" preload="auto"></audio>
-
-</body>
+    
+    
+      <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
+      <audio id="audio-adhan-fajr" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3" preload="auto"></audio>
+      <audio id="audio-adhan-mishary" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3" preload="auto"></audio>
+      <audio id="audio-adhan-madinah" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzankota.mp3" preload="auto"></audio>
+      <audio id="murottal-player" preload="auto"></audio>
+    
+    </body>
 
 <script>
     // [BARU] Variabel untuk state kuis
@@ -1746,6 +1894,24 @@ const themes = [
     { id: 'ultrachrome', name: 'Ultra Chrome', price: 18000, colors: ['#101010', '#202020', '#00e6e6', '#1c1c1c'] },
     { id: 'hypernova', name: 'Hypernova', price: 20000, colors: ['#14002e', '#1f003f', '#ff5ef7', '#250045'] }
     
+];
+
+const motivationData = [
+    { id: 1, text: "Kesabaran itu ada dua macam: sabar atas sesuatu yang tidak kau ingin dan sabar menahan diri dari sesuatu yang kau ingini.", author: "Ali bin Abi Thalib", category: "Sabar", featured: true },
+    { id: 2, text: "Jangan berduka. Apa pun yang hilang darimu akan kembali lagi dalam wujud lain.", author: "Jalaluddin Rumi", category: "Sabar" },
+    { id: 3, "text": "Bersyukurlah, karena rasa syukur akan menambah nikmat yang telah ada dan membuka pintu nikmat yang belum datang.", "author": "Imam Al-Ghazali", "category": "Syukur", "featured": true },
+    { id: 4, "text": "Barangsiapa tidak mensyukuri yang sedikit, maka ia tidak akan mampu mensyukuri yang banyak.", "author": "HR. Ahmad", "category": "Syukur" },
+    { id: 5, "text": "Bekerjalah untuk duniamu seakan-akan engkau akan hidup selamanya. Dan beramallah untuk akhiratmu seakan-akan engkau akan mati besok.", "author": "Hadits", "category": "Semangat", "featured": true },
+    { id: 6, "text": "Kegagalan adalah cara Allah untuk mengatakan 'Bersabarlah, Aku memiliki sesuatu yang lebih baik untukmu'.", "author": "Kutipan Islami", "category": "Sabar" },
+    { id: 7, "text": "Hiduplah seperti pohon kayu yang lebat buahnya; hidup di tepi jalan dan dilempari dengan batu, tetapi membalas dengan buah.", "author": "Abu Bakar As-Siddiq", "category": "Sabar" },
+    { id: 8, "text": "Dunia ini ibarat bayangan. Kalau kau coba menangkapnya, ia akan lari. Tapi kalau kau membelakanginya, ia tak punya pilihan selain mengikutimu.", "author": "Ibnu Qayyim Al-Jauziyyah", "category": "Semangat" },
+    { id: 9, "text": "Jika kamu tidak dapat menahan lelahnya belajar, maka kamu harus sanggup menahan perihnya kebodohan.", "author": "Imam Syafi'i", "category": "Semangat" },
+    { id: 10, "text": "Orang yang paling aku sukai adalah dia yang menunjukkan kesalahanku.", "author": "Umar bin Khattab", "category": "Semangat" },
+    { id: 11, "text": "Cukuplah Allah sebagai penolong kami, dan Allah adalah sebaik-baik pelindung.", "author": "QS. Ali 'Imran: 173", "category": "Syukur" },
+    { id: 12, "text": "Dan sedikit sekali dari hamba-hamba-Ku yang bersyukur.", "author": "QS. Saba': 13", "category": "Syukur" },
+    { id: 13, "text": "Maka sesungguhnya beserta kesulitan ada kemudahan.", "author": "QS. Al-Insyirah: 5", "category": "Sabar", "featured": true },
+    { id: 14, "text": "Balaslah keburukan dengan kebaikan.", "author": "Kutipan Islami", "category": "Sabar" },
+    { id: 15, "text": "Janganlah kamu berputus asa dari rahmat Allah.", "author": "QS. Az-Zumar: 53", "category": "Semangat", "featured": true }
 ];
     
     
@@ -2289,6 +2455,221 @@ const themes = [
             const locale = localeMap[currentLanguage] || 'en-US';
             gregorianDateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         }
+
+
+
+// [BARU] Tambahkan seluruh fungsi ini di dalam script utama Anda
+function setupMotivationFeature() {
+    const motivasiBtn = document.getElementById('motivasi-btn');
+    const motivationView = document.getElementById('motivation-view');
+    if (!motivasiBtn || !motivationView) return;
+
+    const listContainer = document.getElementById('motivation-list-container');
+    const tabsContainer = document.getElementById('motivation-tabs');
+    const randomQuoteBtn = document.getElementById('random-quote-btn');
+    const toastEl = document.getElementById('motivation-toast');
+    const bookmarkListBtn = document.getElementById('motivation-bookmark-list-btn');
+
+    // Carousel elements
+    const carouselTrack = document.querySelector('.motivation-carousel-track');
+    const carouselIndicators = document.querySelector('.carousel-indicators');
+    const prevButton = document.querySelector('.carousel-control.prev');
+    const nextButton = document.querySelector('.carousel-control.next');
+    let currentSlide = 0;
+    let featuredQuotes = [];
+
+    let favoriteQuotes = JSON.parse(localStorage.getItem('favorite_quotes')) || [];
+
+    // --- Inisialisasi Fitur ---
+    motivasiBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showView('motivation-view');
+        renderQuotes('all');
+        setupCarousel();
+        closeSidebar();
+    });
+
+    // --- Logika Carousel ---
+    function setupCarousel() {
+        featuredQuotes = motivationData.filter(q => q.featured);
+        if (featuredQuotes.length === 0 || !carouselTrack) return;
+
+        carouselTrack.innerHTML = '';
+        carouselIndicators.innerHTML = '';
+
+        featuredQuotes.forEach((quote, index) => {
+            const slide = document.createElement('div');
+            slide.className = 'motivation-slide';
+            slide.innerHTML = `<p>"${quote.text}"</p><span class="quote-author">- ${quote.author} -</span>`;
+            carouselTrack.appendChild(slide);
+
+            const dot = document.createElement('div');
+            dot.className = 'indicator-dot';
+            dot.dataset.slideTo = index;
+            carouselIndicators.appendChild(dot);
+        });
+        updateCarousel();
+    }
+    
+    function updateCarousel() {
+        carouselTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+        const dots = document.querySelectorAll('.indicator-dot');
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[currentSlide].classList.add('active');
+    }
+
+    nextButton.addEventListener('click', () => {
+        currentSlide = (currentSlide + 1) % featuredQuotes.length;
+        updateCarousel();
+    });
+
+    prevButton.addEventListener('click', () => {
+        currentSlide = (currentSlide - 1 + featuredQuotes.length) % featuredQuotes.length;
+        updateCarousel();
+    });
+    
+    carouselIndicators.addEventListener('click', (e) => {
+        if(e.target.matches('.indicator-dot')) {
+            currentSlide = parseInt(e.target.dataset.slideTo);
+            updateCarousel();
+        }
+    });
+
+    // --- Logika Tampilan & Filter ---
+    function renderQuotes(category) {
+        listContainer.innerHTML = '';
+        let quotesToRender = motivationData;
+
+        if (category === 'favorites') {
+            quotesToRender = motivationData.filter(q => favoriteQuotes.includes(q.id));
+             if (quotesToRender.length === 0) {
+                listContainer.innerHTML = `<div class="loading-indicator">Anda belum punya kutipan favorit.</div>`;
+                return;
+            }
+        } else if (category !== 'all') {
+            quotesToRender = motivationData.filter(q => q.category === category);
+        }
+
+        quotesToRender.forEach(quote => {
+            const card = document.createElement('div');
+            card.className = 'motivation-quote-card';
+            card.dataset.id = quote.id;
+
+            const isFavorited = favoriteQuotes.includes(quote.id);
+
+            card.innerHTML = `
+                <p class="quote-text">"${quote.text}"</p>
+                <p class="quote-author">- ${quote.author}</p>
+                <div class="quote-footer">
+                    <div class="quote-tags">
+                        <span class="quote-tag-badge">${quote.category}</span>
+                    </div>
+                    <div class="quote-actions">
+                        <span class="action-icon share-btn" title="Bagikan">🔗</span>
+                        <span class="action-icon copy-btn" title="Salin Teks">📋</span>
+                        <span class="action-icon favorite-btn ${isFavorited ? 'favorited' : ''}" title="Favorit">❤️</span>
+                    </div>
+                </div>
+            `;
+            listContainer.appendChild(card);
+        });
+    }
+    
+    // --- Event Listeners ---
+    tabsContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('tab-item')) {
+            tabsContainer.querySelector('.tab-item.active').classList.remove('active');
+            e.target.classList.add('active');
+            renderQuotes(e.target.dataset.category);
+            bookmarkListBtn.classList.remove('active'); // Nonaktifkan highlight favorit jika tab lain dipilih
+        }
+    });
+
+    listContainer.addEventListener('click', (e) => {
+        const card = e.target.closest('.motivation-quote-card');
+        if (!card) return;
+        
+        const quoteId = parseInt(card.dataset.id);
+        const quote = motivationData.find(q => q.id === quoteId);
+
+        if (e.target.classList.contains('copy-btn')) {
+            const textToCopy = `"${quote.text}" - ${quote.author}`;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast("Teks berhasil disalin!");
+            });
+        }
+        
+        if (e.target.classList.contains('share-btn')) {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Motivasi Islami',
+                    text: `"${quote.text}" - ${quote.author}\n\nDari aplikasi Annur Islamic`,
+                });
+            } else {
+                showToast("Fitur bagikan tidak didukung browser ini.");
+            }
+        }
+
+        if (e.target.classList.contains('favorite-btn')) {
+            toggleFavorite(quoteId, e.target);
+        }
+    });
+
+    randomQuoteBtn.addEventListener('click', () => {
+        listContainer.innerHTML = '';
+        const randomQuote = motivationData[Math.floor(Math.random() * motivationData.length)];
+        renderQuotes('all'); // Tampilkan lagi semua
+        setTimeout(() => {
+            const cardToScroll = document.querySelector(`.motivation-quote-card[data-id='${randomQuote.id}']`);
+            if(cardToScroll) {
+                cardToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                cardToScroll.style.boxShadow = "0 0 15px var(--accent-color)";
+                setTimeout(() => { cardToScroll.style.boxShadow = ""; }, 2000);
+            }
+        }, 100);
+    });
+    
+    bookmarkListBtn.addEventListener('click', () => {
+        tabsContainer.querySelector('.tab-item.active').classList.remove('active');
+        bookmarkListBtn.classList.add('active');
+        renderQuotes('favorites');
+    });
+
+    // --- Fungsi Bantuan (Helper Functions) ---
+    function toggleFavorite(id, iconElement) {
+        const index = favoriteQuotes.indexOf(id);
+        if (index > -1) {
+            favoriteQuotes.splice(index, 1);
+            iconElement.classList.remove('favorited');
+            showToast("Dihapus dari favorit.");
+        } else {
+            favoriteQuotes.push(id);
+            iconElement.classList.add('favorited');
+            showToast("Ditambahkan ke favorit!");
+        }
+        localStorage.setItem('favorite_quotes', JSON.stringify(favoriteQuotes));
+        
+        // Jika sedang di tab favorit, render ulang
+        if(document.querySelector('#motivation-bookmark-list-btn.active')) {
+            renderQuotes('favorites');
+        }
+    }
+
+    function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('show');
+        setTimeout(() => {
+            toastEl.classList.remove('show');
+        }, 2000);
+    }
+}
+
+// Terakhir, panggil fungsi setup utama di dalam event listener DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // ... kode setup lainnya
+    setupMotivationFeature();
+    // ... sisa kode Anda
+});
     
         // --- DOA HARIAN FEATURE ---
         function setupDoaHarian() {
@@ -2640,6 +3021,8 @@ const themes = [
     
             updateLastReadSurahCard();
         }
+
+        
     
         // --- DZIKIR & TASBIH FEATURE ---
         function setupDzikir() {
@@ -3560,6 +3943,7 @@ const themes = [
         setupAppDetailPages();
         setupAdhanSettingsPage();
         setupCustomPermissionModals();
+        setupMotivationFeature();
     
         // Panggil fungsi inisialisasi utama yang baru
         initLocationAndPrayerTimes();
