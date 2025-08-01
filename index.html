@@ -2068,49 +2068,77 @@ const motivationData = [
         }
     
         function fetchPrayerTimings(lat, lon) {
-            document.getElementById('city-name').textContent = "Memperbarui jadwal...";
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1;
-    
-            fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
-                .then(r => r.json())
-                .then(j => {
-                    if (j.code === 200) {
-                        console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
-                        localStorage.setItem(CACHE_KEY_COORDS, JSON.stringify({ lat, lon }));
-                        const cacheKey = `timings_${year}_${month}`;
-                        const adjustedData = j.data.map(dailyData => {
-                            const adjustedTimings = {};
-                            for (const key in dailyData.timings) {
-                                const timeString = dailyData.timings[key].split(' ')[0];
-                                const [h, m] = timeString.split(':').map(Number);
-                                if (!isNaN(h) && !isNaN(m)) {
-                                    const date = new Date();
-                                    date.setHours(h, m + 2, 0, 0);
-                                    adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
-                                } else {
-                                    adjustedTimings[key] = dailyData.timings[key];
-                                }
-                            }
-                            return { ...dailyData, timings: adjustedTimings };
-                        });
-                        const dataToStore = { key: cacheKey, data: adjustedData };
-                        localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
-                        console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
-    
-                        loadPrayerDataFromCache();
-                        fetchCityName(lat, lon); // Panggil juga fetch city name di sini
-                    } else {
-                        console.error("API Aladhan mengembalikan error.");
-                        handleLocationError({ message: "API Error" });
-                    }
-                })
-                .catch(error => {
-                    console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
-                    handleLocationError(error);
-                });
-        }
+            document.getElementById('city-name').textContent = "Memperbarui jadwal...";
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+    
+            fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}?latitude=${lat}&longitude=${lon}&method=11`)
+                .then(r => r.json())
+                .then(j => {
+                    if (j.code === 200) {
+                        console.log("Berhasil mengambil data jadwal sholat baru untuk sebulan dari API.");
+                        localStorage.setItem(CACHE_KEY_COORDS, JSON.stringify({ lat, lon }));
+                        const cacheKey = `timings_${year}_${month}`;
+                        const adjustedData = j.data.map(dailyData => {
+                            const adjustedTimings = {};
+                            for (const key in dailyData.timings) {
+                                const timeString = dailyData.timings[key].split(' ')[0];
+                                const [h, m] = timeString.split(':').map(Number);
+                                if (!isNaN(h) && !isNaN(m)) {
+                                    const date = new Date();
+                                    date.setHours(h, m + 2, 0, 0);
+                                    adjustedTimings[key] = `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+                                } else {
+                                    adjustedTimings[key] = dailyData.timings[key];
+                                }
+                            }
+                            return { ...dailyData, timings: adjustedTimings };
+                        });
+                        const dataToStore = { key: cacheKey, data: adjustedData };
+                        localStorage.setItem(CACHE_KEY_MONTHLY_TIMINGS, JSON.stringify(dataToStore));
+                        console.log("Data jadwal sholat sebulan penuh telah disimpan ke cache.");
+    
+                        loadPrayerDataFromCache();
+                        fetchCityName(lat, lon);
+
+                        // --- KODE JEMBATAN UNTUK MENGIRIM JADWAL KE ANDROID ---
+                        if (window.Android && typeof window.Android.schedulePrayerAlarms === 'function') {
+                            console.log("Mengirim jadwal sholat ke Android untuk notifikasi native...");
+                            
+                            // 1. Ambil jadwal hari ini dari data yang baru di-fetch
+                            const todayData = j.data[new Date().getDate() - 1];
+                            const todayTimings = todayData.timings;
+                            
+                            // 2. Siapkan data dalam format JSON yang dimengerti oleh MainActivity
+                            const scheduleForAndroid = [];
+                            const prayerKeys = ['Imsak', 'Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+                            prayerKeys.forEach(prayerName => {
+                                if (todayTimings[prayerName] && prayerAudioSettings[prayerName]) {
+                                    scheduleForAndroid.push({
+                                        name: prayerName,
+                                        time: todayTimings[prayerName],
+                                        soundId: prayerAudioSettings[prayerName].sound
+                                    });
+                                }
+                            });
+
+                            // 3. Kirim data ke MainActivity
+                            window.Android.schedulePrayerAlarms(JSON.stringify(scheduleForAndroid));
+                        }
+                        // --- AKHIR KODE JEMBATAN ---
+                        
+                    } else {
+                        console.error("API Aladhan mengembalikan error.");
+                        handleLocationError({ message: "API Error" });
+                    }
+                })
+                .catch(error => {
+                    console.error("Gagal mengambil jadwal sholat (kemungkinan offline):", error);
+                    handleLocationError(error);
+                });
+        }
     
         function handleLocationError(error) {
             console.warn(`Error getting location: ${error.message}.`);
@@ -2616,6 +2644,7 @@ function setupMotivationFeature() {
                 showToast("Gunakan fitur bagikan di dalam aplikasi.");
             }
         }
+
 
         if (e.target.classList.contains('favorite-btn')) {
             toggleFavorite(quoteId, e.target);
