@@ -2599,16 +2599,23 @@ function setupMotivationFeature() {
             });
         }
         
-        if (e.target.classList.contains('share-btn')) {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Motivasi Islami',
-                    text: `"${quote.text}" - ${quote.author}\n\nDari aplikasi Annur Islamic`,
-                });
-            } else {
-                showToast("Fitur bagikan tidak didukung browser ini.");
-            }
-        }
+// ... di dalam fungsi setupMotivationFeature() ...
+
+// ... di dalam fungsi setupMotivationFeature() ...
+
+        if (e.target.classList.contains('share-btn')) {
+            // Siapkan teks yang mau dibagikan
+            const textToShare = `"${quote.text}" - ${quote.author}\n\nDari aplikasi Annur Islamic`;
+
+            // Cek apakah "jembatan" ke Android ada
+            if (window.Android && typeof window.Android.shareContent === 'function') {
+                // Panggil fungsi di MainActivity dan kirimkan teksnya
+                window.Android.shareContent(textToShare);
+            } else {
+                // Pesan jika dibuka di browser biasa
+                showToast("Gunakan fitur bagikan di dalam aplikasi.");
+            }
+        }
 
         if (e.target.classList.contains('favorite-btn')) {
             toggleFavorite(quoteId, e.target);
