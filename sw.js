@@ -1,16 +1,21 @@
 // --- Service Worker untuk Annur Islamic ---
 
 // Versi cache dinaikkan untuk memicu pembaruan otomatis saat file ini berubah.
-const STATIC_CACHE_NAME = 'annur-islamic-static-v8';
-const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v8';
+const STATIC_CACHE_NAME = 'annur-islamic-static-v9'; // Versi dinaikkan
+const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v9'; // Versi dinaikkan
 
 // Aset inti aplikasi (App Shell) yang akan di-cache saat instalasi.
 const APP_SHELL_ASSETS = [
-    '/AnnurIslamic/',
-    '/AnnurIslamic/index.html',
-    '/AnnurIslamic/manifest.json',
-    '/AnnurIslamic/logo-annur.jpg'
-    // Catatan: CSS dan JS utama ada di dalam HTML, jadi tidak perlu ditambahkan di sini.
+    // BARU: Path disesuaikan agar lebih universal
+    './',
+    './index.html',
+    './manifest.json',
+    './logo-annur.jpg',
+    // BARU: Menambahkan file audio utama ke cache statis agar lebih cepat diakses
+    'https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3',
+    'https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3',
+    'https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3',
+    'https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzankota.mp3'
 ];
 
 // Daftar host API dan sumber daya eksternal yang akan di-cache secara dinamis.
@@ -21,7 +26,7 @@ const DYNAMIC_HOSTS = [
     'nominatim.openstreetmap.org', // Untuk mendapatkan nama kota dari koordinat
     'fonts.gstatic.com',         // Untuk file font
     'fonts.googleapis.com',      // Untuk CSS font
-    'raw.githubusercontent.com'  // Untuk file audio Adzan & notifikasi
+    'raw.githubusercontent.com'  // Untuk file audio (jika ada yang tidak di-cache di awal)
 ];
 
 // Event 'install': Menyimpan App Shell ke dalam cache statis.
@@ -29,8 +34,11 @@ self.addEventListener('install', event => {
     console.log('[SW] Sedang menginstall Service Worker...');
     event.waitUntil(
         caches.open(STATIC_CACHE_NAME).then(cache => {
-            console.log('[SW] Pre-caching App Shell...');
+            console.log('[SW] Pre-caching App Shell & Audio Utama...');
+            // Menggunakan addAll untuk menyimpan semua aset inti
             return cache.addAll(APP_SHELL_ASSETS);
+        }).catch(error => {
+            console.error('[SW] Gagal melakukan pre-cache:', error);
         })
     );
 });
@@ -60,7 +68,6 @@ self.addEventListener('fetch', event => {
     // Cek apakah permintaan ditujukan ke salah satu host API atau sumber daya dinamis.
     if (DYNAMIC_HOSTS.includes(requestUrl.hostname)) {
         // Strategi: Network First, then Cache (Coba ambil dari jaringan dulu)
-        // Cocok untuk data yang bisa berubah seperti jadwal sholat atau data API lainnya.
         event.respondWith(
             caches.open(DYNAMIC_CACHE_NAME).then(cache => {
                 return fetch(event.request).then(networkResponse => {
@@ -74,12 +81,12 @@ self.addEventListener('fetch', event => {
             })
         );
     } else {
-        // Strategi: Cache First, then Network (Coba ambil dari cache dulu)
-        // Cocok untuk App Shell yang jarang berubah.
+        // Strategi: Cache First (Coba ambil dari cache dulu)
+        // Cocok untuk App Shell yang sudah disimpan.
         event.respondWith(
             caches.match(event.request).then(response => {
                 // Jika ada di cache, langsung kembalikan.
-                // Jika tidak, coba ambil dari jaringan.
+                // Jika tidak, baru coba ambil dari jaringan.
                 return response || fetch(event.request);
             })
         );
@@ -90,15 +97,16 @@ self.addEventListener('fetch', event => {
 self.addEventListener('notificationclick', event => {
     event.notification.close();
     event.waitUntil(
-        clients.matchAll({ type: 'window' }).then(clientList => {
-            for (let i = 0; i < clientList.length; i++) {
-                const client = clientList[i];
-                if (client.url === '/AnnurIslamic/' && 'focus' in client) {
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
+            // Jika aplikasi sudah terbuka, fokus ke jendela yang sudah ada.
+            for (const client of clientList) {
+                if (client.url.endsWith('index.html') || client.url.endsWith('/')) {
                     return client.focus();
                 }
             }
+            // Jika aplikasi belum terbuka, buka jendela baru.
             if (clients.openWindow) {
-                return clients.openWindow('/AnnurIslamic/');
+                return clients.openWindow('./index.html');
             }
         })
     );
