@@ -3849,7 +3849,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const settingsModal = document.getElementById('settings-modal');
             const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
             const adhanSettingsContainer = document.getElementById('adhan-settings-trigger-container');
-    
+
+// ==========================================================
+// TAMBAHKAN KODE BARU INI
+// ==========================================================
+document.addEventListener('visibilitychange', () => {
+    // Jika aplikasi kembali terlihat (misalnya dari pengaturan HP)
+    if (document.visibilityState === 'visible') {
+        console.log("Aplikasi kembali aktif, memeriksa ulang status notifikasi...");
+        // Panggil fungsi untuk update tombol notifikasi
+        if (window.updateNotificationButtonState) {
+            window.updateNotificationButtonState();
+        }
+    }
+});
             const applyDarkMode = (theme) => { darkModeToggle.checked = theme === 'dark'; document.body.classList.toggle('dark-mode', theme === 'dark'); };
             darkModeToggle.addEventListener('change', () => { const theme = darkModeToggle.checked ? 'dark' : 'light'; localStorage.setItem('theme', theme); applyDarkMode(theme); });
             applyDarkMode(localStorage.getItem('theme') || 'light');
