@@ -1,7 +1,7 @@
 // --- Service Worker untuk Annur Islamic ---
 
-const STATIC_CACHE_NAME = 'annur-islamic-static-v10'; // Versi dinaikkan
-const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v10';
+const STATIC_CACHE_NAME = 'annur-islamic-static-v11'; // Versi dinaikkan
+const DYNAMIC_CACHE_NAME = 'annur-islamic-dynamic-v11';
 
 // Aset WAJIB yang harus ada agar aplikasi bisa berjalan offline
 const CORE_ASSETS = [
@@ -26,7 +26,8 @@ const DYNAMIC_HOSTS = [
     'api.alquran.cloud',
     'nominatim.openstreetmap.org',
     'fonts.gstatic.com',
-    'raw.githubusercontent.com'
+    'raw.githubusercontent.com',
+    'cdn.alquran.cloud'
 ];
 
 // Event 'install': Menyimpan aset ke cache statis.
@@ -72,7 +73,7 @@ self.addEventListener('fetch', event => {
     const requestUrl = new URL(event.request.url);
 
     // Strategi untuk API dan sumber daya dinamis (Network First)
-    if (DYNAMIC_HOSTS.includes(requestUrl.hostname)) {
+if (DYNAMIC_HOSTS.includes(requestUrl.hostname) || event.request.url.endsWith('.mp3')) {
         event.respondWith(
             fetch(event.request)
                 .then(networkResponse => {
