@@ -1701,7 +1701,11 @@
           </div>
       </div>
     
-    
+      <body>
+        <div id="debug-info" style="position: fixed; top: 0; left: 0; width: 100%; padding: 10px; background-color: #ffc107; color: black; z-index: 9999; font-size: 12px; font-family: monospace; border-bottom: 2px solid black;"></div>
+        <nav id="sidebar">
+          ... (sisa kode Anda) ...
+
       <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
       <audio id="audio-adhan-fajr" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3" preload="auto"></audio>
       <audio id="audio-adhan-mishary" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3" preload="auto"></audio>
@@ -1711,6 +1715,7 @@
     </body>
 
 <script>
+
     // [BARU] Variabel untuk state kuis
     let userPoints = 0;
     let quizScore = 0;
@@ -3869,10 +3874,10 @@ document.addEventListener('visibilitychange', () => {
     
             window.updateNotificationButtonState = function() {
                 if (!("Notification" in window) || !("serviceWorker" in navigator)) {
-                    enableNotificationsBtn.textContent = 'Tidak Didukung';
-                    enableNotificationsBtn.disabled = true;
-                    return;
-                }
+    enableNotificationsBtn.textContent = 'Tidak Didukung';
+    enableNotificationsBtn.disabled = true;
+    return; // <--- PROSES BERHENTI DI SINI
+}
                 switch (Notification.permission) {
                     case 'granted':
                         enableNotificationsBtn.textContent = 'Telah Diizinkan';
@@ -4025,6 +4030,21 @@ document.addEventListener('visibilitychange', () => {
     
         requestPersistentStorage();
     });
-    </script>
-</body>
+
+    const debugEl = document.getElementById('debug-info');
+    if (debugEl) {
+      const notifSupport = ("Notification" in window) ? 'YA' : 'TIDAK';
+      const swSupport = ("serviceWorker" in navigator) ? 'YA' : 'TIDAK';
+      const isSecure = window.isSecureContext ? 'YA (HTTPS)' : 'TIDAK (Bukan HTTPS)';
+      
+      debugEl.innerHTML = `
+        <strong>PANEL DEBUG:</strong><br>
+        - Dukungan Notifikasi: <strong>${notifSupport}</strong><br>
+        - Dukungan ServiceWorker: <strong>${swSupport}</strong><br>
+        - Koneksi Aman: <strong>${isSecure}</strong><br>
+        - User Agent: ${navigator.userAgent}
+      `;
+    }
+  </script>
+  </body>
 </html>
