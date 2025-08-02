@@ -3847,122 +3847,141 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     
-// --- GANTI SELURUH FUNGSI setupSettings() ANDA DENGAN INI ---
-function setupSettings() {
-    // BAGIAN LAMA YANG DIPERTAHANKAN (Variabel Anda)
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
-    const langSelect = document.getElementById('language-select');
-    const settingsModal = document.getElementById('settings-modal');
-    const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
-    const adhanSettingsContainer = document.getElementById('adhan-settings-trigger-container');
+        // --- SETTINGS & LANGUAGE ---
+        function setupSettings() {
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            const langSelect = document.getElementById('language-select');
+            const settingsModal = document.getElementById('settings-modal');
+            const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
+            const adhanSettingsContainer = document.getElementById('adhan-settings-trigger-container');
 
-    // ==================================================================
-    // BAGIAN BARU: Logika Notifikasi Native (Solusi Final)
-    // ==================================================================
-
-    // Fungsi ini akan dipanggil oleh kode Java untuk memberitahu hasil permintaan izin
-    window.updateNotificationButtonStateFromNative = function(isGranted) {
-        if (isGranted) {
-            enableNotificationsBtn.textContent = 'Telah Diizinkan';
-            enableNotificationsBtn.disabled = true;
-        } else {
-            // Jika ditolak, anggap diblokir. Pengguna harus ubah di pengaturan HP.
-            enableNotificationsBtn.textContent = 'Diblokir';
-            enableNotificationsBtn.disabled = true;
-        }
-    };
-
-    // Fungsi ini akan memeriksa status izin saat modal pengaturan dibuka
-    function checkInitialNotificationPermission() {
-        // Pastikan jembatan ke Android sudah ada
-        if (window.Android && typeof window.Android.checkNativeNotificationPermission === 'function') {
-            const permissionStatus = window.Android.checkNativeNotificationPermission(); // Memanggil fungsi Java
-            if (permissionStatus === 'granted') {
-                enableNotificationsBtn.textContent = 'Telah Diizinkan';
-                enableNotificationsBtn.disabled = true;
-            } else if (permissionStatus === 'denied') {
-                enableNotificationsBtn.textContent = 'Diblokir';
-                enableNotificationsBtn.disabled = true;
-            } else { // 'default'
-                enableNotificationsBtn.textContent = 'Aktifkan';
-                enableNotificationsBtn.disabled = false;
-            }
-        } else {
-            // Jika karena suatu hal jembatan JS tidak berfungsi
-            enableNotificationsBtn.textContent = 'Tidak Terhubung';
-            enableNotificationsBtn.disabled = true;
+// ==========================================================
+// TAMBAHKAN KODE BARU INI
+// ==========================================================
+document.addEventListener('visibilitychange', () => {
+    // Jika aplikasi kembali terlihat (misalnya dari pengaturan HP)
+    if (document.visibilityState === 'visible') {
+        console.log("Aplikasi kembali aktif, memeriksa ulang status notifikasi...");
+        // Panggil fungsi untuk update tombol notifikasi
+        if (window.updateNotificationButtonState) {
+            window.updateNotificationButtonState();
         }
     }
+});
+            const applyDarkMode = (theme) => { darkModeToggle.checked = theme === 'dark'; document.body.classList.toggle('dark-mode', theme === 'dark'); };
+            darkModeToggle.addEventListener('change', () => { const theme = darkModeToggle.checked ? 'dark' : 'light'; localStorage.setItem('theme', theme); applyDarkMode(theme); });
+            applyDarkMode(localStorage.getItem('theme') || 'light');
     
-    // Mengubah apa yang dilakukan tombol "Aktifkan"
-    enableNotificationsBtn.addEventListener('click', () => {
-        if (window.Android && typeof window.Android.requestNativeNotificationPermission === 'function') {
-            // Tombol ini sekarang memanggil fungsi di MainActivity.java
-            window.Android.requestNativeNotificationPermission();
-        } else {
-            alert('Fungsi notifikasi tidak terhubung dengan aplikasi.');
-        }
-    });
-
-    // Mengubah apa yang terjadi saat ikon gear ⚙️ diklik
-    // Ini event listener BARU untuk tombol #settings-btn di sidebar
-    document.getElementById('settings-btn').addEventListener('click', (e) => {
-        e.preventDefault();
-        checkInitialNotificationPermission(); // Cek status izin dulu
-        settingsModal.style.display = 'flex'; // Baru tampilkan modal
-        closeSidebar();
-    });
-
-    // ==================================================================
-    // BAGIAN LAMA YANG DIPERTAHANKAN (Dark Mode, Bahasa, dll.)
-    // ==================================================================
-    const applyDarkMode = (theme) => { darkModeToggle.checked = theme === 'dark'; document.body.classList.toggle('dark-mode', theme === 'dark'); };
-    darkModeToggle.addEventListener('change', () => { const theme = darkModeToggle.checked ? 'dark' : 'light'; localStorage.setItem('theme', theme); applyDarkMode(theme); });
-    applyDarkMode(localStorage.getItem('theme') || 'light');
-    
-    function renderAdhanTriggerButton() {
-        adhanSettingsContainer.innerHTML = `
-            <h4 data-key="settings_adhan_sound">Pengaturan Suara Adzan</h4>
-            <div class="settings-menu-item" id="open-adhan-settings-btn" style="border-bottom: none; padding-bottom: 0;">
-                <span>Atur Suara & Volume untuk Tiap Waktu</span>
-                <span class="arrow">&rsaquo;</span>
-            </div>`;
-        document.getElementById('open-adhan-settings-btn').addEventListener('click', () => {
-            settingsModal.style.display = 'none';
-            showView('adhan-settings-view');
-            renderFullAdhanSettingsPage();
-        });
-    }
-    
-    const setLanguage = (lang) => {
-        currentLanguage = lang;
-        localStorage.setItem('language', lang);
-        document.documentElement.lang = lang;
-        document.querySelectorAll('[data-key]').forEach(el => {
-            const key = el.dataset.key;
-            if (translations[lang] && translations[lang][key]) {
-                el.textContent = translations[lang][key];
-            }
-        });
-        updateDates();
-        generateCalendar();
-        if (window.latestPrayerTimes) {
-            renderPrayerTimes(window.latestPrayerTimes);
-            startCountdown(window.latestPrayerTimes);
-        }
-        renderAdhanTriggerButton();
-    };
-    
-    langSelect.addEventListener('change', () => {
-        setLanguage(langSelect.value);
-    });
-    
-    const savedLang = localStorage.getItem('language') || 'id';
-    langSelect.value = savedLang;
-    setLanguage(savedLang);
-    
-    settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
+            window.updateNotificationButtonState = function() {
+                if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+    enableNotificationsBtn.textContent = 'Tidak Didukung';
+    enableNotificationsBtn.disabled = true;
+    return; // <--- PROSES BERHENTI DI SINI
 }
+                switch (Notification.permission) {
+                    case 'granted':
+                        enableNotificationsBtn.textContent = 'Telah Diizinkan';
+                        enableNotificationsBtn.disabled = true;
+                        break;
+                    case 'denied':
+                        enableNotificationsBtn.textContent = 'Diblokir';
+                        enableNotificationsBtn.disabled = true;
+                        break;
+                    default:
+                        enableNotificationsBtn.textContent = 'Aktifkan';
+                        enableNotificationsBtn.disabled = false;
+                }
+            }
+    
+            enableNotificationsBtn.addEventListener('click', () => {
+    // Langsung minta izin ke browser/WebView tanpa modal kustom
+    Notification.requestPermission().then(permission => {
+        console.log('Izin Notifikasi:', permission);
+        if (permission === "granted") {
+            new Notification("Notifikasi Diaktifkan!", {
+                body: "Anda akan menerima notifikasi waktu sholat.",
+                icon: 'logo-annur.jpg'
+            });
+        }
+        // Perbarui status tombol setelah permintaan selesai
+        window.updateNotificationButtonState(); 
+    });
+});
+            updateNotificationButtonState();
+    
+            function renderAdhanTriggerButton() {
+                adhanSettingsContainer.innerHTML = `
+                    <h4 data-key="settings_adhan_sound">Pengaturan Suara Adzan</h4>
+                    <div class="settings-menu-item" id="open-adhan-settings-btn" style="border-bottom: none; padding-bottom: 0;">
+                        <span>Atur Suara & Volume untuk Tiap Waktu</span>
+                        <span class="arrow">&rsaquo;</span>
+                    </div>`;
+                document.getElementById('open-adhan-settings-btn').addEventListener('click', () => {
+                    settingsModal.style.display = 'none';
+                    showView('adhan-settings-view');
+                    renderFullAdhanSettingsPage();
+                });
+            }
+    
+            const setLanguage = (lang) => {
+                currentLanguage = lang;
+                localStorage.setItem('language', lang);
+                document.documentElement.lang = lang;
+    
+                document.querySelectorAll('[data-key]').forEach(el => {
+                    const key = el.dataset.key;
+                    if (translations[lang] && translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+    
+                updateDates();
+                generateCalendar();
+    
+                if (window.latestPrayerTimes) {
+                    renderPrayerTimes(window.latestPrayerTimes);
+                    startCountdown(window.latestPrayerTimes);
+                }
+                renderAdhanTriggerButton();
+            };
+    
+            langSelect.addEventListener('change', () => {
+                setLanguage(langSelect.value);
+            });
+    
+            const savedLang = localStorage.getItem('language') || 'id';
+            langSelect.value = savedLang;
+            setLanguage(savedLang);
+    
+            settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
+        }
+    
+        // --- FUNGSI UNTUK HALAMAN DETAIL APLIKASI ---
+        function setupAppDetailPages() {
+            const settingsModal = document.getElementById('settings-modal');
+            const detailAppBtn = document.getElementById('detail-app-btn');
+            const detailViewBackBtn = document.getElementById('detail-view-back-btn');
+    
+            if (!detailAppBtn) return;
+    
+            detailAppBtn.addEventListener('click', () => {
+                settingsModal.style.display = 'none';
+                showView('app-detail-view');
+            });
+    
+            detailViewBackBtn.addEventListener('click', () => {
+                showView('prayer-times-view');
+            });
+    
+            document.querySelectorAll('#app-detail-view .settings-menu-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetViewId = item.getAttribute('data-target-view');
+                    if (targetViewId) {
+                        showView(targetViewId);
+                    }
+                });
+            });
+        }
     
         // --- INITIALIZATION ---
         setupNavigation();
