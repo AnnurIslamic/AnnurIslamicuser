@@ -3876,21 +3876,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
     
             enableNotificationsBtn.addEventListener('click', () => {
-                window.requestNotificationPermission()
-                    .then(permission => {
-                        if (permission === "granted") {
-                            new Notification("Notifikasi Diaktifkan!", {
-                                body: "Anda akan menerima notifikasi waktu sholat.",
-                                icon: 'logo-annur.jpg'
-                            });
-                        }
-                        updateNotificationButtonState();
-                    })
-                    .catch(error => {
-                        console.log('Permintaan notifikasi ditolak dari modal kustom:', error);
-                        updateNotificationButtonState();
-                    });
+    // Langsung minta izin ke browser/WebView tanpa modal kustom
+    Notification.requestPermission().then(permission => {
+        console.log('Izin Notifikasi:', permission);
+        if (permission === "granted") {
+            new Notification("Notifikasi Diaktifkan!", {
+                body: "Anda akan menerima notifikasi waktu sholat.",
+                icon: 'logo-annur.jpg'
             });
+        }
+        // Perbarui status tombol setelah permintaan selesai
+        window.updateNotificationButtonState(); 
+    });
+});
             updateNotificationButtonState();
     
             function renderAdhanTriggerButton() {
