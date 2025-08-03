@@ -4039,6 +4039,53 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+
+// ... di dalam event listener DOMContentLoaded ...
+
+// --- MODIFIKASI UNTUK PENGATURAN NOTIFIKASI ---
+const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
+
+// Fungsi ini akan dipanggil oleh Kotlin untuk update UI tombol
+window.updateNotificationButtonStateAndroid = function(status) {
+    console.log("Menerima status notifikasi dari Android:", status);
+    if (status === 'granted') {
+        enableNotificationsBtn.textContent = 'Telah Diizinkan';
+        enableNotificationsBtn.disabled = true;
+    } else {
+        enableNotificationsBtn.textContent = 'Aktifkan';
+        enableNotificationsBtn.disabled = false;
+    }
+}
+
+// Saat tombol "Aktifkan" diklik, panggil fungsi di Kotlin
+enableNotificationsBtn.addEventListener('click', () => {
+    if (window.Android && typeof window.Android.checkNotificationPermissionStatus === 'function') {
+        window.Android.checkNotificationPermissionStatus();
+    } else {
+        alert('Fungsi ini hanya tersedia di aplikasi Android.');
+    }
+});
+
+// Saat modal pengaturan dibuka, langsung cek status terakhir
+const settingsBtn = document.getElementById('settings-btn');
+settingsBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('settings-modal').style.display = 'flex';
+    closeSidebar();
+    
+    // Panggil fungsi pengecekan saat modal dibuka
+    if (window.Android && typeof window.Android.checkNotificationPermissionStatus === 'function') {
+        // Sedikit jeda agar modal sempat muncul
+        setTimeout(() => {
+            window.Android.checkNotificationPermissionStatus();
+        }, 100);
+    }
+});
+
+// Hapus fungsi lama window.requestNotificationPermission jika ada, karena sekarang dikelola oleh Kotlin
+// ... sisa kode Anda ...
+</script>
     </script>
 </body>
 </html>
