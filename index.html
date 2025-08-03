@@ -1472,12 +1472,18 @@
                 <option value="bn">বাংলা (Bengali)</option>
               </select>
             </div>
-    
+
             <div class="settings-group" style="margin-top: 1.5rem; padding: 0; background-color: transparent; box-shadow: none;">
               <div id="adhan-settings-trigger-container">
               </div>
             </div>
     
+            <div style="padding: 1rem;">
+                <button id="test-alarm-btn" class="modal-action-btn" style="background-color: #dc3545;">
+                    Tes Alarm 5 Detik
+                </button>
+ 
+            </div>    
             <div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
               <h4 style="font-size: 1rem; color: var(--header-bg); margin-bottom: 0.75rem; padding-bottom: 0; border: none;">Notifikasi Terlambat?</h4>
               <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
@@ -4058,6 +4064,19 @@ enableNotificationsBtn.addEventListener('click', () => {
         alert('Fungsi ini hanya tersedia di aplikasi Android.');
     }
 });
+
+   // Letakkan ini di dalam event listener DOMContentLoaded
+   const testAlarmBtn = document.getElementById('test-alarm-btn');
+    if (testAlarmBtn) {
+        testAlarmBtn.addEventListener('click', () => {
+            if (window.Android && typeof window.Android.testAlarmIn5Seconds === 'function') {
+                console.log('Memanggil fungsi tes alarm di Android...');
+                window.Android.testAlarmIn5Seconds();
+            } else {
+                alert('Fungsi tes hanya untuk aplikasi Android.');
+            }
+        });
+    }
 
 // Anda bisa menambahkan kode untuk mengubah teks tombol kembali ke "Aktifkan"
 // setelah beberapa saat jika pengguna tidak memberikan respon, tapi ini opsional.
