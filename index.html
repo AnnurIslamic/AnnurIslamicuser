@@ -1487,6 +1487,16 @@
                 Optimalkan Notifikasi
               </button>
             </div>
+<div class="settings-group">
+    <h4>Tampilan Alarm</h4>
+    <div class="settings-item">
+        <label for="popup-alarm-btn">Izinkan Pop-up Alarm</label>
+        <button id="popup-alarm-btn" class="custom-select">Buka Pengaturan</button>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+        Agar layar alarm bisa langsung muncul di atas aplikasi lain saat adzan berkumandang.
+    </p>
+</div>
             <div class="settings-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
               <div class="settings-item">
                 <label data-key="settings_about">Tentang Aplikasi</label>
@@ -1709,6 +1719,7 @@
       <audio id="murottal-player" preload="auto"></audio>
     
     </body>
+    
 
 <script>
     // [BARU] Variabel untuk state kuis
@@ -4014,6 +4025,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
         requestPersistentStorage();
     });
+    
+    // ... di dalam event listener DOMContentLoaded ...
+    
+    const popupAlarmBtn = document.getElementById('popup-alarm-btn');
+    if (popupAlarmBtn) {
+        popupAlarmBtn.addEventListener('click', () => {
+            if (window.Android && typeof window.Android.requestOverlayPermission === 'function') {
+                // Panggil fungsi di MainActivity
+                window.Android.requestOverlayPermission();
+            } else {
+                alert('Fungsi ini hanya tersedia di dalam aplikasi Android.');
+            }
+        });
+    }
     </script>
 </body>
 </html>
