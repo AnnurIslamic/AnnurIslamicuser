@@ -1484,6 +1484,13 @@
                 </button>
  
             </div>    
+
+            <div style="padding: 1rem; padding-top: 0;">
+                <button id="test-sound-btn" class="modal-action-btn" style="background-color: #28a745;">
+                    Tes Suara Langsung
+                </button>
+            </div>
+
             <div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
               <h4 style="font-size: 1rem; color: var(--header-bg); margin-bottom: 0.75rem; padding-bottom: 0; border: none;">Notifikasi Terlambat?</h4>
               <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
@@ -4077,6 +4084,21 @@ enableNotificationsBtn.addEventListener('click', () => {
             }
         });
     }
+
+
+    // Letakkan ini di dalam event listener DOMContentLoaded
+    const testSoundBtn = document.getElementById('test-sound-btn');
+    if (testSoundBtn) {
+        testSoundBtn.addEventListener('click', () => {
+            if (window.Android && typeof window.Android.testSoundPlaybackDirectly === 'function') {
+                console.log('Memanggil fungsi tes suara langsung di Android...');
+                window.Android.testSoundPlaybackDirectly();
+            } else {
+                alert('Fungsi tes hanya untuk aplikasi Android.');
+            }
+        });
+    }
+
 
 // Anda bisa menambahkan kode untuk mengubah teks tombol kembali ke "Aktifkan"
 // setelah beberapa saat jika pengguna tidak memberikan respon, tapi ini opsional.
