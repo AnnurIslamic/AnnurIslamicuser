@@ -4041,12 +4041,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+
 // ... di dalam event listener DOMContentLoaded ...
 
-// --- MODIFIKASI UNTUK PENGATURAN NOTIFIKASI ---
+// --- MODIFIKASI BARU UNTUK PENGATURAN NOTIFIKASI ---
 const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
 
-// Fungsi ini akan dipanggil oleh Kotlin untuk update UI tombol
+// Fungsi ini akan dipanggil oleh Kotlin untuk update UI tombol (tidak berubah)
 window.updateNotificationButtonStateAndroid = function(status) {
     console.log("Menerima status notifikasi dari Android:", status);
     if (status === 'granted') {
@@ -4058,34 +4059,31 @@ window.updateNotificationButtonStateAndroid = function(status) {
     }
 }
 
-// Saat tombol "Aktifkan" diklik, panggil fungsi di Kotlin
+// Saat tombol "Aktifkan" diklik, panggil fungsi PERMINTAAN izin
 enableNotificationsBtn.addEventListener('click', () => {
-    if (window.Android && typeof window.Android.checkNotificationPermissionStatus === 'function') {
-        window.Android.checkNotificationPermissionStatus();
+    if (window.Android && typeof window.Android.requestNotificationPermission === 'function') {
+        window.Android.requestNotificationPermission();
     } else {
         alert('Fungsi ini hanya tersedia di aplikasi Android.');
     }
 });
 
-// Saat modal pengaturan dibuka, langsung cek status terakhir
+// Saat modal pengaturan dibuka, panggil fungsi PENGECEKAN status
 const settingsBtn = document.getElementById('settings-btn');
 settingsBtn.addEventListener('click', (e) => {
     e.preventDefault();
     document.getElementById('settings-modal').style.display = 'flex';
     closeSidebar();
     
-    // Panggil fungsi pengecekan saat modal dibuka
+    // Selalu panggil fungsi pengecekan status setiap kali modal dibuka
     if (window.Android && typeof window.Android.checkNotificationPermissionStatus === 'function') {
-        // Sedikit jeda agar modal sempat muncul
         setTimeout(() => {
             window.Android.checkNotificationPermissionStatus();
         }, 100);
     }
 });
 
-// Hapus fungsi lama window.requestNotificationPermission jika ada, karena sekarang dikelola oleh Kotlin
 // ... sisa kode Anda ...
-</script>
     </script>
 </body>
 </html>
