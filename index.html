@@ -8,6 +8,12 @@
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+    /* [TAMBAHKAN KODE INI] Aturan Global untuk Mencegah Scroll Horizontal */
+    html, body {
+        width: 100%;
+        overflow-x: hidden;
+    }
+    
     /* [BARU] CSS Tambahan untuk Score Board Duet */
     #duet-score-board h4 {
         font-size: 1rem;
@@ -851,6 +857,129 @@
     body.dark-mode #duet-score-board .player-container.active h4 {
         color: var(--accent-color);
     }
+
+/* --- [MODIFIKASI] CSS UNTUK FITUR SAHABAT ANNUR ALA AI --- */
+#sahabat-annur-view {
+    display: flex;
+    flex-direction: column;
+    /* [DIUBAH] Gunakan 100vh agar mengisi seluruh tinggi layar perangkat */
+    height: 100vh; 
+    /* [DIHAPUS] Padding dipindahkan ke elemen anak agar lebih konsisten */
+    width: 100%; /* [DITAMBAHKAN] Memastikan view menggunakan lebar penuh */
+}
+
+/* [DITAMBAHKAN] Atur header agar ukurannya tetap dan tidak terpengaruh oleh chat */
+#sahabat-annur-view .view-header {
+    flex-shrink: 0;
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+    box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+}
+
+#chat-window {
+    flex-grow: 1; /* Biarkan area chat mengisi semua sisa ruang vertikal */
+    overflow-y: auto;
+    padding: 0 1rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.chat-message {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    max-width: 85%;
+    /* [DITAMBAHKAN] Mencegah flex item menyebabkan overflow */
+    min-width: 0; 
+}
+
+.chat-bubble {
+    padding: 0.8rem 1rem;
+    border-radius: 18px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    opacity: 0;
+    transform: translateY(15px);
+    animation: fadeInBubble 0.4s forwards;
+    /* [SANGAT PENTING] Mencegah teks panjang (misal: link) merusak layout */
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+@keyframes fadeInBubble { to { opacity: 1; transform: translateY(0); } }
+
+.ai-message { align-self: flex-start; }
+.ai-message .chat-bubble {
+    background-color: var(--card-bg);
+    border-top-left-radius: 4px;
+    color: var(--text-color);
+}
+
+.ai-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--header-bg);
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.user-message { align-self: flex-end; }
+.user-message .chat-bubble {
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    border-top-right-radius: 4px;
+}
+
+.typing-indicator { display: flex; align-items: center; gap: 5px; }
+.typing-indicator .dot {
+    width: 8px; height: 8px; background-color: #ccc; border-radius: 50%;
+    animation: typing-blink 1.4s infinite both;
+}
+.typing-indicator .dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator .dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing-blink { 0% { opacity: 0.2; } 20% { opacity: 1; } 100% { opacity: 0.2; } }
+
+.sahabat-annur-input-area {
+    /* [DITAMBAHKAN] Pastikan area input tidak mengecil */
+    flex-shrink: 0; 
+    padding: 1rem;
+    background-color: var(--primary-bg);
+    border-top: 1px solid var(--tap-area-bg);
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+}
+
+#sahabat-annur-input {
+    /* flex-grow: 1; <-- Dihapus atau diberi komentar */
+    padding: 0.8rem 0.1rem; 
+    border-radius: 1rem;
+    border: 1px solid var(--tap-area-bg); 
+    background-color: var(--card-bg);
+    color: var(--text-color); 
+    font-family: 'Poppins', sans-serif; 
+    font-size: 0.9rem;
+}
+#sahabat-annur-input:focus { outline: none; border-color: var(--header-bg); }
+body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
+
+#sahabat-annur-send-btn {
+    width: 48px; height: 48px; border: none;
+    background-color: var(--button-bg); color: var(--button-text);
+    border-radius: 50%; font-weight: 600; cursor: pointer;
+    transition: transform 0.2s ease; font-size: 1.5rem;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+#sahabat-annur-send-btn:active { transform: scale(0.9); }
     
     
     /* --- [FUNGSI TOKO] Styling untuk Halaman Toko Tema --- */
@@ -1165,6 +1294,8 @@
     .motivation-toast.show {
         bottom: 80px;
     }
+
+    
     </style>
     <body>
       <nav id="sidebar">
@@ -1177,6 +1308,7 @@
           <li><a href="#" id="qibla-btn" data-key="nav_kiblat">🕋 Kiblat</a></li>
           <li><a href="#" id="quiz-btn">🧠 Kuis Ayat</a></li>
           <li><a href="#" id="motivasi-btn">🌟 Motivasi Islami</a></li> 
+          <li><a href="#" id="sahabat-annur-btn">🤖 Sahabat Annur</a></li>
           <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
         </ul>
       </nav>
@@ -1394,6 +1526,37 @@
         </div>
     
       </div>
+            <div id="sahabat-annur-view" class="main-view" style="display: none;">
+        <div class="view-header" style="padding: 0 1rem; margin-bottom: 1rem;">
+            <span class="back-button" data-target-view="prayer-times-view">‹</span>
+            <h2>Sahabat Annur</h2>
+        </div>
+        <div id="chat-window">
+            <div class="chat-message ai-message">
+                <div class="ai-avatar">AI</div>
+                <div class="chat-bubble">
+                    <p>Assalamu'alaikum Wr.Wb! Saya Sahabat Annur, asisten AI Anda.</p>
+                    <p>Ada yang bisa saya bantu terkait pertanyaan seputar Islam? Silakan ketik pertanyaan Anda di bawah.</p>
+                </div>
+            </div>
+            
+            <div class="chat-message ai-message" id="typing-container" style="display: none;">
+                 <div class="ai-avatar">AI</div>
+                 <div class="chat-bubble">
+                    <div class="typing-indicator">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sahabat-annur-input-area">
+            <input type="text" id="sahabat-annur-input" placeholder="Tanya tentang Islam...">
+            <button id="sahabat-annur-send-btn" aria-label="Kirim">➢</button>
+        </div>
+      </div>
+    </div>
     
       <div id="qibla-view" class="main-view">
         <div class="view-header">
@@ -1723,6 +1886,37 @@
             </div>
           </div>
       </div>
+      
+  <div id="individual-result-modal" class="full-modal">
+    <div class="modal-content permission-modal-content">
+        <h3>🎉 Permainan Selesai! 🎉</h3>
+        <p id="individual-final-score" style="font-size: 1.2rem; font-weight: 600; margin: 1rem 0;"></p>
+        <p id="individual-points-earned" style="margin-bottom: 1.5rem;"></p>
+        <div class="permission-modal-actions">
+            <button id="individual-back-to-menu-btn" class="modal-action-btn" style="margin-top: 0;">Kembali ke Menu</button>
+        </div>
+    </div>
+</div>
+
+<div id="theme-purchase-modal" class="full-modal">
+    <div class="modal-content permission-modal-content">
+        <h3>Konfirmasi Pembelian</h3>
+        <p id="theme-purchase-info" style="margin-bottom: 1.5rem;"></p>
+        <div class="permission-modal-actions">
+            <button id="cancel-purchase-btn" class="modal-action-btn deny-btn" style="margin-top: 0;">Batal</button>
+            <button id="confirm-purchase-btn" class="modal-action-btn" style="margin-top: 0;">Beli</button>
+        </div>
+    </div>
+</div>    
+<div id="theme-success-modal" class="full-modal">
+    <div class="modal-content permission-modal-content">
+        <h3>✅ Pembelian Berhasil!</h3>
+        <p id="theme-success-info" style="margin-bottom: 1.5rem;"></p>
+        <div class="permission-modal-actions">
+            <button id="theme-success-ok-btn" class="modal-action-btn" style="margin-top: 0;">Mantap!</button>
+        </div>
+    </div>
+</div>
     
     
       <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
@@ -1730,6 +1924,8 @@
       <audio id="audio-adhan-mishary" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/mishary.mp3" preload="auto"></audio>
       <audio id="audio-adhan-madinah" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzankota.mp3" preload="auto"></audio>
       <audio id="murottal-player" preload="auto"></audio>
+      
+      
     
     </body>
     
@@ -1937,6 +2133,333 @@ const motivationData = [
     { id: 14, "text": "Balaslah keburukan dengan kebaikan.", "author": "Kutipan Islami", "category": "Sabar" },
     { id: 15, "text": "Janganlah kamu berputus asa dari rahmat Allah.", "author": "QS. Az-Zumar: 53", "category": "Semangat", "featured": true }
 ];
+
+const sahabatAnnurData = [
+    // Data Asli yang Dipertahankan dan Diperbarui
+    {
+        keywords: ["rukun", "islam"],
+        question: "Apa saja rukun Islam?",
+        answer: "Rukun Islam ada lima: 1. Mengucap dua kalimat syahadat, 2. Mendirikan shalat, 3. Menunaikan zakat, 4. Berpuasa di bulan Ramadhan, dan 5. Menunaikan haji bagi yang mampu."
+    },
+    {
+        keywords: ["rukun", "iman"],
+        question: "Apa saja rukun Iman?",
+        answer: "Rukun Iman ada enam: 1. Iman kepada Allah, 2. Iman kepada Malaikat, 3. Iman kepada Kitab-kitab Allah, 4. Iman kepada Rasul, 5. Iman kepada Hari Kiamat, dan 6. Iman kepada Qada dan Qadar (takdir)."
+    },
+    {
+        keywords: ["arti", "salat", "sholat"],
+        question: "Apa arti Salat?",
+        answer: "Secara bahasa, salat berarti doa. Secara istilah, salat adalah serangkaian ucapan dan perbuatan tertentu yang dimulai dengan takbiratul ihram dan diakhiri dengan salam, dengan syarat-syarat tertentu."
+    },
+    {
+        keywords: ["berapa", "kali", "salat", "sholat", "sehari"],
+        question: "Berapa kali umat Islam salat dalam sehari?",
+        answer: "Umat Islam diwajibkan shalat fardu lima kali dalam sehari: Subuh, Dzuhur, Ashar, Maghrib, dan Isya."
+    },
+    {
+        keywords: ["siapa", "nabi", "muhammad"],
+        question: "Siapakah Nabi Muhammad SAW?",
+        answer: "Nabi Muhammad SAW adalah nabi dan rasul terakhir yang diutus oleh Allah SWT untuk seluruh umat manusia. Beliau menerima wahyu Al-Qur'an dan menjadi teladan utama bagi umat Islam."
+    },
+    {
+        keywords: ["quran", "al-quran", "apa", "itu"],
+        question: "Apa itu Al-Qur’an?",
+        answer: "Al-Qur’an adalah kitab suci umat Islam yang berisi firman Allah, diturunkan dalam bahasa Arab kepada Nabi Muhammad ﷺ sebagai petunjuk hidup bagi seluruh manusia."
+    },
+    {
+        keywords: ["wudhu", "wudu", "apa", "itu"],
+        question: "Apa itu Wudhu?",
+        answer: "Wudhu adalah cara bersuci dari hadas kecil dengan membasuh bagian-bagian tubuh tertentu menggunakan air suci dan menyucikan sebelum melaksanakan ibadah seperti salat."
+    },
+    {
+        keywords: ["batal", "wudhu", "membatalkan", "wudu"],
+        question: "Apa saja yang membatalkan wudhu?",
+        answer: "Beberapa hal yang dapat membatalkan wudhu antara lain: keluarnya sesuatu dari dua jalan (qubul dan dubur), hilang akal (karena tidur nyenyak, pingsan, atau gila), dan bersentuhan kulit antara laki-laki dan perempuan yang bukan mahram."
+    },
+    {
+        keywords: ["halal", "haram", "apa", "itu"],
+        question: "Apa itu Halal dan Haram?",
+        answer: "Halal adalah segala sesuatu yang diizinkan oleh syariat Islam untuk dikonsumsi atau dilakukan. Haram adalah segala sesuatu yang dilarang keras oleh syariat Islam."
+    },
+    {
+        keywords: ["bulan", "suci", "islam", "ramadan"],
+        question: "Bulan apa yang dianggap suci oleh umat Islam?",
+        answer: "Bulan Ramadan adalah bulan yang paling suci dalam kalender Islam. Di bulan ini, umat Islam diwajibkan berpuasa dan Al-Qur'an pertama kali diturunkan."
+    },
+    {
+        keywords: ["idul", "fitri", "lebaran", "apa"],
+        question: "Apa itu Idul Fitri?",
+        answer: "Idul Fitri atau Lebaran adalah hari raya umat Islam yang jatuh pada tanggal 1 Syawal. Hari ini menandai berakhirnya bulan puasa Ramadan dan dirayakan dengan salat Ied serta silaturahmi."
+    },
+    {
+        keywords: ["idul", "adha", "kurban", "apa"],
+        question: "Apa itu Idul Adha?",
+        answer: "Idul Adha adalah hari raya umat Islam yang diperingati setiap tanggal 10 Dzulhijjah. Hari ini dikenal juga sebagai Hari Raya Kurban, di mana umat Islam yang mampu disunahkan untuk menyembelih hewan kurban."
+    },
+    {
+        keywords: ["khulafaur", "rasyidin", "siapa"],
+        question: "Siapa saja Khulafaur Rasyidin?",
+        answer: "Khulafaur Rasyidin adalah empat sahabat Nabi yang menjadi pemimpin setelah beliau wafat. Mereka adalah: 1. Abu Bakar Ash-Shiddiq, 2. Umar bin Khattab, 3. Utsman bin Affan, 4. Ali bin Abi Thalib."
+    },
+    {
+        keywords: ["beda", "sunnah", "fardhu", "wajib"],
+        question: "Apa beda Sunnah dan Fardhu?",
+        answer: "Fardhu (atau Wajib) adalah amalan yang harus dikerjakan dan akan mendapat dosa jika ditinggalkan. Sunnah adalah amalan yang dianjurkan untuk dikerjakan; akan mendapat pahala jika dikerjakan, namun tidak berdosa jika ditinggalkan."
+    },
+    {
+        keywords: ["kiblat", "arah", "mana"],
+        question: "Ke arah mana kiblat umat Islam?",
+        answer: "Kiblat umat Islam adalah ke arah Ka'bah yang berada di Masjidil Haram, kota Mekkah."
+    },
+    {
+        keywords: ["syahadat", "syahadatain", "apa", "itu"],
+        question: "Apa itu Syahadat?",
+        answer: "Syahadat adalah persaksian dan pengakuan dasar dalam Islam yang berbunyi 'Asyhadu an laa ilaaha illallaah, wa asyhadu anna Muhammadan rasuulullaah', artinya 'Aku bersaksi bahwa tiada Tuhan selain Allah, dan aku bersaksi bahwa Muhammad adalah utusan Allah'."
+    },
+    // ✅ Percakapan Dasar
+    {
+        keywords: ["assalamualaikum", "assalamu'alaikum", "salam", "halo", "hai", "selamat pagi", "selamat siang", "selamat sore", "selamat malam"],
+        question: "Sapaan atau salam pembuka",
+        answer: "Wa'alaikumussalam warahmatullahi wabarakatuh. Ada yang bisa saya bantu terkait pertanyaan seputar Islam?"
+    },
+    {
+        keywords: ["terima kasih", "makasih", "syukron", "terimakasih", "thanks"],
+        question: "Ucapan terima kasih",
+        answer: "Sama-sama. Senang bisa membantu. Jika ada pertanyaan lain, jangan ragu untuk bertanya ya."
+    },
+    // ✅ Keimanan dan Aqidah
+    {
+        keywords: ["islam", "apa", "itu", "agama", "arti"],
+        question: "Apa itu Islam?",
+        answer: "Islam adalah agama yang diturunkan oleh Allah kepada Nabi Muhammad ﷺ sebagai petunjuk hidup yang sempurna. Islam berarti kedamaian dan berserah diri kepada Allah."
+    },
+    {
+        keywords: ["siapa", "allah", "tuhan"],
+        question: "Siapa itu Allah?",
+        answer: "Allah adalah Tuhan Yang Maha Esa, Pencipta alam semesta, dan hanya kepada-Nya semua makhluk bergantung. Dia tidak beranak dan tidak diperanakkan."
+    },
+    {
+        keywords: ["iman", "takdir", "qada", "qadar", "arti"],
+        question: "Apa arti iman kepada takdir?",
+        answer: "Iman kepada takdir (Qada dan Qadar) berarti meyakini bahwa segala sesuatu yang terjadi di alam semesta, baik yang baik maupun yang buruk, telah ditetapkan oleh Allah SWT, namun manusia tetap diberi pilihan untuk berusaha (ikhtiar)."
+    },
+    {
+        keywords: ["mengapa", "kenapa", "harus", "shalat", "sholat"],
+        question: "Mengapa kita harus shalat?",
+        answer: "Karena shalat adalah tiang agama dan cara seorang Muslim berkomunikasi langsung dengan Allah. Ia merupakan ibadah yang diwajibkan lima kali sehari."
+    },
+    // ✅ Ibadah
+    {
+        keywords: ["tata", "cara", "shalat", "sholat", "benar"],
+        question: "Bagaimana tata cara shalat yang benar?",
+        answer: "Secara ringkas, shalat dimulai dengan niat, Takbiratul Ihram, membaca Al-Fatihah, ruku', i'tidal, sujud, duduk di antara dua sujud, hingga diakhiri dengan salam. Untuk detailnya, sangat dianjurkan belajar dari guru yang terpercaya."
+    },
+    {
+        keywords: ["hukum", "meninggalkan", "shalat", "sholat"],
+        question: "Apa hukum meninggalkan shalat?",
+        answer: "Menurut kesepakatan ulama, meninggalkan shalat dengan sengaja adalah dosa yang sangat besar dalam Islam. Ia adalah pembeda utama antara seorang Muslim dan non-Muslim."
+    },
+    {
+        keywords: ["niat", "puasa", "ramadhan"],
+        question: "Bagaimana niat puasa Ramadhan?",
+        answer: "Niat puasa Ramadhan dapat diucapkan dalam hati pada malam hari sebelum fajar, dengan tekad untuk berpuasa esok hari karena Allah Ta'ala."
+    },
+    {
+        keywords: ["zakat", "siapa", "wajib", "membayar"],
+        question: "Apa itu zakat dan siapa yang wajib membayarnya?",
+        answer: "Zakat adalah kewajiban mengeluarkan sebagian harta untuk diberikan kepada yang berhak (fakir miskin, dll), bagi setiap Muslim yang telah memenuhi syarat kekayaan tertentu (nisab dan haul)."
+    },
+    {
+        keywords: ["cara", "wudhu", "tayammum"],
+        question: "Bagaimana cara berwudhu atau tayammum?",
+        answer: "Wudhu dilakukan dengan air untuk membasuh wajah, tangan, mengusap kepala, dan membasuh kaki. Tayammum dilakukan dengan debu suci sebagai pengganti wudhu saat tidak ada air, dengan mengusap wajah dan kedua tangan."
+    },
+    // ✅ Al-Qur'an dan Hadis
+    {
+        keywords: ["perbedaan", "quran", "hadis"],
+        question: "Apa perbedaan antara Al-Qur’an dan Hadis?",
+        answer: "Al-Qur'an adalah firman Allah yang mutlak kebenarannya. Hadis adalah perkataan, perbuatan, dan ketetapan Nabi Muhammad ﷺ, yang berfungsi sebagai penjelas Al-Qur'an."
+    },
+    {
+        keywords: ["membaca", "quran", "tartil"],
+        question: "Bagaimana cara membaca Al-Qur’an dengan tartil?",
+        answer: "Membaca dengan tartil artinya membaca secara perlahan, jelas, dan sesuai dengan kaidah ilmu Tajwid. Tujuannya agar dapat memahami dan merenungi maknanya."
+    },
+    // ✅ Hukum Islam
+    {
+        keywords: ["hukum", "riba"],
+        question: "Apa itu riba dan apa hukumnya?",
+        answer: "Riba adalah tambahan atau bunga dalam pinjaman atau transaksi tertentu. Hukum riba dalam Islam adalah haram secara mutlak karena merugikan dan tidak adil."
+    },
+    {
+        keywords: ["hukum", "menikah", "non-muslim"],
+        question: "Bolehkah seorang Muslim menikah dengan non-Muslim?",
+        answer: "Seorang pria Muslim boleh menikahi wanita Ahli Kitab (Yahudi/Nasrani). Namun, seorang wanita Muslimah haram hukumnya menikah dengan pria non-Muslim."
+    },
+    {
+        keywords: ["hukum", "asuransi", "pinjaman", "bank"],
+        question: "Bagaimana hukum asuransi atau pinjaman bank?",
+        answer: "Transaksi konvensional seringkali mengandung unsur riba yang haram. Sebagai alternatif, Islam menyediakan sistem syariah seperti asuransi syariah (takaful) dan bank syariah yang terhindar dari riba."
+    },
+    // ✅ Kehidupan Sehari-hari
+    {
+        keywords: ["hukum", "merayakan", "ulang tahun"],
+        question: "Bolehkah merayakan ulang tahun dalam Islam?",
+        answer: "Ada perbedaan pendapat di kalangan ulama. Sebagian membolehkan jika diisi dengan rasa syukur dan tidak bertentangan dengan syariat. Sebagian yang lain melarang karena dianggap tidak berasal dari ajaran Islam."
+    },
+    {
+        keywords: ["cara", "menghadapi", "ujian", "hidup", "cobaan"],
+        question: "Bagaimana cara menghadapi ujian hidup menurut Islam?",
+        answer: "Dengan sabar, shalat, doa, tawakal (berserah diri), dan yakin bahwa semua ujian dari Allah memiliki hikmah dan tidak akan melebihi kemampuan kita."
+    },
+    {
+        keywords: ["doa", "hati", "tenang"],
+        question: "Apa doa agar hati tenang?",
+        answer: "Cara utama menenangkan hati adalah dengan berdzikir (mengingat Allah). Salah satu doa yang bisa dibaca adalah 'Yaa muqallibal quluub, tsabbit qalbii 'alaa diinik' (Wahai Dzat yang membolak-balikkan hati, teguhkanlah hatiku di atas agama-Mu)."
+    },
+    {
+        keywords: ["adab", "berteman", "teman"],
+        question: "Bagaimana adab dalam berteman menurut Islam?",
+        answer: "Adab berteman antara lain saling menasihati dalam kebaikan, menjaga aib teman, berkata jujur, dan memilih teman yang baik agamanya."
+    },
+    // ✅ Akhirat dan Hari Kiamat
+    {
+        keywords: ["setelah", "mati", "kematian", "terjadi"],
+        question: "Apa yang terjadi setelah mati?",
+        answer: "Setelah mati, manusia akan memasuki alam kubur (barzakh), lalu dibangkitkan pada hari kiamat, dihisab (dihitung) amalnya, dan akan masuk surga atau neraka."
+    },
+    {
+        keywords: ["siksa", "kubur"],
+        question: "Seperti apa siksa kubur?",
+        answer: "Siksa kubur adalah balasan pertama di akhirat bagi orang kafir dan Muslim yang berdosa. Hadis menggambarkannya sebagai sesuatu yang sangat pedih. Kita dianjurkan untuk selalu berdoa agar terhindar darinya."
+    },
+    {
+        keywords: ["tanda", "tanda-tanda", "kiamat"],
+        question: "Apa tanda-tanda kiamat?",
+        answer: "Tanda kiamat ada dua: tanda kecil (seperti ilmu agama dicabut, banyak fitnah) dan tanda besar (seperti munculnya Dajjal, turunnya Nabi Isa, dan terbitnya matahari dari barat)."
+    },
+    // ✅ Dosa-Dosa Besar
+    {
+        keywords: ["zina", "hukum", "dosa", "berzina"],
+        question: "Apa hukum zina dalam Islam?",
+        answer: "Zina adalah hubungan seksual di luar ikatan pernikahan yang sah. Hukumnya adalah haram dan termasuk salah satu dosa terbesar dalam Islam. Allah SWT berfirman, 'Dan janganlah kamu mendekati zina; (zina) itu sungguh suatu perbuatan keji, dan suatu jalan yang buruk.' (QS. Al-Isra': 32). Pelakunya diancam dengan hukuman berat di dunia dan siksa pedih di akhirat."
+    },
+    {
+        keywords: ["mencuri", "hukum", "dosa", "curi"],
+        question: "Apa hukum mencuri dalam Islam?",
+        answer: "Mencuri adalah mengambil harta milik orang lain secara sembunyi-sembunyi tanpa hak. Hukumnya haram dan merupakan dosa besar. Islam sangat menjaga hak milik setiap individu, dan menetapkan hukuman yang berat (hudud) bagi pencuri yang telah memenuhi syarat-syarat tertentu, sebagai efek jera dan untuk menjaga keamanan masyarakat."
+    },
+    {
+        keywords: ["korupsi", "hukum", "suap", "ghulul"],
+        question: "Bagaimana pandangan Islam tentang korupsi?",
+        answer: "Korupsi dalam pandangan Islam adalah perbuatan haram dan termasuk dosa besar. Korupsi merupakan bentuk kezaliman, pengkhianatan terhadap amanah, dan pencurian harta rakyat. Perbuatan ini mencakup suap (risywah) dan penggelapan (ghulul), yang dilaknat oleh Allah dan Rasul-Nya karena merusak tatanan masyarakat dan merugikan banyak orang."
+    },
+    {
+        keywords: ["pemimpin", "amanah", "tanggung jawab", "khianat", "dosa"],
+        question: "Apa dosa pemimpin yang tidak amanah dan tidak bertanggung jawab?",
+        answer: "Kepemimpinan dalam Islam adalah amanah yang sangat besar dan akan dimintai pertanggungjawaban di akhirat. Pemimpin yang tidak amanah, tidak bertanggung jawab, dan berkhianat kepada rakyatnya telah melakukan dosa yang sangat besar. Rasulullah ﷺ bersabda bahwa setiap pemimpin akan ditanya tentang kepemimpinannya dan mengancam pemimpin yang menipu rakyatnya tidak akan mencium bau surga."
+    },
+    {
+        keywords: ["durhaka", "orang tua", "ibu", "ayah", "dosa"],
+        question: "Apa dosa durhaka kepada orang tua?",
+        answer: "Durhaka kepada orang tua ('uququl walidain) adalah salah satu dosa terbesar dalam Islam setelah syirik. Perbuatan ini mencakup segala ucapan atau tindakan yang menyakiti hati mereka, bahkan sekadar berkata 'ah' (uff). Ridha Allah terletak pada ridha orang tua, dan murka Allah terletak pada murka orang tua."
+    },
+
+    // --- Data yang Ditambahkan Sebelumnya (2 Agustus 2025) ---
+    {
+        keywords: ["pacaran", "hukum", "dating", "khalwat"],
+        question: "Apa hukum pacaran dalam Islam?",
+        answer: "Pacaran seperti yang umum dipahami (berduaan, bersentuhan fisik, dll) hukumnya haram dalam Islam karena mendekati zina. Islam melarang keras khalwat, yaitu berduaan antara laki-laki dan perempuan yang bukan mahram. Proses yang dianjurkan Islam adalah ta'aruf (perkenalan yang diawasi keluarga), lalu khitbah (lamaran), dan diakhiri dengan pernikahan."
+    },
+    {
+        keywords: ["bohong", "berbohong", "dusta", "hukum", "dosa"],
+        question: "Apa hukum berbohong dalam Islam?",
+        answer: "Berbohong atau berdusta (kadzib) hukumnya haram dan merupakan salah satu tanda kemunafikan. Kejujuran (shiddiq) adalah sifat mulia yang wajib dimiliki setiap Muslim. Meskipun ada pengecualian yang sangat sempit (seperti mendamaikan orang), pada dasarnya berbohong adalah perbuatan tercela yang mendatangkan murka Allah."
+    },
+    {
+        keywords: ["tidak puasa", "meninggalkan puasa", "ramadhan", "hukum", "dosa"],
+        question: "Apa hukum tidak puasa Ramadhan dengan sengaja?",
+        answer: "Sengaja tidak berpuasa di bulan Ramadhan tanpa udzur syar'i (alasan yang dibenarkan syariat seperti sakit, safar, haid) adalah dosa yang sangat besar. Orang yang meninggalkannya wajib bertaubat dengan sungguh-sungguh dan menggantinya (qadha) di hari lain. Meremehkan puasa Ramadhan berarti meremehkan salah satu rukun Islam."
+    },
+    {
+        keywords: ["hukum zakat", "zakat", "wajib"],
+        question: "Apa hukum membayar zakat?",
+        answer: "Hukum membayar zakat adalah Fardhu 'Ain (wajib bagi setiap individu) bagi setiap Muslim yang telah memenuhi syarat, yaitu hartanya telah mencapai batas minimum (nisab) dan telah dimiliki selama satu tahun (haul). Zakat adalah rukun Islam ketiga dan menolak membayarnya termasuk dosa besar."
+    },
+    {
+        keywords: ["niat wudhu", "niat", "wudhu", "doa wudhu"],
+        question: "Bagaimana niat wudhu, lafaz Arab dan artinya?",
+        answer: "Niat wudhu letaknya di dalam hati saat pertama kali membasuh wajah. Namun, melafalkannya dianjurkan oleh sebagian ulama untuk memantapkan hati. Lafaznya adalah: <br><b>نَوَيْتُ الْوُضُوْءَ لِرَفْعِ الْحَدَثِ الْأَصْغَرِ فَرْضًا لِلّٰهِ تَعَالَى</b><br><i>Nawaitul wudhuu'a liraf'il hadatsil ashghari fardhal lillaahi ta'aala.</i><br>Artinya: 'Saya niat berwudhu untuk menghilangkan hadas kecil, fardhu karena Allah Ta'ala'."
+    },
+    {
+        keywords: ["doa setelah wudhu", "setelah wudhu", "doa", "niat setelah wudhu"],
+        question: "Bagaimana doa setelah wudhu, lafaz Arab dan artinya?",
+        answer: "Doa setelah wudhu adalah: <br><b>أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيكَ لَهُ، وَأَشْهَدُ أَنَّ مُحَمَّdًا عَبْدُهُ وَرَسُولُهُ، اللَّهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ، وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ</b><br><i>Asyhadu an laa ilaaha illallaah wahdahu laa syariika lah, wa asyhadu anna muhammadan 'abduhu wa rasuuluh. Allahummaj 'alnii minat tawwaabiina waj'alnii minal mutathahhiriin.</i><br>Artinya: 'Aku bersaksi bahwa tiada Tuhan selain Allah Yang Maha Esa, tiada sekutu bagi-Nya. Dan aku bersaksi bahwa Muhammad adalah hamba dan utusan-Nya. Ya Allah, jadikanlah aku termasuk orang-orang yang bertaubat dan jadikanlah aku termasuk orang-orang yang mensucikan diri'."
+    },
+    {
+        keywords: ["niat sholat", "niat subuh", "niat dzuhur", "niat ashar", "niat maghrib", "niat isya"],
+        question: "Bagaimana niat sholat fardhu, lafaz Arab dan artinya?",
+        answer: "Niat sholat letaknya di dalam hati, namun dianjurkan melafalkannya. Berikut lafaz niat untuk sholat sendiri (munfaridan):<br><b>Subuh:</b> أُصَلِّي فَرْضَ الصُّبْحِ رَكْعَتَيْنِ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى (Ushalli fardhash shubhi rak'ataini mustaqbilal qiblati adaa'an lillaahi ta'aala).<br><b>Dzuhur:</b> أُصَلِّي فَرْضَ الظُّهْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى (Ushalli fardhadz dzuhri arba'a raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aala).<br><b>Ashar:</b> أُصَلِّي فَرْضَ الْعَصْرِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى (Ushalli fardhal 'ashri arba'a raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aala).<br><b>Maghrib:</b> أُصَلِّي فَرْضَ الْمَغْرِبِ ثَلَاثَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى (Ushalli fardhal maghribi tsalaatsa raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aala).<br><b>Isya:</b> أُصَلِّي فَرْضَ الْعِشَاءِ أَرْبَعَ رَكَعَاتٍ مُسْتَقْبِلَ الْقِبْلَةِ أَدَاءً لِلّٰهِ تَعَالَى (Ushalli fardhal 'isyaa'i arba'a raka'aatin mustaqbilal qiblati adaa'an lillaahi ta'aala).<br>Jika menjadi makmum, tambahkan kata 'مَأْمُوْمًا' (ma'muuman) sebelum 'لِلّٰهِ تَعَالَى'."
+    },
+    {
+        keywords: ["sholat jenazah", "jenazah", "mayit", "hukum"],
+        question: "Apa itu sholat jenazah?",
+        answer: "Sholat jenazah adalah sholat yang dilakukan untuk mendoakan seorang Muslim yang telah meninggal dunia. Sholat ini unik karena tidak ada ruku' atau sujud, hanya terdiri dari 4 kali takbir dengan bacaan-bacaan khusus. Hukum melaksanakannya adalah Fardhu Kifayah."
+    },
+    {
+        keywords: ["fardhu kifayah", "fardhu ain", "arti"],
+        question: "Apa arti dari Fardhu Kifayah?",
+        answer: "Fardhu Kifayah adalah kewajiban yang ditujukan kepada seluruh komunitas Muslim. Jika sebagian orang dari komunitas tersebut telah melaksanakannya, maka gugurlah kewajiban bagi yang lain. Namun, jika tidak ada seorang pun yang melaksanakannya, maka seluruh komunitas akan menanggung dosa. Contohnya adalah sholat jenazah."
+    },
+
+    // --- Pertanyaan Tentang Curhat & Nyerah (Ditambahkan Sebelumnya) ---
+    {
+        keywords: ["curhat", "sedih", "galau", "cemas", "putus asa", "masalah", "stres", "buntu"],
+        question: "Saya sedang sedih/cemas/punya banyak masalah, apa yang harus saya lakukan menurut Islam?",
+        answer: "Dalam Islam, saat menghadapi kesedihan atau masalah, kita dianjurkan untuk:<br>1. <b>Sabar:</b> Yakinlah bahwa setiap ujian adalah cara Allah untuk menghapus dosa dan mengangkat derajat kita.<br>2. <b>Shalat dan Doa:</b> Jadikan shalat sebagai penolong dan curahkan semua isi hati kepada Allah dalam doa, karena Dia Maha Mendengar.<br>3. <b>Dzikir:</b> Mengingat Allah akan menenangkan hati (QS. Ar-Ra'd: 28). Perbanyak istighfar, tasbih, tahmid, dan tahlil.<br>4. <b>Tawakal:</b> Setelah berusaha (ikhtiar), serahkan hasilnya kepada Allah. Yakinlah Allah akan memberikan yang terbaik.<br>5. <b>Jangan Putus Asa:</b> Jangan pernah berputus asa dari rahmat Allah (QS. Az-Zumar: 53)."
+    },
+    {
+        keywords: ["nyerah", "menyerah", "putus asa", "lelah", "capek", "pasrah", "tawakal"],
+        question: "Saya merasa lelah dan ingin menyerah dengan keadaan, bagaimana pandangan Islam?",
+        answer: "Perasaan lelah itu manusiawi, namun Islam melarang keras sikap putus asa dari rahmat Allah. Sikap 'menyerah' yang benar dalam Islam adalah <b>tawakal</b>, yaitu menyerahkan hasil akhir kepada Allah <b>setelah</b> kita berusaha sekuat tenaga (ikhtiar). Bukan menyerah sebelum berjuang. Ingatlah firman Allah: 'Dan jangan kamu berputus asa dari rahmat Allah. Sesungguhnya tiada berputus asa dari rahmat Allah, melainkan kaum yang kafir.' (QS. Yusuf: 87). Teruslah berusaha, berdoa, dan serahkan sisanya pada Allah."
+    },
+    {
+        keywords: ["ikhlas", "pasrah", "ridha", "takdir", "tenang", "gelisah"],
+        question: "Bagaimana cara agar hati tenang, ikhlas, dan ridha menerima takdir Allah?",
+        answer: "Ketenangan hati datang dari keikhlasan (melakukan sesuatu murni karena Allah) dan ridha (menerima dengan lapang dada) atas segala ketetapan (takdir) Allah. Caranya adalah dengan:<br>1. <b>Husnudzon kepada Allah:</b> Selalu berbaik sangka bahwa apapun yang Allah takdirkan pasti mengandung hikmah dan kebaikan.<br>2. <b>Memahami Konsep Takdir:</b> Meyakini bahwa Allah telah menetapkan yang terbaik, dan tugas kita hanya berusaha dan berdoa.<br>3. <b>Memperbanyak Dzikir:</b> Mengingat Allah adalah kunci ketenangan jiwa. 'Ingatlah, hanya dengan mengingat Allah-lah hati menjadi tenteram.' (QS. Ar-Ra'd: 28).<br>4. <b>Melihat ke Bawah:</b> Syukuri nikmat yang ada dengan melihat orang yang keadaannya di bawah kita, bukan selalu melihat ke atas."
+    },
+    {
+        keywords: ["beda", "tawakal", "pasrah", "malas", "ikhtiar", "berusaha"],
+        question: "Apa bedanya tawakal dengan pasrah yang berarti malas dan tidak mau berusaha?",
+        answer: "Perbedaannya sangat besar. <b>Ikhtiar (berusaha)</b> adalah kewajiban kita sebagai manusia. <b>Tawakal</b> adalah amalan hati yang dilakukan <b>setelah</b> kita melakukan ikhtiar secara maksimal. Jadi, urutannya adalah: Berusaha (Ikhtiar) -> Berdoa -> Bertawakal (Menyerahkan hasilnya pada Allah). Sedangkan pasrah dalam arti malas, tidak mau berusaha, dan hanya menunggu takdir adalah sikap yang keliru dan dilarang dalam Islam. Rasulullah ﷺ bersabda, 'Ikatlah untamu, baru kemudian bertawakallah'."
+    },
+    
+    // --- PENAMBAHAN BARU SESUAI PERMINTAAN ---
+    {
+        keywords: ["boleh curhat", "curhat", "capek", "nyerah", "lelah", "assalamualaikum"],
+        question: "Assalamualaikum, boleh curhat tidak? Saya capek dan rasanya ingin menyerah.",
+        answer: "Wa'alaikumussalam warahmatullahi wabarakatuh. Tentu saja boleh, Saudaraku. Saya di sini untuk mendengarkan. Perasaan lelah dan ingin menyerah itu sangat manusiawi, dan Islam sangat memahami kerapuhan hati manusia.<br><br>Ketahuilah, mengadu dan 'curhat' terbaik adalah kepada Allah SWT. Dia Maha Mendengar keluh kesahmu, bahkan sebelum engkau mengucapkannya. Allah berfirman: <i>'Berdoalah kepada-Ku, niscaya akan Kuperkenankan bagimu.'</i> (QS. Ghafir: 60).<br><br>Rasa 'capek' yang kau rasakan adalah ujian untuk mengangkat derajatmu. Yakinlah, <i>'Allah tidak membebani seseorang melainkan sesuai dengan kesanggupannya.'</i> (QS. Al-Baqarah: 286). Ini adalah janji Allah, artinya engkau pasti lebih kuat dari ujian ini.<br><br>Dan jangan biarkan bisikan 'menyerah' menguasaimu. Itu adalah bisikan setan agar engkau berputus asa. Padahal Allah melarang keras: <i>'Janganlah kamu berputus asa dari rahmat Allah.'</i> (QS. Az-Zumar: 53).<br><br>Cobalah ambil wudhu, bentangkan sajadahmu, shalatlah dua rakaat, dan menangislah dalam sujudmu. Adukan semua kepada-Nya. InsyaAllah hatimu akan terasa lebih lapang. Bertahanlah, karena sesungguhnya sesudah kesulitan itu ada kemudahan."
+    }
+];
+
+
+    
+    
+    // --- FUNGSI PERMINTAAN PENYIMPANAN PERMANEN ---
+    async function requestPersistentStorage() {
+        if (navigator.storage && navigator.storage.persist) {
+            try {
+                const isPersisted = await navigator.storage.persisted();
+                console.log(`Penyimpanan sudah permanen: ${isPersisted}`);
+                if (!isPersisted) {
+                    const result = await navigator.storage.persist();
+                    console.log(`Berhasil meminta penyimpanan permanen: ${result}`);
+                }
+            } catch (error) {
+                console.error('Gagal memeriksa atau meminta penyimpanan permanen:', error);
+            }
+        }
+    }
     
     
     // --- FUNGSI PERMINTAAN PENYIMPANAN PERMANEN ---
@@ -2125,6 +2648,16 @@ const motivationData = [
     
                         loadPrayerDataFromCache();
                         fetchCityName(lat, lon);
+                        
+// Setelah Anda mendapatkan 'todayTimings'
+// ...
+if (window.Android && typeof window.Android.updateWidgetData === 'function') {
+    console.log("Mengirim data jadwal ke Widget Android...");
+    // Ubah objek jadwal menjadi string JSON
+    const dataForWidget = JSON.stringify(todayTimings);
+    // Panggil fungsi native Android melalui jembatan
+    window.Android.updateWidgetData(dataForWidget);
+}
 
                         // --- KODE JEMBATAN UNTUK MENGIRIM JADWAL KE ANDROID ---
                         if (window.Android && typeof window.Android.schedulePrayerAlarms === 'function') {
@@ -2730,6 +3263,97 @@ document.addEventListener('DOMContentLoaded', () => {
     setupMotivationFeature();
     // ... sisa kode Anda
 });
+
+// [MODIFIKASI] FUNGSI UNTUK FITUR SAHABAT ANNUR (CHAT INTERFACE)
+function setupSahabatAnnurFeature() {
+    // 1. Ambil semua elemen HTML yang dibutuhkan
+    const sahabatAnnurBtn = document.getElementById('sahabat-annur-btn');
+    const chatWindow = document.getElementById('chat-window');
+    const inputField = document.getElementById('sahabat-annur-input');
+    const sendBtn = document.getElementById('sahabat-annur-send-btn');
+    const typingIndicator = document.getElementById('typing-container');
+
+    if (!sahabatAnnurBtn) return; // Hentikan jika elemen utama tidak ada
+
+    // 2. Event listener untuk tombol di sidebar
+    sahabatAnnurBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showView('sahabat-annur-view');
+        closeSidebar();
+    });
+
+    // 3. Fungsi untuk menampilkan pesan di jendela chat
+    function displayMessage(message, sender) {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = `chat-message ${sender}-message`;
+
+        let messageHtml = '';
+        if (sender === 'ai') {
+            messageHtml += '<div class="ai-avatar">AI</div>';
+        }
+        messageHtml += `<div class="chat-bubble">${message}</div>`;
+
+        messageWrapper.innerHTML = messageHtml;
+        chatWindow.appendChild(messageWrapper);
+        chatWindow.scrollTop = chatWindow.scrollHeight; // Auto-scroll ke bawah
+    }
+
+    // 4. Fungsi untuk mencari jawaban dari AI
+    function getAiResponse(query) {
+        const lowerCaseQuery = query.toLowerCase();
+        let bestMatch = null;
+        let highestScore = 0;
+
+        sahabatAnnurData.forEach(item => {
+            let currentScore = 0;
+            item.keywords.forEach(keyword => {
+                if (lowerCaseQuery.includes(keyword)) {
+                    currentScore++;
+                }
+            });
+            if (currentScore > highestScore) {
+                highestScore = currentScore;
+                bestMatch = item;
+            }
+        });
+
+        if (bestMatch) {
+            return bestMatch.answer;
+        } else {
+            return "Maaf, saya belum mengerti pertanyaan Anda. Coba gunakan kata kunci lain seperti 'rukun islam', 'zakat', atau 'batal wudhu'.";
+        }
+    }
+
+    // 5. Fungsi utama yang dijalankan saat pengguna mengirim pesan
+    function handleSendMessage() {
+        const userQuery = inputField.value.trim();
+        if (userQuery === "") return;
+
+        // Tampilkan pesan pengguna
+        displayMessage(userQuery, 'user');
+        inputField.value = ""; // Kosongkan input field
+        inputField.focus();
+
+        // Tampilkan indikator mengetik
+        typingIndicator.style.display = 'flex';
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+
+        // Simulasi AI berpikir, lalu tampilkan jawaban
+        setTimeout(() => {
+            const aiAnswer = getAiResponse(userQuery);
+            typingIndicator.style.display = 'none'; // Sembunyikan indikator
+            displayMessage(aiAnswer, 'ai');
+        }, 1200); // Jeda 1.2 detik
+    }
+
+    // 6. Pasang event listener untuk tombol kirim dan tombol Enter
+    sendBtn.addEventListener('click', handleSendMessage);
+    inputField.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            handleSendMessage();
+        }
+    });
+}
     
         // --- DOA HARIAN FEATURE ---
         function setupDoaHarian() {
@@ -3433,9 +4057,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 feedbackEl.className = 'quiz-feedback';
                 optionsContainer.innerHTML = '';
     
-                if (availableQuestions.length === 0) {
-                    alert(`Permainan Selesai!\nSkor Akhir Anda: ${quizScore}`);
-                    showView('quiz-view');
+if (availableQuestions.length === 0) {
+                    // Ambil elemen modal
+                    const individualResultModal = document.getElementById('individual-result-modal');
+
+                    // Isi konten modal dengan skor akhir dan poin yang didapat
+                    document.getElementById('individual-final-score').textContent = `Skor Akhir Anda: ${quizScore}`;
+                    const pointsEarned = quizScore * 10; // Poin didapat dari jumlah jawaban benar
+                    document.getElementById('individual-points-earned').textContent = `Anda mendapatkan ${pointsEarned} 💎 dari permainan ini.`;
+                    
+                    // Tampilkan modal
+                    individualResultModal.style.display = 'flex';
+
+                    // Tambahkan fungsi untuk tombol kembali
+                    document.getElementById('individual-back-to-menu-btn').onclick = () => {
+                        individualResultModal.style.display = 'none';
+                        showView('quiz-view');
+                    };
                     return;
                 }
     
@@ -3682,19 +4320,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!themeId) return;
     
                 // Logika untuk membeli tema
-                if (btn.classList.contains('buy')) {
+if (btn.classList.contains('buy')) {
                     const theme = themes.find(t => t.id === themeId);
                     if (theme && userPoints >= theme.price) {
-                        if(confirm(`Anda akan membeli tema "${theme.name}" seharga ${theme.price} poin. Lanjutkan?`)) {
-                            userPoints -= theme.price;
-                            purchasedThemes.push(themeId);
-                            saveUserPoints();
-                            saveThemeData();
-                            alert(`Tema "${theme.name}" berhasil dibeli!`);
-                            renderThemes(); // Render ulang untuk update tampilan
-                        }
+                        const themePurchaseModal = document.getElementById('theme-purchase-modal');
+                        
+                        // Isi konten modal konfirmasi
+                        document.getElementById('theme-purchase-info').innerHTML = `Anda akan membeli tema <strong>"${theme.name}"</strong> seharga <strong>${theme.price} 💎</strong>. Lanjutkan?`;
+                        
+                        // Tampilkan modal
+                        themePurchaseModal.style.display = 'flex';
+
+// Fungsi tombol konfirmasi beli
+            document.getElementById('confirm-purchase-btn').onclick = () => {
+                themePurchaseModal.style.display = 'none'; // Sembunyikan modal konfirmasi
+                
+                // 1. Lakukan proses pembelian
+                userPoints -= theme.price;
+                purchasedThemes.push(themeId);
+                saveUserPoints();
+                saveThemeData();
+                
+                // 2. Siapkan dan tampilkan modal sukses
+                const successModal = document.getElementById('theme-success-modal');
+                const successInfo = document.getElementById('theme-success-info');
+                const successOkBtn = document.getElementById('theme-success-ok-btn');
+
+                successInfo.innerHTML = `Anda telah berhasil membeli tema <strong>"${theme.name}"</strong>. Anda bisa langsung menerapkannya sekarang di Toko Tema.`;
+                successModal.style.display = 'flex';
+
+                // 3. Fungsi tombol OK pada modal sukses
+                successOkBtn.onclick = () => {
+                    successModal.style.display = 'none';
+                    renderThemes(); // Render ulang toko SETELAH notifikasi ditutup
+                };
+            };
                     }
-                } 
+                }
+                
                 // Logika untuk menerapkan tema
                 else if (btn.classList.contains('apply')) {
                     appliedThemeId = themeId;
@@ -4004,6 +4667,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupAdhanSettingsPage();
         setupCustomPermissionModals();
         setupMotivationFeature();
+        setupSahabatAnnurFeature();
     
         // Panggil fungsi inisialisasi utama yang baru
         initLocationAndPrayerTimes();
