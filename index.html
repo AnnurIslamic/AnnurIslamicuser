@@ -1663,6 +1663,16 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
                 Optimalkan Notifikasi
               </button>
             </div>
+            
+            <div class="settings-group">
+    <h4>Widget Homescreen</h4>
+    <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
+        Tambahkan widget jadwal sholat ke layar utama Anda untuk akses cepat.
+    </p>
+    <button id="add-widget-btn" class="modal-action-btn" style="width: 100%; margin-top: 0;">
+        Tambahkan Widget ke Homescreen
+    </button>
+</div>
 <div class="settings-group">
     <h4>Tampilan Alarm</h4>
     <div class="settings-item">
@@ -4633,6 +4643,26 @@ if (btn.classList.contains('buy')) {
     
             settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
         }
+        
+  // ... di dalam fungsi setupSettings() ...
+
+// Kode untuk menangani tombol tambah widget
+const addWidgetBtn = document.getElementById('add-widget-btn');
+if (addWidgetBtn) {
+    addWidgetBtn.addEventListener('click', () => {
+        // Cek apakah jembatan dan fungsinya tersedia
+        if (window.Android && typeof window.Android.requestPinWidget === 'function') {
+            console.log('Meminta Android untuk menambahkan widget...');
+            // Panggil fungsi native di Kotlin
+            window.Android.requestPinWidget();
+        } else {
+            // Beri tahu pengguna jika fitur tidak didukung (misalnya dibuka di browser biasa)
+            alert('Fitur ini hanya didukung di dalam aplikasi Android versi terbaru.');
+        }
+    });
+}
+
+// ... sisa kode fungsi setupSettings() Anda ...      
     
         // --- FUNGSI UNTUK HALAMAN DETAIL APLIKASI ---
         function setupAppDetailPages() {
