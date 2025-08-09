@@ -2649,15 +2649,22 @@ const sahabatAnnurData = [
                         loadPrayerDataFromCache();
                         fetchCityName(lat, lon);
                         
-// Setelah Anda mendapatkan 'todayTimings'
-// ...
-if (window.Android && typeof window.Android.updateWidgetData === 'function') {
-    console.log("Mengirim data jadwal ke Widget Android...");
-    // Ubah objek jadwal menjadi string JSON
-    const dataForWidget = JSON.stringify(todayTimings);
-    // Panggil fungsi native Android melalui jembatan
-    window.Android.updateWidgetData(dataForWidget);
-}
+        // [TAMBAHKAN KODE INI]
+        // Bagian ini akan mengirim data jadwal hari ini ke widget Android
+        const todayDataForWidget = j.data[new Date().getDate() - 1];
+        if (todayDataForWidget && window.Android && typeof window.Android.updateWidgetData === 'function') {
+            console.log("Mengirim data jadwal ke Widget Android...");
+            // Ubah objek jadwal menjadi string JSON
+            const dataForWidget = JSON.stringify(todayDataForWidget.timings);
+            // Panggil fungsi native Android melalui jembatan
+            window.Android.updateWidgetData(dataForWidget);
+        }
+        // [AKHIR KODE TAMBAHAN]
+
+        // --- KODE JEMBATAN UNTUK MENGIRIM JADWAL KE ANDROID ---
+        if (window.Android && typeof window.Android.schedulePrayerAlarms === 'function') {
+            // ... sisa kode Anda ...
+        }
 
                         // --- KODE JEMBATAN UNTUK MENGIRIM JADWAL KE ANDROID ---
                         if (window.Android && typeof window.Android.schedulePrayerAlarms === 'function') {
