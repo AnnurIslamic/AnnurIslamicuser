@@ -1673,6 +1673,15 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
         Tambahkan Widget ke Homescreen
     </button>
 </div>
+<div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
+    <h4>Pengaturan Lokasi</h4>
+    <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
+        Gunakan tombol ini jika lokasi Anda berubah atau jadwal sholat terasa tidak akurat.
+    </p>
+    <button id="refresh-location-btn" class="modal-action-btn" style="width: 100%; margin-top: 0;">
+        🔄 Perbarui Lokasi Saat Ini
+    </button>
+</div>
 <div class="settings-group">
     <h4>Tampilan Alarm</h4>
     <div class="settings-item">
@@ -2726,26 +2735,35 @@ const sahabatAnnurData = [
         }
     
         // Fungsi utama yang menangani semua alur permintaan lokasi
-        function requestLocationAndFetchData() {
-            document.getElementById('city-name').textContent = "Mencari lokasi...";
-            if (!navigator.geolocation) {
-                handleLocationError({ message: "Geolocation tidak didukung browser ini." });
-                return;
+function requestLocationAndFetchData() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                console.log("Lokasi baru:", latitude, longitude);
+
+                // Simpan ke localStorage (opsional)
+                localStorage.setItem("latitude", latitude);
+                localStorage.setItem("longitude", longitude);
+
+                // Panggil ulang API jadwal sholat
+                fetchPrayerTimes(latitude, longitude);
+            },
+            (error) => {
+                console.error("Gagal mendapatkan lokasi:", error);
+            },
+            {
+                enableHighAccuracy: true,
+                maximumAge: 0, // jangan ambil data lama dari cache
+                timeout: 10000
             }
-    
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    // Sukses
-                    console.log("Lokasi berhasil didapatkan.");
-                    fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
-                },
-                (error) => {
-                    // Gagal
-                    handleLocationError(error);
-                },
-                { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
-            );
-        }
+        );
+    } else {
+        alert("Browser tidak mendukung Geolocation");
+    }
+}
     
         // Inisialisasi utama untuk lokasi dan jadwal sholat
         async function initLocationAndPrayerTimes() {
@@ -4643,6 +4661,32 @@ if (btn.classList.contains('buy')) {
     
             settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
         }
+        
+// ... di dalam fungsi setupSettings() ...
+
+const refreshLocationBtn = document.getElementById('refresh-location-btn');
+
+if (refreshLocationBtn) {
+    refreshLocationBtn.addEventListener('click', () => {
+        // 1. Beri feedback visual ke pengguna
+        refreshLocationBtn.textContent = 'Mencari Lokasi...';
+        refreshLocationBtn.disabled = true;
+
+        // 2. Tutup modal pengaturan agar pengguna bisa lihat perubahan di layar utama
+        settingsModal.style.display = 'none';
+
+        // 3. Panggil fungsi yang sudah ada untuk mengambil lokasi & jadwal sholat baru
+        requestLocationAndFetchData();
+
+        // 4. Kembalikan teks dan status tombol setelah beberapa saat
+        setTimeout(() => {
+            refreshLocationBtn.textContent = '🔄 Perbarui Lokasi Saat Ini';
+            refreshLocationBtn.disabled = false;
+        }, 5000); // Reset setelah 5 detik agar tidak di-spam
+    });
+}
+
+// ... sisa kode fungsi setupSettings() Anda ...
         
   // ... di dalam fungsi setupSettings() ...
 
