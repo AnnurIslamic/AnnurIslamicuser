@@ -1673,6 +1673,15 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
         Tambahkan Widget ke Homescreen
     </button>
 </div>
+<div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
+    <h4>Pengaturan Lokasi</h4>
+    <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
+        Gunakan tombol ini jika lokasi Anda berubah atau jadwal sholat terasa tidak akurat.
+    </p>
+    <button id="refresh-location-btn" class="modal-action-btn" style="width: 100%; margin-top: 0;">
+        🔄 Perbarui Lokasi Saat Ini
+    </button>
+</div>
 <div class="settings-group">
     <h4>Tampilan Alarm</h4>
     <div class="settings-item">
@@ -4552,6 +4561,7 @@ if (btn.classList.contains('buy')) {
             const langSelect = document.getElementById('language-select');
             const settingsModal = document.getElementById('settings-modal');
             const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
+    const refreshLocationBtn = document.getElementById('refresh-location-btn');
             const adhanSettingsContainer = document.getElementById('adhan-settings-trigger-container');
     
             const applyDarkMode = (theme) => { darkModeToggle.checked = theme === 'dark'; document.body.classList.toggle('dark-mode', theme === 'dark'); };
@@ -4643,6 +4653,23 @@ if (btn.classList.contains('buy')) {
     
             settingsModal.querySelector('.close-button').addEventListener('click', () => settingsModal.style.display = 'none');
         }
+        
+// ... di dalam fungsi setupSettings() ...
+ const refreshLocationBtn = document.getElementById('refresh-location-btn');
+    if (refreshLocationBtn) {
+        refreshLocationBtn.addEventListener('click', () => {
+            refreshLocationBtn.textContent = 'Mencari Lokasi...';
+            refreshLocationBtn.disabled = true;
+            settingsModal.style.display = 'none'; // <-- SEKARANG AKAN BERFUNGSI
+            requestLocationAndFetchData();
+            setTimeout(() => {
+                refreshLocationBtn.textContent = '🔄 Perbarui Lokasi Saat Ini';
+                refreshLocationBtn.disabled = false;
+            }, 5000);
+        });
+    }
+
+// ... sisa kode fungsi setupSettings() Anda ...
         
   // ... di dalam fungsi setupSettings() ...
 
