@@ -2735,35 +2735,26 @@ const sahabatAnnurData = [
         }
     
         // Fungsi utama yang menangani semua alur permintaan lokasi
-function requestLocationAndFetchData() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                console.log("Lokasi baru:", latitude, longitude);
-
-                // Simpan ke localStorage (opsional)
-                localStorage.setItem("latitude", latitude);
-                localStorage.setItem("longitude", longitude);
-
-                // Panggil ulang API jadwal sholat
-                fetchPrayerTimes(latitude, longitude);
-            },
-            (error) => {
-                console.error("Gagal mendapatkan lokasi:", error);
-            },
-            {
-                enableHighAccuracy: true,
-                maximumAge: 0, // jangan ambil data lama dari cache
-                timeout: 10000
+        function requestLocationAndFetchData() {
+            document.getElementById('city-name').textContent = "Mencari lokasi...";
+            if (!navigator.geolocation) {
+                handleLocationError({ message: "Geolocation tidak didukung browser ini." });
+                return;
             }
-        );
-    } else {
-        alert("Browser tidak mendukung Geolocation");
-    }
-}
+    
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Sukses
+                    console.log("Lokasi berhasil didapatkan.");
+                    fetchPrayerTimings(position.coords.latitude, position.coords.longitude);
+                },
+                (error) => {
+                    // Gagal
+                    handleLocationError(error);
+                },
+                { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+            );
+        }
     
         // Inisialisasi utama untuk lokasi dan jadwal sholat
         async function initLocationAndPrayerTimes() {
