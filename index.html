@@ -8,6 +8,56 @@
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+  /* --- [BARU] CSS UNTUK FITUR TAJWID (Legenda & Warna) --- */
+.tajwid-legend {
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 5px var(--card-shadow);
+    border-left: 4px solid var(--header-bg);
+}
+body.dark-mode .tajwid-legend {
+    border-left-color: var(--accent-color);
+}
+.tajwid-legend summary {
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--header-bg);
+}
+body.dark-mode .tajwid-legend summary {
+    color: var(--accent-color);
+}
+.tajwid-legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.85rem;
+}
+.legend-color-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    margin-right: 8px;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+.ayah-arabic .tajwid-highlight {
+    font-weight: bold;
+    cursor: help;
+}
+
+/* Warna untuk setiap hukum tajwid */
+.tajwid-ghunnah { color: #e74c3c; } /* Merah */
+.tajwid-ikhfa { color: #3498db; } /* Biru */
+.tajwid-idgham { color: #2ecc71; } /* Hijau */
+.tajwid-iqlab { color: #f39c12; } /* Oranye */
+.tajwid-qalqalah { color: #9b59b6; } /* Ungu */
+  
     /* [TAMBAHKAN KODE INI] Aturan Global untuk Mencegah Scroll Horizontal */
     html, body {
         width: 100%;
@@ -1673,6 +1723,44 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
         Tambahkan Widget ke Homescreen
     </button>
 </div>
+<div class="settings-group">
+    <h4>Tampilan Al-Qur'an</h4>
+    <div class="settings-item">
+        <label for="tajwid-toggle">Tampilkan Warna Tajwid</label>
+        <label class="switch">
+            <input type="checkbox" id="tajwid-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+        Aktifkan untuk melihat penanda warna hukum tajwid saat membaca Al-Qur'an.
+    </p>
+
+    <div id="tajwid-explanation-box">
+        <ul>
+            <li>
+                <span class="legend-color-box" style="background-color: #e74c3c;"></span>
+                <strong>Ghunnah:</strong> Dengung pada huruf Nun (نّ) atau Mim (مّ) yang bertasydid. Dibaca dengan menahan suara 2-3 harakat.
+            </li>
+            <li>
+                <span class="legend-color-box" style="background-color: #3498db;"></span>
+                <strong>Ikhfa':</strong> Suara samar dari Nun sukun (نْ) atau tanwin (ـًـــٍـــٌ) saat bertemu 15 huruf ikhfa'.
+            </li>
+            <li>
+                <span class="legend-color-box" style="background-color: #2ecc71;"></span>
+                <strong>Idgham:</strong> Meleburkan suara Nun sukun (نْ) atau tanwin ke huruf setelahnya (ي, ن, م, و).
+            </li>
+            <li>
+                <span class="legend-color-box" style="background-color: #f39c12;"></span>
+                <strong>Iqlab:</strong> Mengubah suara Nun sukun (نْ) atau tanwin menjadi Mim (م) saat bertemu huruf Ba (ب).
+            </li>
+            <li>
+                <span class="legend-color-box" style="background-color: #9b59b6;"></span>
+                <strong>Qalqalah:</strong> Pantulan suara pada huruf (ق, ط, ب, ج, د) yang berharakat sukun.
+            </li>
+        </ul>
+    </div>
+</div>
 <div class="settings-group" style="padding: 1rem; margin-top: 1rem;">
     <h4>Pengaturan Lokasi</h4>
     <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
@@ -2470,6 +2558,52 @@ const sahabatAnnurData = [
     }
 ];
 
+// [BARU] FUNGSI UNTUK MENDETEKSI DAN MEWARNAI HUKUM TAJWID
+function applyTajwidRules(arabicText) {
+    const rules = [
+        {
+            name: 'Ghunnah Musyaddadah',
+            className: 'tajwid-ghunnah',
+            regex: /(نّ|مّ)/g,
+            explanation: 'Ghunnah: Dengung pada huruf Nun atau Mim yang bertasydid (ّ). Dibaca dengan menahan suara selama 2-3 harakat.'
+        },
+        {
+            name: 'Qalqalah',
+            className: 'tajwid-qalqalah',
+            regex: /([قْطْبْجْدْ])/g,
+            explanation: "Qalqalah: Pantulan suara pada huruf Qaf (ق), Tha (ط), Ba (ب), Jim (ج), atau Dal (د) yang sukun (ْ)."
+        },
+        {
+            name: 'Iqlab',
+            className: 'tajwid-iqlab',
+            regex: /(نْ|ً|ٍ|ٌ)(?=\s*ب)/g,
+            explanation: "Iqlab: Nun sukun (نْ) atau tanwin (ً ٍ ٌ) bertemu dengan huruf Ba (ب). Dibaca dengan mengubah suara Nun/Tanwin menjadi Mim (م) dan didengungkan."
+        },
+        {
+            name: 'Idgham Bi Ghunnah',
+            className: 'tajwid-idgham',
+            regex: /(نْ|ً|ٍ|ٌ)(?=\s*[ينمو])/g,
+            explanation: "Idgham Bi Ghunnah: Nun sukun (نْ) atau tanwin (ً ٍ ٌ) bertemu huruf Ya (ي), Nun (ن), Mim (م), atau Waw (و). Dibaca melebur dengan dengung."
+        },
+        {
+            name: 'Ikhfa\' Haqiqi',
+            className: 'tajwid-ikhfa',
+            regex: /(نْ|ً|ٍ|ٌ)(?=\s*[تثجدذزسشصضطظفقك])/g,
+            explanation: "Ikhfa' Haqiqi: Nun sukun (نْ) atau tanwin (ً ٍ ٌ) bertemu dengan salah satu dari 15 huruf Ikhfa'. Dibaca samar-samar sambil didengungkan."
+        }
+    ];
+
+    let highlightedText = arabicText;
+    rules.forEach(rule => {
+        highlightedText = highlightedText.replace(rule.regex, (match) => {
+            // Hindari membungkus span di dalam span lain
+            if (match.includes('span')) return match;
+            return `<span class="tajwid-highlight ${rule.className}" title="${rule.explanation}">${match}</span>`;
+        });
+    });
+
+    return highlightedText;
+}
 
     
     
@@ -3586,90 +3720,114 @@ function setupSahabatAnnurFeature() {
                 }
             }
     
-            async function showSurahDetail(number, backTarget = 'quran-view', autoplay = false) {
-                surahViewTitle.textContent = `Memuat Surah...`;
-                surahViewBody.innerHTML = `<div class="loading-indicator">Memuat...</div>`;
-                surahViewBackBtn.setAttribute('data-target-view', backTarget);
-                showView('surah-view');
-    
-                // [PERBAIKAN] Panggil stopPlaylist() tanpa syarat di awal
-                // Ini memastikan state (termasuk hitungan ayat) selalu di-reset setiap kali surah baru dibuka.
-                stopPlaylist();
-    
-                try {
-                    const textResponse = await fetch(`https://api.quran.gading.dev/surah/${number}`);
-                    const textResult = await textResponse.json();
-                    if (textResult.code !== 200) throw new Error('Gagal memuat teks surah');
-                    const surah = textResult.data;
-    
-                    const audioResponse = await fetch(`https://api.alquran.cloud/v1/surah/${number}/editions/${selectedQariIdentifier}`);
-                    const audioResult = await audioResponse.json();
-                    if (audioResult.code !== 200) throw new Error('Gagal memuat audio surah');
-                    surahAudioData = audioResult.data[0];
-    
-                    currentOpenSurahNumber = surah.number;
-                    surahViewTitle.textContent = `${surah.name.transliteration.id}`;
-    
-                    let contentHtml = `
-                        <div class="surah-detail-header">
-                            <h2>${surah.name.long}</h2>
-                            <p>${surah.name.translation.id}</p>
-                            <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} AYAT</div>
-                        </div>
-                        <div class="surah-audio-player">
-                            <button id="surah-play-btn">▶️</button>
-                            <select id="qari-select" class="custom-select" style="flex-grow: 1; text-align: center;"></select>
-                        </div>
-                    `;
-                    if (surah.number !== 1 && surah.number !== 9) {
-                        contentHtml += `<div class="basmala"><p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p></div>`;
-                    }
-    
-                    surah.verses.forEach(ayah => {
-                        contentHtml += `
-                            <div class="ayah-item" id="ayah-item-${ayah.number.inSurah}">
-                                <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
-                                <p class="ayah-arabic">${ayah.text.arab}</p>
-                                <p class="ayah-latin">${ayah.text.transliteration.en}</p>
-                                <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
-                            </div>`;
-                    });
-                    surahViewBody.innerHTML = contentHtml;
-    
-                    const qariSelect = document.getElementById('qari-select');
-                    for (const key in qariData) {
-                        const option = document.createElement('option');
-                        option.value = key;
-                        option.textContent = qariData[key];
-                        if (key === selectedQariIdentifier) { option.selected = true; }
-                        qariSelect.appendChild(option);
-                    }
-    
-                    qariSelect.addEventListener('change', function() {
-                        selectedQariIdentifier = this.value;
-                        localStorage.setItem('selected_qari_identifier', selectedQariIdentifier);
-                        stopPlaylist();
-                        showSurahDetail(number, backTarget);
-                    });
-    
-                    document.getElementById('surah-play-btn').addEventListener('click', togglePlaylist);
-                    lastReadSurah = { number: surah.number, name: surah.name.transliteration.id };
-                    localStorage.setItem('last_read_surah', JSON.stringify(lastReadSurah));
-                    updateLastReadSurahCard();
-                    surahViewBookmarkBtn.classList.toggle('bookmarked', bookmarkedSurahs.includes(surah.number));
-    
-                    if (autoplay) {
-                        // Sedikit jeda untuk memastikan UI siap sebelum memulai audio
-                        setTimeout(() => {
-                            togglePlaylist();
-                        }, 100);
-                    }
-    
-                } catch (error) {
-                    surahViewBody.innerHTML = `<div class="loading-indicator">Gagal memuat surah. Periksa koneksi internet dan coba lagi.</div>`;
-                    console.error("Error fetching surah detail:", error);
-                }
+// GANTI SELURUH FUNGSI showSurahDetail ANDA DENGAN KODE GABUNGAN INI
+async function showSurahDetail(number, backTarget = 'quran-view', autoplay = false) {
+    surahViewTitle.textContent = `Memuat Surah...`;
+    surahViewBody.innerHTML = `<div class="loading-indicator">Memuat...</div>`;
+    surahViewBackBtn.setAttribute('data-target-view', backTarget);
+    showView('surah-view');
+
+    stopPlaylist();
+
+    // [BARU] Periksa apakah fitur tajwid diaktifkan dari localStorage
+    const isTajwidEnabled = localStorage.getItem('tajwid_highlight_enabled') === 'true';
+
+    try {
+        const textResponse = await fetch(`https://api.quran.gading.dev/surah/${number}`);
+        const textResult = await textResponse.json();
+        if (textResult.code !== 200) throw new Error('Gagal memuat teks surah');
+        const surah = textResult.data;
+
+        const audioResponse = await fetch(`https://api.alquran.cloud/v1/surah/${number}/editions/${selectedQariIdentifier}`);
+        const audioResult = await audioResponse.json();
+        if (audioResult.code !== 200) throw new Error('Gagal memuat audio surah');
+        surahAudioData = audioResult.data[0];
+
+        currentOpenSurahNumber = surah.number;
+        surahViewTitle.textContent = `${surah.name.transliteration.id}`;
+
+        let contentHtml = `
+            <div class="surah-detail-header">
+                <h2>${surah.name.long}</h2>
+                <p>${surah.name.translation.id}</p>
+                <div class="meta">${surah.revelation.id} • ${surah.numberOfVerses} AYAT</div>
+            </div>
+            <div class="surah-audio-player">
+                <button id="surah-play-btn">▶️</button>
+                <select id="qari-select" class="custom-select" style="flex-grow: 1; text-align: center;"></select>
+            </div>
+        `;
+
+        // [DIGABUNGKAN] Hanya tampilkan legenda jika tajwid aktif
+        if (isTajwidEnabled) {
+            contentHtml += `
+            <details class="tajwid-legend">
+                <summary>📘 Warna Tajwid</summary>
+                <div class="tajwid-legend-grid">
+                    <div class="legend-item"><span class="legend-color-box" style="background-color: #e74c3c;"></span>Ghunnah</div>
+                    <div class="legend-item"><span class="legend-color-box" style="background-color: #3498db;"></span>Ikhfa'</div>
+                    <div class="legend-item"><span class="legend-color-box" style="background-color: #2ecc71;"></span>Idgham</div>
+                    <div class="legend-item"><span class="legend-color-box" style="background-color: #f39c12;"></span>Iqlab</div>
+                    <div class="legend-item"><span class="legend-color-box" style="background-color: #9b59b6;"></span>Qalqalah</div>
+                </div>
+            </details>
+            `;
+        }
+
+        if (surah.number !== 1 && surah.number !== 9) {
+            contentHtml += `<div class="basmala"><p class="basmala-arabic">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p></div>`;
+        }
+
+        surah.verses.forEach(ayah => {
+            // [DIGABUNGKAN] Terapkan aturan tajwid hanya jika diaktifkan
+            let arabicText = ayah.text.arab;
+            if (isTajwidEnabled) {
+                arabicText = applyTajwidRules(arabicText);
             }
+
+            contentHtml += `
+                <div class="ayah-item" id="ayah-item-${ayah.number.inSurah}">
+                    <div class="ayah-header"><span class="ayah-number">${surah.number}:${ayah.number.inSurah}</span></div>
+                    <p class="ayah-arabic">${arabicText}</p>
+                    <p class="ayah-latin">${ayah.text.transliteration.en}</p>
+                    <p class="ayah-translation"><b>Artinya:</b> ${ayah.translation.id}</p>
+                </div>`;
+        });
+        surahViewBody.innerHTML = contentHtml;
+
+        const qariSelect = document.getElementById('qari-select');
+        for (const key in qariData) {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = qariData[key];
+            if (key === selectedQariIdentifier) { option.selected = true; }
+            qariSelect.appendChild(option);
+        }
+
+        qariSelect.addEventListener('change', function() {
+            selectedQariIdentifier = this.value;
+            localStorage.setItem('selected_qari_identifier', selectedQariIdentifier);
+            stopPlaylist();
+            showSurahDetail(number, backTarget);
+        });
+
+        document.getElementById('surah-play-btn').addEventListener('click', togglePlaylist);
+        lastReadSurah = { number: surah.number, name: surah.name.transliteration.id };
+        localStorage.setItem('last_read_surah', JSON.stringify(lastReadSurah));
+        updateLastReadSurahCard();
+        surahViewBookmarkBtn.classList.toggle('bookmarked', bookmarkedSurahs.includes(surah.number));
+
+        if (autoplay) {
+            setTimeout(() => {
+                togglePlaylist();
+            }, 100);
+        }
+
+    } catch (error) {
+        surahViewBody.innerHTML = `<div class="loading-indicator">Gagal memuat surah. Periksa koneksi internet dan coba lagi.</div>`;
+        console.error("Error fetching surah detail:", error);
+    }
+}
     
             function updateLastReadSurahCard() {
                 if (lastReadSurah) {
@@ -4566,13 +4724,29 @@ if (btn.classList.contains('buy')) {
     
         // --- SETTINGS & LANGUAGE ---
 // GANTI SELURUH FUNGSI LAMA ANDA DENGAN YANG INI
+// GANTI FUNGSI LAMA ANDA DENGAN YANG INI
 function setupSettings() {
     const darkModeToggle = document.getElementById('dark-mode-toggle');
     const langSelect = document.getElementById('language-select');
     const settingsModal = document.getElementById('settings-modal');
     const enableNotificationsBtn = document.getElementById('enable-notifications-btn');
-    const refreshLocationBtn = document.getElementById('refresh-location-btn'); // Pindahkan deklarasi ke sini
+    const refreshLocationBtn = document.getElementById('refresh-location-btn'); 
     const adhanSettingsContainer = document.getElementById('adhan-settings-trigger-container');
+    const tajwidToggle = document.getElementById('tajwid-toggle'); // [BARU] Ambil elemen toggle tajwid
+
+    // [BARU] Logika untuk menyimpan dan menerapkan pengaturan tajwid
+    const applyTajwidSetting = () => {
+        const isEnabled = localStorage.getItem('tajwid_highlight_enabled') === 'true';
+        tajwidToggle.checked = isEnabled;
+        console.log(`Pewarnaan Tajwid ${isEnabled ? 'diaktifkan' : 'dinonaktifkan'}.`);
+    };
+
+    tajwidToggle.addEventListener('change', () => {
+        localStorage.setItem('tajwid_highlight_enabled', tajwidToggle.checked);
+        applyTajwidSetting();
+    });
+    
+    applyTajwidSetting(); // Terapkan saat aplikasi dimuat
 
     const applyDarkMode = (theme) => {
         darkModeToggle.checked = theme === 'dark';
@@ -4624,13 +4798,11 @@ function setupSettings() {
     });
     updateNotificationButtonState();
 
-    // BLOK KODE YANG DIPINDAHKAN SEKARANG DI SINI
     if (refreshLocationBtn) {
         refreshLocationBtn.addEventListener('click', () => {
             refreshLocationBtn.textContent = 'Mencari Lokasi...';
             refreshLocationBtn.disabled = true;
             
-            // Variabel settingsModal sekarang bisa diakses
             settingsModal.style.display = 'none'; 
 
             requestLocationAndFetchData();
@@ -4644,7 +4816,7 @@ function setupSettings() {
 
     function renderAdhanTriggerButton() {
         adhanSettingsContainer.innerHTML = `
-            <h4 data-key="settings_adhan_sound">Pengaturan Suara Adzan</h4>
+            <h4>Pengaturan Suara Adzan</h4>
             <div class="settings-menu-item" id="open-adhan-settings-btn" style="border-bottom: none; padding-bottom: 0;">
                 <span>Atur Suara & Volume untuk Tiap Waktu</span>
                 <span class="arrow">&rsaquo;</span>
