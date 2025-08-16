@@ -5032,18 +5032,31 @@ enableNotificationsBtn.addEventListener('click', () => {
 
 // Letakkan ini di dalam event listener DOMContentLoaded
 
-const openDnsButton = document.getElementById('open-dns-settings-btn');
+// Di dalam event listener untuk membuka modal pengaturan
 
+// Ambil elemen div-nya
+const dnsSection = document.getElementById('dns-settings-section');
+
+// Cek apakah jembatan Android ada
+if (window.Android && typeof window.Android.getAndroidVersion === 'function') {
+    const androidVersion = window.Android.getAndroidVersion();
+
+    // Android 9 (Pie) adalah API level 28.
+    // Tampilkan bagian DNS hanya jika versi Android 9 atau lebih baru.
+    if (androidVersion >= 28) {
+        dnsSection.style.display = 'block';
+    } else {
+        dnsSection.style.display = 'none';
+    }
+}
+
+// Kode lama untuk tombolnya tetap sama
+const openDnsButton = document.getElementById('open-dns-settings-btn');
 if (openDnsButton) {
     openDnsButton.addEventListener('click', () => {
-        // Cek dulu apakah objek "Android" (jembatan) ada.
-        // Ini penting agar web Anda tidak error jika dibuka di browser biasa.
         if (window.Android && typeof window.Android.openPrivateDnsSettings === 'function') {
-            console.log('Memanggil fungsi native Android: openPrivateDnsSettings');
-            // Panggil fungsi di Kotlin melalui jembatan!
             window.Android.openPrivateDnsSettings();
         } else {
-            // Beri tahu pengguna jika mereka tidak di dalam aplikasi.
             alert('Fitur ini hanya berfungsi di dalam aplikasi Annur Islamic.');
         }
     });
