@@ -1785,6 +1785,17 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
         Agar layar alarm bisa langsung muncul di atas aplikasi lain saat adzan berkumandang.
     </p>
 </div>
+<div class="settings-group">
+    <h4>Jaringan & Koneksi</h4>
+    <div class="settings-item">
+        <label for="open-dns-settings-btn">DNS Pribadi</label>
+        <button id="open-dns-settings-btn" class="custom-select">Buka Pengaturan</button>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+        Gunakan DNS pemblokir iklan untuk pengalaman browsing yang lebih nyaman di semua aplikasi.
+    </p>
+</div>
+
             <div class="settings-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
               <div class="settings-item">
                 <label data-key="settings_about">Tentang Aplikasi</label>
@@ -3762,7 +3773,7 @@ async function showSurahDetail(number, backTarget = 'quran-view', autoplay = fal
         if (isTajwidEnabled) {
             contentHtml += `
             <details class="tajwid-legend">
-                <summary>📘 Warna Tajwid</summary>
+                <summary>📘Warna Tajwid</summary>
                 <div class="tajwid-legend-grid">
                     <div class="legend-item"><span class="legend-color-box" style="background-color: #e74c3c;"></span>Ghunnah</div>
                     <div class="legend-item"><span class="legend-color-box" style="background-color: #3498db;"></span>Ikhfa'</div>
@@ -5019,7 +5030,24 @@ enableNotificationsBtn.addEventListener('click', () => {
         });
     }
 
+// Letakkan ini di dalam event listener DOMContentLoaded
 
+const openDnsButton = document.getElementById('open-dns-settings-btn');
+
+if (openDnsButton) {
+    openDnsButton.addEventListener('click', () => {
+        // Cek dulu apakah objek "Android" (jembatan) ada.
+        // Ini penting agar web Anda tidak error jika dibuka di browser biasa.
+        if (window.Android && typeof window.Android.openPrivateDnsSettings === 'function') {
+            console.log('Memanggil fungsi native Android: openPrivateDnsSettings');
+            // Panggil fungsi di Kotlin melalui jembatan!
+            window.Android.openPrivateDnsSettings();
+        } else {
+            // Beri tahu pengguna jika mereka tidak di dalam aplikasi.
+            alert('Fitur ini hanya berfungsi di dalam aplikasi Annur Islamic.');
+        }
+    });
+}
 // Anda bisa menambahkan kode untuk mengubah teks tombol kembali ke "Aktifkan"
 // setelah beberapa saat jika pengguna tidak memberikan respon, tapi ini opsional.
 // Misalnya, saat modal pengaturan ditutup.
