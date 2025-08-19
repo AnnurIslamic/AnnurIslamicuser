@@ -8,6 +8,33 @@
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+/* --- [BARU] CSS Untuk Tab yang Bisa Digeser (Scrollable) --- */
+.scrollable-tabs {
+    overflow-x: auto; /* Memungkinkan scroll horizontal saat konten meluap */
+    -webkit-overflow-scrolling: touch; /* Membuat scroll lebih mulus di perangkat mobile */
+
+    /* Menyembunyikan scrollbar visual agar lebih rapi */
+    -ms-overflow-style: none;  /* Untuk IE dan Edge */
+    scrollbar-width: none;  /* Untuk Firefox */
+}
+
+/* Menyembunyikan scrollbar untuk browser berbasis Webkit (Chrome, Safari) */
+.scrollable-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+/* [PENTING] Override aturan .tab-item khusus untuk kontainer yang bisa discroll */
+.scrollable-tabs .tab-item {
+    flex: 0 0 auto; /* Mencegah tab meregang (stretch), ukurannya akan sesuai kontennya */
+}
+
+.tab-item {
+    /* ...properti lain yang sudah ada seperti flex, text-align, dll... */
+    
+    /* TAMBAHKAN BARIS INI */
+    white-space: nowrap; 
+}
+
   /* --- [BARU] CSS UNTUK FITUR TAJWID (Legenda & Warna) --- */
 .tajwid-legend {
     background-color: var(--card-bg);
@@ -207,7 +234,7 @@ body.dark-mode .tajwid-legend summary {
         .last-read-card p { font-weight: 600; font-size: 1rem; }
         .tabs-container { display: flex; border-bottom: 2px solid #e0e0e0; margin: 0 1rem 1rem 1rem; }
         body.dark-mode .tabs-container { border-bottom-color: #333; }
-        .tab-item { flex: 1; text-align: center; padding: 0.8rem 0; font-weight: 600; font-size: 0.9rem; color: var(--text-light); cursor: pointer; position: relative; }
+        .tab-item {  text-align: center; padding: 0.8rem 0.5rem; font-weight: 600; font-size: 0.9rem; color: var(--text-light); cursor: pointer; position: relative; }
         .tab-item.active { color: var(--active-tab); }
         .tab-item.active::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background-color: var(--active-tab); }
         .list-container { padding: 0 0.5rem; }
@@ -1559,11 +1586,15 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
                 <button class="carousel-control next" aria-label="Selanjutnya">›</button>
                 <div class="carousel-indicators"></div>
             </div>
-            <div class="tabs-container" id="motivation-tabs">
+<div class="tabs-container scrollable-tabs" id="motivation-tabs">
                 <div class="tab-item active" data-category="all">Semua</div>
                 <div class="tab-item" data-category="Sabar">Sabar</div>
                 <div class="tab-item" data-category="Syukur">Syukur</div>
                 <div class="tab-item" data-category="Semangat">Semangat</div>
+                <div class="tab-item" data-category="Jodoh">Jodoh
+                </div>
+                <div class="tab-item" data-category="Maut">Maut
+                </div>
             </div>
             <div id="motivation-list-container">
             </div>
@@ -2246,20 +2277,54 @@ const themes = [
 const motivationData = [
     { id: 1, text: "Kesabaran itu ada dua macam: sabar atas sesuatu yang tidak kau ingin dan sabar menahan diri dari sesuatu yang kau ingini.", author: "Ali bin Abi Thalib", category: "Sabar", featured: true },
     { id: 2, text: "Jangan berduka. Apa pun yang hilang darimu akan kembali lagi dalam wujud lain.", author: "Jalaluddin Rumi", category: "Sabar" },
-    { id: 3, "text": "Bersyukurlah, karena rasa syukur akan menambah nikmat yang telah ada dan membuka pintu nikmat yang belum datang.", "author": "Imam Al-Ghazali", "category": "Syukur", "featured": true },
-    { id: 4, "text": "Barangsiapa tidak mensyukuri yang sedikit, maka ia tidak akan mampu mensyukuri yang banyak.", "author": "HR. Ahmad", "category": "Syukur" },
-    { id: 5, "text": "Bekerjalah untuk duniamu seakan-akan engkau akan hidup selamanya. Dan beramallah untuk akhiratmu seakan-akan engkau akan mati besok.", "author": "Hadits", "category": "Semangat", "featured": true },
-    { id: 6, "text": "Kegagalan adalah cara Allah untuk mengatakan 'Bersabarlah, Aku memiliki sesuatu yang lebih baik untukmu'.", "author": "Kutipan Islami", "category": "Sabar" },
-    { id: 7, "text": "Hiduplah seperti pohon kayu yang lebat buahnya; hidup di tepi jalan dan dilempari dengan batu, tetapi membalas dengan buah.", "author": "Abu Bakar As-Siddiq", "category": "Sabar" },
-    { id: 8, "text": "Dunia ini ibarat bayangan. Kalau kau coba menangkapnya, ia akan lari. Tapi kalau kau membelakanginya, ia tak punya pilihan selain mengikutimu.", "author": "Ibnu Qayyim Al-Jauziyyah", "category": "Semangat" },
-    { id: 9, "text": "Jika kamu tidak dapat menahan lelahnya belajar, maka kamu harus sanggup menahan perihnya kebodohan.", "author": "Imam Syafi'i", "category": "Semangat" },
-    { id: 10, "text": "Orang yang paling aku sukai adalah dia yang menunjukkan kesalahanku.", "author": "Umar bin Khattab", "category": "Semangat" },
-    { id: 11, "text": "Cukuplah Allah sebagai penolong kami, dan Allah adalah sebaik-baik pelindung.", "author": "QS. Ali 'Imran: 173", "category": "Syukur" },
-    { id: 12, "text": "Dan sedikit sekali dari hamba-hamba-Ku yang bersyukur.", "author": "QS. Saba': 13", "category": "Syukur" },
-    { id: 13, "text": "Maka sesungguhnya beserta kesulitan ada kemudahan.", "author": "QS. Al-Insyirah: 5", "category": "Sabar", "featured": true },
-    { id: 14, "text": "Balaslah keburukan dengan kebaikan.", "author": "Kutipan Islami", "category": "Sabar" },
-    { id: 15, "text": "Janganlah kamu berputus asa dari rahmat Allah.", "author": "QS. Az-Zumar: 53", "category": "Semangat", "featured": true }
+    { id: 3, text: "Bersyukurlah, karena rasa syukur akan menambah nikmat yang telah ada dan membuka pintu nikmat yang belum datang.", author: "Imam Al-Ghazali", category: "Syukur", featured: true },
+    { id: 4, text: "Barangsiapa tidak mensyukuri yang sedikit, maka ia tidak akan mampu mensyukuri yang banyak.", author: "HR. Ahmad", category: "Syukur" },
+    { id: 5, text: "Jadilah engkau di dunia ini seakan-akan orang asing atau seorang pengembara.", author: "HR. Bukhari no. 6416", category: "Semangat", featured: true },
+    { id: 6, text: "Kegagalan adalah cara Allah untuk mengatakan 'Bersabarlah, Aku memiliki sesuatu yang lebih baik untukmu'.", author: "Ridho Sandhika", category: "Sabar" },
+    { id: 7, text: "Hiduplah seperti pohon kayu yang lebat buahnya; hidup di tepi jalan dan dilempari dengan batu, tetapi membalas dengan buah.", author: "Abu Bakar As-Siddiq", category: "Sabar" },
+    { id: 8, text: "Dunia ini ibarat bayangan. Kalau kau coba menangkapnya, ia akan lari. Tapi kalau kau membelakanginya, ia tak punya pilihan selain mengikutimu.", author: "Ibnu Qayyim Al-Jauziyyah", category: "Semangat" },
+    { id: 9, text: "Jika kamu tidak dapat menahan lelahnya belajar, maka kamu harus sanggup menahan perihnya kebodohan.", author: "Imam Syafi'i", category: "Semangat" },
+    { id: 10, text: "Orang yang paling aku sukai adalah dia yang menunjukkan kesalahanku.", author: "Umar bin Khattab", category: "Semangat" },
+    { id: 11, text: "Cukuplah Allah sebagai penolong kami, dan Allah adalah sebaik-baik pelindung.", author: "QS. Ali 'Imran: 173", category: "Syukur" },
+    { id: 12, text: "Dan sedikit sekali dari hamba-hamba-Ku yang bersyukur.", author: "QS. Saba': 13", category: "Syukur" },
+    { id: 13, text: "Maka sesungguhnya beserta kesulitan ada kemudahan.", author: "QS. Al-Insyirah: 5", category: "Sabar", featured: true },
+    { id: 14, text: "Balaslah keburukan dengan kebaikan.", author: "Kutipan Islami", category: "Sabar" },
+    { id: 15, text: "Janganlah kamu berputus asa dari rahmat Allah.", author: "QS. Az-Zumar: 53", category: "Semangat", featured: true },
+    { id: 16, text: "Tidak sempurna iman seseorang di antara kalian sehingga ia mencintai saudaranya sebagaimana ia mencintai dirinya sendiri.", author: "HR. Bukhari & Muslim", category: "Jodoh", featured: true },
+    { id: 17, text: "Cinta kepada Allah adalah puncak dari segala cinta. Lembahnya adalah cinta kepada sesama.", author: "Imam Syafi'i", category: "Jodoh" },
+    { id: 18, text: "Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan untukmu isteri-isteri dari jenismu sendiri, supaya kamu cenderung dan merasa tenteram kepadanya, dan dijadikan-Nya diantaramu rasa kasih dan sayang.", author: "QS. Ar-Rum: 21", category: "Jodoh" },
+    { id: 19, text: "Cintailah kekasihmu sekadarnya saja, siapa tahu nanti akan jadi musuhmu. Dan bencilah musuhmu sekadarnya saja, siapa tahu nanti akan jadi kekasihmu.", author: "Ali bin Abi Thalib", category: "Jodoh" },
+    { id: 20, text: "Perumpamaan kaum mukminin dalam berkasih sayang bagaikan satu tubuh. Apabila satu anggota tubuh sakit, maka anggota tubuh yang lain akan ikut merasakan sakit dengan demam dan tidak bisa tidur.", author: "HR. Muslim", category: "Jodoh" },
+    { id: 21, text: "Jika engkau mencintai seseorang, beritahukanlah kepadanya bahwa engkau mencintainya.", author: "HR. Abu Dawud", category: "Jodoh" },
+    { id: 22, text: "Ruh-ruh itu laksana prajurit yang berbaris-baris. Yang saling mengenal akan bersatu, dan yang tidak saling mengenal akan berpisah.", author: "HR. Bukhari", category: "Jodoh" },
+    { id: 23, text: "Jangan menjelaskan tentang dirimu kepada siapa pun. Karena yang menyukaimu tidak butuh itu, dan yang membencimu tidak percaya itu.", author: "Ali bin Abi Thalib", category: "Jodoh" },
+    { id: 24, text: "Aku sudah pernah merasakan semua kepahitan dalam hidup, dan yang paling pahit ialah berharap kepada manusia.", author: "Ali bin Abi Thalib", category: "Jodoh" },
+    { id: 25, text: "Orang yang suka berkata jujur akan mendapatkan tiga hal: kepercayaan, cinta, dan rasa hormat.", author: "Ali bin Abi Thalib", category: "Jodoh" },
+    { id: 26, text: "Cintailah siapapun yang engkau mau, tapi ingat, engkau akan berpisah dengannya. Malaikat Maut akan menjadi pemisah setiap cinta duniawi.", author: "Annur Islamic", category: "Jodoh" },
+    { id: 27, text: "Barangsiapa yang suka bertemu dengan Allah, maka Allah pun suka bertemu dengannya. Dan pertemuan itu terjadi setelah kematian.", author: "HR. Bukhari", category: "Jodoh", featured: true },
+    { id: 28, text: "Jadikanlah kematian sebagai penasihat cintamu. Ia akan membuat cintamu pada dunia menjadi secukupnya, dan cintamu pada akhirat menjadi segalanya.", author: "Annur Islamic", category: "Jodoh" },
+    { id: 29, text: "Wanita-wanita yang baik adalah untuk laki-laki yang baik dan laki-laki yang baik adalah untuk wanita-wanita yang baik (pula).", author: "QS. An-Nur: 26", category: "Jodoh", featured: true },
+    { id: 30, text: "Dan Kami menciptakan kamu berpasang-pasangan.", author: "QS. An-Naba': 8", category: "Jodoh" },
+    { id: 31, text: "Jodoh itu cerminan diri. Bukan mencari yang sempurna, tapi saling menyempurnakan dalam ikatan yang diridhai-Nya.", author: "Annur Islamic", category: "Jodoh" },
+    { id: 32, text: "Ketika hatimu terlalu berharap kepada seseorang, maka Allah timpakan ke atas kamu kepedihan agar kamu kembali berharap kepada-Nya.", author: "Imam Syafi'i", category: "Jodoh" },
+    { id: 33, text: "Tulang rusuk dan pemiliknya tidak akan pernah tertukar. Sabarlah dalam penantian dan ikhtiar.", author: "Annur Islamic", category: "Jodoh" },
+    { id: 34, text: "Tiap-tiap yang berjiwa akan merasakan mati.", author: "QS. Ali 'Imran: 185", category: "Maut", featured: true },
+    { id: 35, text: "Perbanyaklah mengingat pemutus kelezatan, yaitu kematian.", author: "HR. Tirmidzi", category: "Maut" },
+    { id: 36, text: "Kematian bukanlah akhir dari segalanya, melainkan awal dari kehidupan yang sebenarnya.", author: "Annur Islmic", category: "Maut" },
+    { id: 37, text: "Orang yang paling cerdas adalah yang paling banyak mengingat kematian serta paling baik persiapannya untuk kehidupan setelah kematian.", author: "HR. Ibnu Majah", category: "Maut" },
+    { id: 38, text: "Cukuplah kematian sebagai nasihat.", author: "Umar bin Khattab", category: "Maut", featured: true },
+    { id: 39, text: "Tugas kita bukan untuk berhasil, melainkan untuk terus mencoba. Soal hasil, serahkan pada skenario terbaik dari-Nya.", author: "Ridho Sandhika", category: "Semangat", featured: true },
+    { id: 40, text: "Saat duniamu terasa sempit, ingatlah bahwa rahmat Allah itu seluas langit. Jangan pernah berhenti berharap dan berusaha.", author: "Ridho Sandhika", category: "Semangat" },
+    { id: 41, text: "Ujian itu bukan untuk menjatuhkanmu, tapi untuk meningkatkan levelmu. Hadapi dengan sabar, jalani dengan ikhlas.", author: "Ridho Sandhika", category: "Semangat" },
+    { id: 42, text: "Jangan menunggu sempurna untuk memulai, tapi mulailah untuk menjadi lebih baik setiap harinya karena Allah.", author: "Ridho Sandhika", category: "Semangat" },
+    
+    // --- [TAMBAHAN BARU: JODOH OLEH RIDHO SANDHIKA] ---
+    { id: 43, text: "Menantimu dalam doa adalah cara terbaikku memantaskan diri. Sebab aku percaya, janji Allah tak akan pernah salah alamat.", author: "Ridho Sandhika", category: "Jodoh", featured: true },
+    { id: 44, text: "Jodoh bukan tentang siapa yang datang paling cepat, tapi siapa yang datang dengan niat ibadah dan siap membersamai hingga ke Jannah.", author: "Ridho Sandhika", category: "Jodoh" },
+    { id: 45, text: "Fokus perbaiki diri untuk-Nya, maka Allah akan datangkan seseorang yang baik untukmu. Karena jodoh adalah cerminan, bukan sekadar pilihan.", author: "Ridho Sandhika", category: "Jodoh" },
+    { id: 46, text: "Jika penantian ini terasa berat, mungkin Allah sedang merindukan rintihan doamu. Teruslah meminta yang terbaik, Dia Maha Mendengar.", author: "Ridho Sandhika", category: "Jodoh" }
 ];
+
 
 const sahabatAnnurData = [
     // Data Asli yang Dipertahankan dan Diperbarui
