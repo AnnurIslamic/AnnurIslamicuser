@@ -2084,10 +2084,18 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
       <audio id="murottal-player" preload="auto"></audio>
       
       
-    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // ... (seluruh kode JavaScript Anda ada di sini) ...
+    </script>
+</body>
+</html>
     </body>
     
 
+
+</body>
+</html>
 <script>
     // [BARU] Variabel untuk state kuis
     let userPoints = 0;
@@ -3370,6 +3378,7 @@ function setupMotivationFeature() {
             updateCarousel();
         }
     });
+    
 
     // --- Logika Tampilan & Filter ---
     function renderQuotes(category) {
@@ -3393,20 +3402,21 @@ function setupMotivationFeature() {
 
             const isFavorited = favoriteQuotes.includes(quote.id);
 
-            card.innerHTML = `
-                <p class="quote-text">"${quote.text}"</p>
-                <p class="quote-author">- ${quote.author}</p>
-                <div class="quote-footer">
-                    <div class="quote-tags">
-                        <span class="quote-tag-badge">${quote.category}</span>
-                    </div>
-                    <div class="quote-actions">
-                        <span class="action-icon share-btn" title="Bagikan">🔗</span>
-                        <span class="action-icon copy-btn" title="Salin Teks">📋</span>
-                        <span class="action-icon favorite-btn ${isFavorited ? 'favorited' : ''}" title="Favorit">❤️</span>
-                    </div>
-                </div>
-            `;
+card.innerHTML = `
+    <p class="quote-text">"${quote.text}"</p>
+    <p class="quote-author">- ${quote.author}</p>
+    <div class="quote-footer">
+        <div class="quote-tags">
+            <span class="quote-tag-badge">${quote.category}</span>
+        </div>
+        <div class="quote-actions">
+            <span class="action-icon share-btn" title="Bagikan Teks">🔗</span>
+            <span class="action-icon share-image-btn" title="Bagikan sebagai Gambar">🖼️</span>
+            <span class="action-icon copy-btn" title="Salin Teks">📋</span>
+            <span class="action-icon favorite-btn ${isFavorited ? 'favorited' : ''}" title="Favorit">❤️</span>
+        </div>
+    </div>
+`;
             listContainer.appendChild(card);
         });
     }
@@ -3427,11 +3437,45 @@ function setupMotivationFeature() {
         
         const quoteId = parseInt(card.dataset.id);
         const quote = motivationData.find(q => q.id === quoteId);
+        
+            // ▼▼▼ TAMBAHKAN BLOK KODE INI ▼▼▼
+    if (e.target.classList.contains('share-image-btn')) {
+        // Tampilkan pesan loading sementara
+        showToast("Membuat gambar..."); 
+
+        html2canvas(card, {
+            // Opsi untuk meningkatkan kualitas gambar
+            scale: 2, 
+            useCORS: true,
+            backgroundColor: getComputedStyle(card).backgroundColor // Ambil warna background dari CSS
+        }).then(canvas => {
+            // Konversi canvas menjadi data URL gambar format JPEG
+            // Kualitas 0.9 berarti 90%
+            const imageDataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            
+            // Ambil hanya data Base64-nya (buang "data:image/jpeg;base64,")
+            const base64ImageData = imageDataUrl.split(',')[1];
+            
+            // Cek apakah jembatan ke Android ada
+            if (window.Android && typeof window.Android.shareImageFromBase64 === 'function') {
+                // Panggil fungsi di MainActivity dan kirimkan data gambarnya
+                window.Android.shareImageFromBase64(base64ImageData);
+            } else {
+                // Pesan jika dibuka di browser biasa untuk testing
+                showToast("Fitur ini hanya berfungsi di aplikasi Android.");
+                console.log("Base64 Data:", base64ImageData); // Untuk debug
+            }
+        }).catch(err => {
+            console.error('oops, something went wrong!', err);
+            showToast("Gagal membuat gambar.");
+        });
+    }
 
         if (e.target.classList.contains('copy-btn')) {
             const textToCopy = `"${quote.text}" - ${quote.author}`;
             navigator.clipboard.writeText(textToCopy).then(() => {
                 showToast("Teks berhasil disalin!");
+                
             });
         }
         
@@ -5137,6 +5181,7 @@ if (openDnsButton) {
 // Misalnya, saat modal pengaturan ditutup.
 
 // ... sisa kode Anda ...
+
 </script>
 </body>
 </html>
