@@ -8,6 +8,28 @@
   <link rel="manifest" href="manifest.json">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+  /* [TAMBAHKAN INI] CSS untuk Notifikasi Toast Kustom */
+.custom-toast {
+    position: fixed;
+    bottom: -100px; /* Mulai dari luar layar */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--header-bg); /* Warna gelap */
+    color: var(--header-text); /* Teks putih */
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-weight: 600;
+    z-index: 9999;
+    transition: bottom 0.5s ease-in-out; /* Animasi muncul */
+    opacity: 0;
+    transition: bottom 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+.custom-toast.show {
+    bottom: 80px; /* Posisi akhir saat tampil */
+    opacity: 1;
+}
+/* [AKHIR TAMBAHAN] */
 /* --- [BARU] CSS Untuk Tab yang Bisa Digeser (Scrollable) --- */
 .scrollable-tabs {
     overflow-x: auto; /* Memungkinkan scroll horizontal saat konten meluap */
@@ -2124,7 +2146,7 @@ body.dark-mode .quote-footer {
         </div>
     </div>
 </div>
-    
+    <div id="custom-toast-notification" class="custom-toast"></div>
     
       <audio id="audio-notification" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/notifikasi.mp3" preload="auto"></audio>
       <audio id="audio-adhan-fajr" src="https://raw.githubusercontent.com/AnnurIslamic/Mp3/main/adzansubuh.mp3" preload="auto"></audio>
@@ -3058,35 +3080,45 @@ function applyTajwidRules(arabicText) {
     // Letakkan ini di dalam event listener DOMContentLoaded,
 // di dalam fungsi setupSettings() atau di bawahnya.
 
+// GANTI FUNGSI setupManualAlarms LAMA ANDA DENGAN YANG INI
+
 function setupManualAlarms() {
     const saveBtn = document.getElementById('save-manual-alarms-btn');
     const prayerKeys = ['Imsak', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
-    // Fungsi untuk memuat status toggle dari localStorage
+    // [FUNGSI BARU] Untuk menampilkan notifikasi toast
+    function showCustomToast(message) {
+        const toastElement = document.getElementById('custom-toast-notification');
+        if (!toastElement) return;
+
+        toastElement.textContent = message;
+        toastElement.classList.add('show');
+
+        // Sembunyikan toast setelah 3 detik
+        setTimeout(() => {
+            toastElement.classList.remove('show');
+        }, 3000);
+    }
+
     function loadAlarmStates() {
         const savedStates = JSON.parse(localStorage.getItem('manual_alarm_states')) || {};
         prayerKeys.forEach(key => {
             const toggle = document.getElementById(`alarm-toggle-${key}`);
             if (toggle) {
-                // Set default Subuh aktif jika belum ada pengaturan
                 const isEnabled = savedStates[key] !== undefined ? savedStates[key] : (key === 'Fajr');
                 toggle.checked = isEnabled;
             }
         });
     }
 
-    // Panggil fungsi load saat modal pengaturan dibuka
     document.getElementById('settings-btn').addEventListener('click', loadAlarmStates);
 
-    // Event listener untuk tombol Simpan
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
-            // Cek apakah jembatan ke Android tersedia
             if (window.Android && typeof window.Android.setManualAlarms === 'function') {
-                
-                // Pastikan data jadwal sholat sudah ada
                 if (!window.latestPrayerTimes) {
-                    alert('Jadwal sholat belum dimuat. Silakan tunggu sebentar dan coba lagi.');
+                    // [DIUBAH] Menggunakan toast kustom untuk pesan error
+                    showCustomToast('Jadwal sholat belum dimuat. Coba lagi.');
                     return;
                 }
 
@@ -3099,32 +3131,26 @@ function setupManualAlarms() {
                     const isEnabled = toggle.checked;
 
                     if (time) {
-                        alarmsData.push({
-                            name: key,
-                            time: time,
-                            isEnabled: isEnabled
-                        });
+                        alarmsData.push({ name: key, time: time, isEnabled: isEnabled });
                     }
-                    // Simpan status toggle ke localStorage
                     savedStates[key] = isEnabled;
                 });
 
                 localStorage.setItem('manual_alarm_states', JSON.stringify(savedStates));
 
-                // Kirim data ke MainActivity melalui jembatan
                 const jsonData = JSON.stringify(alarmsData);
                 console.log("Mengirim data alarm ke Android:", jsonData);
                 window.Android.setManualAlarms(jsonData);
 
-                alert('Pengaturan alarm native telah disimpan!');
+                // [DIUBAH] Menggunakan toast kustom untuk pesan sukses
+                showCustomToast('Pengaturan alarm native telah disimpan! ✅');
 
             } else {
-                alert('Fitur ini hanya berfungsi di dalam aplikasi Annur Islamic. Silakan perbarui aplikasi Anda jika perlu.');
+                // [DIUBAH] Menggunakan toast kustom untuk pesan fallback
+                showCustomToast('Fitur ini hanya berfungsi di aplikasi.');
             }
         });
     }
-
-    // Muat status saat pertama kali script dijalankan
     loadAlarmStates();
 }
 
