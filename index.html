@@ -1206,7 +1206,7 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
         -webkit-backdrop-filter: blur(2px);
     }
     
-    /* --- CSS UNTUK FITUR MOTIVASI ISLAMI --- */
+/* --- CSS UNTUK FITUR MOTIVASI ISLAMI --- */
     .motivation-carousel-container {
         position: relative;
         overflow: hidden;
@@ -1214,163 +1214,177 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
         margin-bottom: 1.5rem;
         height: 180px;
     }
-    .motivation-carousel-track {
-        display: flex;
-        height: 100%;
-        transition: transform 0.5s ease-in-out;
+.motivation-carousel-track {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+.motivation-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    /* [DIUBAH] Menggunakan gradasi warna krem terang agar tidak gelap */
+    background: linear-gradient(135deg, #FFFBEB, #FEF3C7);
+    /* [DIUBAH] Menggunakan warna teks coklat tua agar sangat kontras dan mudah dibaca */
+    color: #6D4C41; 
+}
+.motivation-slide p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: inherit; /* [DIUBAH] Mengikuti warna teks utama dari .motivation-slide */
+}
+.motivation-slide .quote-author {
+    font-size: 0.9rem;
+    font-style: italic;
+    opacity: 0.9;
+    /* [DIUBAH] Menggunakan warna coklat yang sedikit lebih muda untuk penulis */
+    color: #8D6E63; 
+}
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    /* [DIUBAH] Warna tombol diganti agar terlihat jelas di latar belakang terang */
+    background-color: rgba(0, 0, 0, 0.25);
+    border: none;
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    z-index: 10;
+    line-height: 40px;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+.carousel-control:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.carousel-control.prev { left: 10px; }
+.carousel-control.next { right: 10px; }
+.carousel-indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+.indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    /* [DIUBAH] Warna indikator diganti agar terlihat */
+    background-color: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.indicator-dot.active {
+    /* [DIUBAH] Warna indikator aktif disesuaikan dengan warna teks */
+    background-color: #6D4C41;
+}
+
+/* --- [INI TETAP SAMA, TIDAK PERLU DIUBAH] --- */
+.motivation-quote-card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px var(--card-shadow);
+    border-left: 4px solid var(--header-bg);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInQuote 0.5s forwards;
+}
+@keyframes fadeInQuote {
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-    .motivation-slide {
-        flex: 0 0 100%;
-        width: 100%;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background: linear-gradient(135deg, var(--header-bg), #1a3a5f);
-        color: var(--header-text);
-        box-sizing: border-box;
-    }
-    .motivation-slide p {
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-    }
-    .motivation-slide .quote-author {
-        font-size: 0.9rem;
-        font-style: italic;
-        opacity: 0.8;
-    }
-    .carousel-control {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: white;
-        font-size: 1.8rem;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        z-index: 10;
-        line-height: 40px;
-        text-align: center;
-    }
-    .carousel-control.prev { left: 10px; }
-    .carousel-control.next { right: 10px; }
-    .carousel-indicators {
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 8px;
-    }
-    .indicator-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.5);
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    .indicator-dot.active {
-        background-color: white;
-    }
-    .motivation-quote-card {
-        background-color: var(--card-bg);
-        border-radius: var(--radius);
-        padding: 1.2rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 2px 8px var(--card-shadow);
-        border-left: 4px solid var(--header-bg);
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeInQuote 0.5s forwards;
-    }
-    @keyframes fadeInQuote {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    body.dark-mode .motivation-quote-card {
-        border-left-color: var(--accent-color);
-    }
-    .motivation-quote-card .quote-text {
-        font-size: 1rem;
-        line-height: 1.6;
-        margin-bottom: 1rem;
-        font-style: italic;
-        color: var(--text-color);
-    }
-    .motivation-quote-card .quote-author {
-        font-weight: 600;
-        text-align: right;
-        color: var(--header-bg);
-        margin-bottom: 1.2rem;
-    }
-    body.dark-mode .motivation-quote-card .quote-author {
-        color: var(--accent-color);
-    }
-    .quote-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-top: 1px solid var(--tap-area-bg);
-        padding-top: 1rem;
-    }
-    body.dark-mode .quote-footer {
-        border-top-color: #333;
-    }
-    .quote-tags {
-        display: flex;
-        gap: 0.5rem;
-    }
-    .quote-tag-badge {
-        background-color: var(--tap-area-bg);
-        color: var(--text-light);
-        font-size: 0.75rem;
-        font-weight: 500;
-        padding: 0.3rem 0.6rem;
-        border-radius: 1rem;
-    }
-    .quote-actions {
-        display: flex;
-        gap: 1rem;
-    }
-    .quote-actions .action-icon {
-        font-size: 1.4rem;
-        cursor: pointer;
-        color: var(--text-light);
-        transition: color 0.2s, transform 0.2s;
-    }
-    .quote-actions .action-icon:hover {
-        transform: scale(1.1);
-    }
-    .quote-actions .action-icon.favorited {
-        color: #e91e63;
-    }
-    .motivation-toast {
-        position: fixed;
-        bottom: -100px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: var(--header-bg);
-        color: var(--header-text);
-        padding: 1rem 1.5rem;
-        border-radius: var(--radius);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        font-weight: 500;
-        z-index: 5000;
-        transition: bottom 0.5s ease-in-out;
-    }
-    .motivation-toast.show {
-        bottom: 80px;
-    }
+}
+body.dark-mode .motivation-quote-card {
+    border-left-color: var(--accent-color);
+}
+.motivation-quote-card .quote-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    font-style: italic;
+    color: var(--text-color);
+}
+.motivation-quote-card .quote-author {
+    font-weight: 600;
+    text-align: right;
+    color: var(--header-bg);
+    margin-bottom: 1.2rem;
+}
+body.dark-mode .motivation-quote-card .quote-author {
+    color: var(--accent-color);
+}
+.quote-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--tap-area-bg);
+    padding-top: 1rem;
+}
+body.dark-mode .quote-footer {
+    border-top-color: #333;
+}
+.quote-tags {
+    display: flex;
+    gap: 0.5rem;
+}
+.quote-tag-badge {
+    background-color: var(--tap-area-bg);
+    color: var(--text-light);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.6rem;
+    border-radius: 1rem;
+}
+.quote-actions {
+    display: flex;
+    gap: 1rem;
+}
+.quote-actions .action-icon {
+    font-size: 1.4rem;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: color 0.2s, transform 0.2s;
+}
+.quote-actions .action-icon:hover {
+    transform: scale(1.1);
+}
+.quote-actions .action-icon.favorited {
+    color: #e91e63;
+}
+.motivation-toast {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-weight: 500;
+    z-index: 5000;
+    transition: bottom 0.5s ease-in-out;
+}
+.motivation-toast.show {
+    bottom: 80px;
+}
 
     
     </style>
@@ -1535,7 +1549,7 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
           </div>
           <div class="quiz-game-area">
             <div class="quiz-question-card">
-              <p>Lanjutkan potongan ayat berikut:</p>
+              <p>Lanjutkan sambungan ayat berikut:</p>
               <h3 id="quiz-question-text">...</h3>
             </div>
             <div class="quiz-options-container" id="quiz-options">
@@ -1564,7 +1578,7 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
           <div class="quiz-game-area">
             <div class="quiz-question-card">
               <p id="duet-turn-indicator">Giliran Pemain 1</p>
-              <p>Lanjutkan potongan ayat berikut:</p>
+              <p>Lanjutkan sambungan ayat berikut:</p>
               <h3 id="duet-question-text">...</h3>
             </div>
             <div class="quiz-options-container" id="duet-options">
@@ -1594,6 +1608,8 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
                 <div class="tab-item" data-category="Jodoh">Jodoh
                 </div>
                 <div class="tab-item" data-category="Maut">Maut
+                </div>
+                <div class="tab-item" data-category="Sabar & Tawakal">Sabar & Tawakal
                 </div>
             </div>
             <div id="motivation-list-container">
@@ -1807,6 +1823,39 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
     </button>
 </div>
 <div class="settings-group">
+    <h4>Alarm Manual (Native)</h4>
+    <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
+        Gunakan alarm manual ini untuk notifikasi adzan yang lebih andal dan tepat waktu, bahkan saat aplikasi ditutup/paksa.
+    </p>
+    <div class="settings-item">
+        <label for="alarm-toggle-Imsak">Alarm Imsak</label>
+        <label class="switch"><input type="checkbox" id="alarm-toggle-Imsak"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="alarm-toggle-Fajr">Alarm Subuh</label>
+        <label class="switch"><input type="checkbox" id="alarm-toggle-Fajr"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="alarm-toggle-Dhuhr">Alarm Dzuhur</label>
+        <label class="switch"><input type="checkbox" id="alarm-toggle-Dhuhr"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="alarm-toggle-Asr">Alarm Ashar</label>
+        <label class="switch"><input type="checkbox" id="alarm-toggle-Asr"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="alarm-toggle-Maghrib">Alarm Maghrib</label>
+        <label class="switch"><input type="checkbox" id="alarm-toggle-Maghrib"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="alarm-toggle-Isha">Alarm Isya</label>
+        <label class="switch"><input type="checkbox" id="alarm-toggle-Isha"><span class="slider"></span></label>
+    </div>
+    <button id="save-manual-alarms-btn" class="modal-action-btn" style="margin-top: 1.5rem;">
+        Simpan Pengaturan Alarm
+    </button>
+</div>
+<div class="settings-group">
     <h4>Tampilan Alarm</h4>
     <div class="settings-item">
         <label for="popup-alarm-btn">Izinkan Pop-up Alarm</label>
@@ -1830,7 +1879,7 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
             <div class="settings-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
               <div class="settings-item">
                 <label data-key="settings_about">Tentang Aplikasi</label>
-                <span>v18.02.2022 (25)</span>
+                <span>v12.03.06(25)</span>
               </div>
               <div class="detail-app-container">
                 <button id="detail-app-btn">Detail Aplikasi</button>
@@ -1894,7 +1943,7 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
           </div>
           <div class="settings-item">
             <label>Versi Aplikasi</label>
-            <span>v18.02.2022 (25)</span>
+            <span>v12.03.06(25)</span>
           </div>
     
           <a href="https://play.google.com/store/apps/details?id=com.nama.paket.anda" target="_blank" class="playstore-btn">
@@ -2189,53 +2238,80 @@ body.dark-mode #sahabat-annur-input:focus { border-color: var(--accent-color); }
     };
     const juzToSurahMap = { 1: [1, 2], 2: [2], 3: [2, 3], 4: [3, 4], 5: [4], 6: [4, 5], 7: [5, 6], 8: [6, 7], 9: [7, 8], 10: [8, 9], 11: [9, 10, 11], 12: [11, 12], 13: [12, 13, 14, 15], 14: [16, 17], 15: [17, 18], 16: [18, 19, 20], 17: [21, 22], 18: [23, 24, 25], 19: [25, 26, 27], 20: [27, 28, 29], 21: [29, 30, 31, 32, 33], 22: [33, 34, 35, 36], 23: [36, 37, 38, 39], 24: [39, 40, 41], 25: [41, 42, 43, 44, 45], 26: [46, 47, 48, 49, 50, 51], 27: [51, 52, 53, 54, 55, 56, 57], 28: [58, 59, 60, 61, 62, 63, 64, 65, 66], 29: [67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77], 30: [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114] };
     
-    const quizData = [
-        // Level Mudah
-        { level: "mudah", question: "قُلْ هُوَ اللّٰهُ اَحَدٌۚ", options: ["اَللّٰهُ الصَّمَدُۚ", "لَمْ يَلِدْ وَلَمْ يُوْلَدْۙ", "وَلَمْ يَكُنْ لَّهٗ كُفُوًا اَحَدٌ", "مِنْ شَرِّ مَا خَلَقَۙ"], correctAnswer: 0, surahInfo: "QS. Al-Ikhlas: 2" },
-        { level: "mudah", question: "فَصَلِّ لِرَبِّكَ وَانْحَرْۗ", options: ["اِنَّآ اَعْطَيْنٰكَ الْكَوْثَرَۗ", "اِنَّ شَانِئَكَ هُوَ الْاَبْتَرُ ࣖ", "الَّذِيْ يُكَذِّبُ بِالدِّيْنِۗ", "وَلَا يَحُضُّ عَلٰى طَعَامِ الْمِسْكِيْنِۗ"], correctAnswer: 1, surahInfo: "QS. Al-Kausar: 3" },
-        { level: "mudah", question: "مٰلِكِ يَوْمِ الدِّيْنِۗ", options: ["اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُۗ", "الرَّحْمٰنِ الرَّحِيْمِۙ", "اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ", "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيْمَۙ"], correctAnswer: 0, surahInfo: "QS. Al-Fatihah: 5" },
-        { level: "mudah", question: "قُلْ اَعُوْذُ بِرَبِّ النَّاسِۙ", options: ["مَلِكِ النَّاسِۙ", "اِلٰهِ النَّاسِۙ", "مِنْ شَرِّ الْوَسْوَاسِ ەۙ الْخَنَّاسِۖ", "مِنَ الْجِنَّةِ وَالنَّاسِ"], correctAnswer: 0, surahInfo: "QS. An-Nas: 2" },
-        { level: "mudah", question: "وَمِنْ شَرِّ غَاسِقٍ اِذَا وَقَبَۙ", options: ["وَمِنْ شَرِّ النَّفّٰثٰتِ فِى الْعُقَدِۙ", "وَمِنْ شَرِّ حَاسِدٍ اِذَا حَسَدَ", "مِنْ شَرِّ مَا خَلَقَۙ", "قُلْ اَعُوْذُ بِرَبِّ الْفَلَقِۙ"], correctAnswer: 0, surahInfo: "QS. Al-Falaq: 4" },
-        { level: "mudah", question: "اِذَا جَاۤءَ نَصْرُ اللّٰهِ وَالْفَتْحُۙ", options: ["وَرَاَيْتَ النَّاسَ يَدْخُلُوْنَ فِيْ دِيْنِ اللّٰهِ اَفْوَاجًاۙ", "فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُۗ اِنَّهٗ كَانَ تَوَّابًا", "لَكُمْ دِيْنُكُمْ وَلِيَ دِيْنِ", "قُلْ يٰٓاَيُّهَا الْكٰفِرُوْنَۙ"], correctAnswer: 0, surahInfo: "QS. An-Nasr: 2" },
-        { level: "mudah", question: "لَكُمْ دِيْنُكُمْ وَلِيَ دِيْنِ", options: ["وَلَآ اَنَا۠ عَابِدٌ مَّا عَبَدْتُّمْۙ", "وَلَآ اَنْتُمْ عٰبِدُوْنَ مَآ اَعْبُدُۚ", "لَا يَعْبُدُ الَّذِيْنَ تَعْبُدُوْنَ", "قُلْ يَا أَيُّهَا الْكَافِرُونَ"], correctAnswer: 1, surahInfo: "QS. Al-Kafirun: 6 (Ini adalah ayat terakhir, pilihan yang paling logis adalah ayat sebelumnya)" },
-        { level: "mudah", question: "اَرَءَيْتَ الَّذِيْ يُكَذِّبُ بِالدِّيْنِۗ", options: ["فَذٰلِكَ الَّذِيْ يَدُعُّ الْيَتِيْمَۙ", "وَلَا يَحُضُّ عَلٰى طَعَامِ الْمِسْكِيْنِۗ", "فَوَيْلٌ لِّلْمُصَلِّيْنَۙ", "الَّذِيْنَ هُمْ عَنْ صَلَاتِهِمْ سَاهُوْنَۙ"], correctAnswer: 0, surahInfo: "QS. Al-Ma'un: 2" },
-        { level: "mudah", question: "اِنَّ الْاِنْسَانَ لَفِيْ خُسْرٍۙ", options: ["اِلَّا الَّذِيْنَ اٰمَنُوْا وَعَمِلُوا الصّٰلِحٰتِ", "وَالْعَصْرِۙ", "وَتَوَاصَوْا بِالْحَقِّ", "وَتَوَاصَوْا بِالصَّبْرِ"], correctAnswer: 0, surahInfo: "QS. Al-'Asr: 3" },
-        { level: "mudah", question: "اَلْهَاكُمُ التَّكَاثُرُۙ", options: ["حَتّٰى زُرْتُمُ الْمَقَابِرَۗ", "كَلَّا سَوْفَ تَعْلَمُوْنَۙ", "ثُمَّ كَلَّا سَوْفَ تَعْلَمُوْنَ", "لَتَرَوُنَّ الْجَحِيْمَۙ"], correctAnswer: 0, surahInfo: "QS. At-Takasur: 2" },
+const quizData = [
+    // === LEVEL MUDAH ===
+
+    // --- QS. Al-Fatihah ---
+    { level: "mudah", question: "بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِيْمِ ۝١", options: ["الرَّحْمٰنِ الرَّحِيْمِۙ ۝٣", "اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ ۝٢", "مٰلِكِ يَوْمِ الدِّيْنِۗ ۝٤", "اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُۗ ۝٥"], correctAnswer: 1, surahInfo: "QS. Al-Fatihah: 2" },
+    { level: "mudah", question: "اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ ۝٢", options: ["مٰلِكِ يَوْمِ الدِّيْنِۗ ۝٤", "اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُۗ ۝٥", "الرَّحْمٰنِ الرَّحِيْمِۙ ۝٣", "صِرَاطَ الَّذِيْنَ اَنْعَمْتَ عَلَيْهِمْ ەۙ"], correctAnswer: 2, surahInfo: "QS. Al-Fatihah: 3" },
+    { level: "mudah", question: "الرَّحْمٰنِ الرَّحِيْمِۙ ۝٣", options: ["اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُۗ ۝٥", "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيْمَۙ ۝٦", "مٰلِكِ يَوْمِ الدِّيْنِۗ ۝٤", "اَلْحَمْدُ لِلّٰهِ رَبِّ الْعٰلَمِيْنَۙ ۝٢"], correctAnswer: 2, surahInfo: "QS. Al-Fatihah: 4" },
     
-        // Level Sedang
-        { level: "sedang", question: "اَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِاَصْحٰبِ الْفِيْلِۗ", options: ["اَلَمْ يَجْعَلْ كَيْدَهُمْ فِيْ تَضْلِيْلٍۙ", "وَّاَرْسَلَ عَلَيْهِمْ طَيْرًا اَبَابِيْلَۙ", "تَرْمِيْهِمْ بِحِجَارَةٍ مِّنْ سِجِّيْلٍۙ", "فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُوْلٍ"], correctAnswer: 0, surahInfo: "QS. Al-Fil: 2" },
-        { level: "sedang", question: "وَالسَّمَاۤءِ ذَاتِ الْبُرُوْجِۙ", options: ["وَالْيَوْمِ الْمَوْعُوْدِۙ", "وَشَاهِدٍ وَّمَشْهُوْدٍۗ", "قُتِلَ اَصْحٰبُ الْاُخْدُوْدِۙ", "النَّارِ ذَاتِ الْوَقُوْدِۙ"], correctAnswer: 0, surahInfo: "QS. Al-Buruj: 2" },
-        { level: "sedang", question: "اِذَا السَّمَاۤءُ انْشَقَّتْۙ", options: ["وَاَذِنَتْ لِرَبِّهَا وَحُقَّتْۙ", "وَاِذَا الْاَرْضُ مُدَّتْۙ", "وَاَلْقَتْ مَا فِيْهَا وَتَخَلَّتْۙ", "يٰٓاَيُّهَا الْاِنْسَانُ اِنَّكَ كَادِحٌ"], correctAnswer: 0, surahInfo: "QS. Al-Insyiqaq: 2" },
-        { level: "sedang", question: "وَيْلٌ لِّلْمُطَفِّفِيْنَۙ", options: ["الَّذِيْنَ اِذَا اكْتَالُوْا عَلَى النَّاسِ يَسْتَوْفُوْنَۙ", "وَاِذَا كَالُوْهُمْ اَوْ وَّزَنُوْهُمْ يُخْسِرُوْنَۗ", "اَلَا يَظُنُّ اُولٰۤىِٕكَ اَنَّهُمْ مَّبْعُوْثُوْنَۙ", "لِيَوْمٍ عَظِيْمٍۙ"], correctAnswer: 0, surahInfo: "QS. Al-Mutaffifin: 2" },
-        { level: "sedang", question: "اِذَا الشَّمْسُ كُوِّرَتْۖ", options: ["وَاِذَا النُّجُوْمُ انْكَدَرَتْۖ", "وَاِذَا الْجِبَالُ سُيِّرَتْۖ", "وَاِذَا الْعِشَارُ عُطِّلَتْۖ", "وَاِذَا الْوُحُوْشُ حُشِرَتْۖ"], correctAnswer: 0, surahInfo: "QS. At-Takwir: 2" },
-        { level: "sedang", question: "عَبَسَ وَتَوَلّٰىٓۙ", options: ["اَنْ جَاۤءَهُ الْاَعْمٰىۗ", "وَمَا يُدْرِيْكَ لَعَلَّهٗ يَزَّكّٰىٓۙ", "اَوْ يَذَّكَّرُ فَتَنْفَعَهُ الذِّكْرٰىۗ", "اَمَّا مَنِ اسْتَغْنٰىۙ"], correctAnswer: 0, surahInfo: "QS. 'Abasa: 2" },
-        { level: "sedang", question: "يَوْمَ يَقُوْمُ النَّاسُ لِرَبِّ الْعٰلَمِيْنَۗ", options: ["كَلَّآ اِنَّ كِتٰبَ الْفُجَّارِ لَفِيْ سِجِّيْنٍۗ", "لِيَوْمٍ عَظِيْمٍۙ", "وَمَا يُكَذِّبُ بِهٖٓ اِلَّا كُلُّ مُعْتَدٍ اَثِيْمٍۙ", "وَمَآ اَدْرٰىكَ مَا سِجِّيْنٌۗ"], correctAnswer: 0, surahInfo: "QS. Al-Mutaffifin: 7" },
-        { level: "sedang", question: "فَاَمَّا مَنْ طَغٰىۙ", options: ["وَاٰثَرَ الْحَيٰوةَ الدُّنْيَاۙ", "فَاِنَّ الْجَحِيْمَ هِيَ الْمَأْوٰىۗ", "وَاَمَّا مَنْ خَافَ مَقَامَ رَبِّهٖ", "وَنَهَى النَّفْسَ عَنِ الْهَوٰىۙ"], correctAnswer: 0, surahInfo: "QS. An-Nazi'at: 38" },
-        { level: "sedang", question: "وَالَّيْلِ اِذَا عَسْعَسَۙ", options: ["وَالصُّبْحِ اِذَا تَنَفَّسَۙ", "اِنَّهٗ لَقَوْلُ رَسُوْلٍ kَرِيْمٍۙ", "ذِيْ قُوَّةٍ عِنْدَ ذِى الْعَرْشِ مَكِيْنٍۙ", "مُّطَاعٍ ثَمَّ اَمِيْنٍۗ"], correctAnswer: 0, surahInfo: "QS. At-Takwir: 18" },
-        { level: "sedang", question: "فَاِذَا جَاۤءَتِ الصَّاۤخَّةُ ۖ", options: ["يَوْمَ يَفِرُّ الْمَرْءُ مِنْ اَخِيْهِۙ", "وَاُمِّهٖ وَاَبِيْهِۙ", "وَصَاحِبَتِهٖ وَبَنِيْهِۗ", "لِكُلِّ امْرِئٍ مِّنْهُمْ يَوْمَىِٕذٍ شَأْنٌ يُّغْنِيْهِۗ"], correctAnswer: 0, surahInfo: "QS. 'Abasa: 34" },
+    // --- QS. An-Nas ---
+    { level: "mudah", question: "قُلْ اَعُوْذُ بِرَبِّ النَّاسِۙ ۝١", options: ["مِنْ شَرِّ الْوَسْوَاسِ ەۙ الْخَنَّاسِۖ ۝٤", "مَلِكِ النَّاسِۙ ۝٢", "اِلٰهِ النَّاسِۙ ۝٣", "مِنَ الْجِنَّةِ وَالنَّاسِ ۝٦"], correctAnswer: 1, surahInfo: "QS. An-Nas: 2" },
+    { level: "mudah", question: "مَلِكِ النَّاسِۙ ۝٢", options: ["اِلٰهِ النَّاسِۙ ۝٣", "مِنْ شَرِّ الْوَسْوَاسِ ەۙ الْخَنَّاسِۖ ۝٤", "الَّذِيْ يُوَسْوِسُ فِيْ صُدُوْرِ النَّاسِۙ ۝٥", "قُلْ اَعُوْذُ بِرَبِّ النَّاسِۙ ۝١"], correctAnswer: 0, surahInfo: "QS. An-Nas: 3" },
     
-        // Level Sulit (20 soal)
-        { level: "sulit", question: "وَلِكُلِّ اُمَّةٍ جَعَلْنَا مَنْسَكًا لِّيَذْكُرُوا اسْمَ اللّٰهِ عَلٰى مَا رَزَقَهُمْ مِّنْۢ بَهِيْمَةِ الْاَنْعَامِۗ", options: ["فَاِلٰهُكُمْ اِلٰهٌ وَّاحِدٌ فَلَهٗٓ اَسْلِمُوْاۗ وَبَشِّرِ الْمُخْبِتِيْنَۙ", "الَّذِيْنَ اِذَا ذُكِرَ اللّٰهُ وَجِلَتْ قُلُوْبُهُمْ", "وَالصَّابِرِيْنَ عَلٰى مَآ اَصَابَهُمْ", "وَالْمُقِيْمِى الصَّلٰوةِ وَمِمَّا رَزَقْنٰهُمْ يُنْفِقُوْنَ"], correctAnswer: 0, surahInfo: "QS. Al-Hajj: 34" },
-        { level: "sulit", question: "اِنَّ اللّٰهَ يُدْخِلُ الَّذِيْنَ اٰمَنُوْا وَعَمِلُوا الصّٰلِحٰتِ جَنّٰتٍ تَجْرِيْ مِنْ تَحْتِهَا الْاَنْهٰرُ", options: ["يُحَلَّوْنَ فِيْهَا مِنْ اَسَاوِرَ مِنْ ذَهَبٍ وَّلُؤْلُؤًاۗ وَلِبَاسُهُمْ فِيْهَا حَرِيْرٌ", "وَهُدُوٓا اِلَى الطَّيِّبِ مِنَ الْقَوْلِۙ", "وَهُدُوٓا اِلٰى صِرَاطِ الْحَمِيْدِ", "اِنَّ الَّذِيْنَ كَفَرُوْا وَيَصُدُّوْنَ عَنْ sَبِيْلِ اللّٰهِ"], correctAnswer: 0, surahInfo: "QS. Al-Hajj: 23" },
-        { level: "sulit", question: "يٰٓاَيُّهَا الَّذِيْنَ اٰمَنُوْا لَا تَتَّخِذُوا الْيَهُوْدَ وَالنَّصٰرٰٓى اَوْلِيَاۤءَۘ", options: ["بَعْضُهُمْ اَوْلِيَاۤءُ بَعْضٍۗ", "وَمَنْ يَّتَوَلَّهُمْ مِّنْكُمْ فَاِنَّهٗ مِنْهُمْۗ", "اِنَّ اللّٰهَ لَا يَهْدِى الْقَوْمَ الظّٰلِمِيْنَ", "فَتَرَى الَّذِيْنَ فِيْ قُلُوْبِهِمْ مَّرَضٌ"], correctAnswer: 0, surahInfo: "QS. Al-Ma'idah: 51" },
-        { level: "sulit", question: "وَمَا كَانَ لِمُؤْمِنٍ اَنْ يَّقْتُلَ مُؤْمِنًا اِلَّا خَطَـًٔاۚ", options: ["وَمَنْ قَتَلَ مُؤْمِنًا خَطَـًٔا فَتَحْرِيْرُ رَقَبَةٍ مُّؤْمِنَةٍ", "وَدِيَةٌ مُّسَلَّمَةٌ اِلٰٓى اَهْلِهٖٓ", "اِلَّآ اَنْ يَّصَّدَّقُوْاۗ", "فَاِنْ كَانَ مِنْ قَوْمٍ عَدُوٍّ لَّكُمْ"], correctAnswer: 0, surahInfo: "QS. An-Nisa: 92" },
-        { level: "sulit", question: "فَاِذَا قَضَيْتُمُ الصَّلٰوةَ فَاذْكُرُوا اللّٰهَ قِيَامًا وَّقُعُوْدًا وَّعَلٰى جُنُوْبِكُمْۚ", options: ["فَاِذَا اطْمَأْنَنْتُمْ فَاَقِيْمُوا الصَّلٰوةَۚ", "اِنَّ الصَّلٰوةَ كَانَتْ عَلَى الْمُؤْمِنِيْنَ كِتٰبًا مَّوْقُوْتًا", "وَلَا تَهِنُوْا فِى ابْتِغَاۤءِ الْقَوْمِۗ", "اِنْ تَكُوْنُوْا تَأْلَمُوْنَ فَاِنَّهُمْ يَأْلَمُوْنَ"], correctAnswer: 0, surahInfo: "QS. An-Nisa: 103" },
-        { level: "sulit", question: "وَلَا تَسُبُّوا الَّذِيْنَ يَدْعُوْنَ مِنْ دُوْنِ اللّٰهِ فَيَسُبُّوا اللّٰهَ عَدْوًاۢ بِغَيْرِ عِلْمٍۗ", options: ["كَذٰلِكَ زَيَّنَّا لِكُلِّ اُمَّةٍ عَمَلَهُمْ", "ثُمَّ اِلٰى رَبِّهِمْ مَّرْجِعُهُمْ", "فَيُنَبِّئُهُمْ بِمَا كَانُوْا يَعْمَلُوْنَ", "وَاَقْسَمُوْا بِاللّٰهِ جَهْدَ اَيْمَانِهِمْ"], correctAnswer: 0, surahInfo: "QS. Al-An'am: 108" },
-        { level: "sulit", question: "يَسْـَٔلُوْنَكَ عَنِ الْاَنْفَالِۗ قُلِ الْاَنْفَالُ لِلّٰهِ وَالرَّسُوْلِۚ", options: ["فَاتَّقُوا اللّٰهَ وَاَصْلِحُوْا ذَاتَ بَيْنِكُمْۚ", "وَاَطِيْعُوا اللّٰهَ وَرَسُوْلَهٗٓ اِنْ كُنْتُمْ مُّؤْمِنِيْنَ", "اِنَّمَا الْمُؤْمِنُوْنَ الَّذِيْنَ اِذَا ذُكِرَ اللّٰهُ وَجِلَتْ قُلُوْبُهُمْ", "وَاِذَا تُلِيَتْ عَلَيْهِمْ اٰيٰتُهٗ زَادَتْهُمْ اِيْمَانًا"], correctAnswer: 0, surahInfo: "QS. Al-Anfal: 1" },
-        { level: "sulit", question: "يٰٓاَيُّهَا الَّذِيْنَ اٰمَنُوا اسْتَجِيْبُوْا لِلّٰهِ وَلِلرَّسُوْلِ اِذَا دَعَاكُمْ لِمَا يُحْيِيْكُمْۚ", options: ["وَاعْلَمُوْٓا اَنَّ اللّٰهَ يَحُوْلُ بَيْنَ الْمَرْءِ وَقَلْبِهٖ", "وَاَنَّهٗٓ اِلَيْهِ تُحْشَرُوْنَ", "وَاتَّقُوْا فِتْنَةً لَّا تُصِيْبَنَّ الَّذِيْنَ ظَلَمُوْا مِنْكُمْ خَاۤصَّةًۚ", "وَاعْلَمُوْٓا اَنَّ اللّٰهَ شَدِيْدُ الْعِقَابِ"], correctAnswer: 0, surahInfo: "QS. Al-Anfal: 24" },
-        { level: "sulit", question: "وَقَاتِلُوْهُمْ حَتّٰى لَا تَكُوْنَ فِتْنَةٌ وَّيَكُوْنَ الدِّيْنُ كُلُّهٗ لِلّٰهِۚ", options: ["فَاِنِ انْتَهَوْا فَاِنَّ اللّٰهَ بِمَا يَعْمَلُوْنَ بَصِيْرٌ", "وَاِنْ تَوَلَّوْا فَاعْلَمُوْٓا اَنَّ اللّٰهَ مَوْلٰىكُمْۗ", "نِعْمَ الْمَوْلٰى وَنِعْمَ النَّصِيْرُ", "وَاعْلَمُوْٓا اَنَّمَا غَنِمْتُمْ مِّنْ شَيْءٍ"], correctAnswer: 0, surahInfo: "QS. Al-Anfal: 39" },
-        { level: "sulit", question: "اِنَّ عِدَّةَ الشُّهُوْرِ عِنْدَ اللّٰهِ اثْنَا عَشَرَ شَهْرًا فِيْ كِتٰبِ اللّٰهِ", options: ["يَوْمَ خَلَقَ السَّمٰوٰتِ وَالْاَرْضَ مِنْهَآ اَرْبَعَةٌ حُرُمٌۗ", "ذٰلِكَ الدِّيْنُ الْقَيِّمُ ەۙ", "فَلَا تَظْلِمُوْا فِيْهِنَّ اَنْفُسَكُمْ", "وَقَاتِلُوا الْمُشْرِكِيْنَ كَاۤفَّةً"], correctAnswer: 0, surahInfo: "QS. At-Taubah: 36" },
-        { level: "sulit", question: "خُذْ مِنْ اَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيْهِمْ بِهَا", options: ["وَصَلِّ عَلَيْهِمْۗ اِنَّ صَلٰوتَكَ سَكَنٌ لَّهُمْۗ", "وَاللّٰهُ سَمِيْعٌ عَلِيْمٌ", "اَلَمْ يَعْلَمُوْٓا اَنَّ اللّٰهَ هُوَ يَقْبَلُ التَّوْبَةَ عَنْ عِبَادِهٖ", "وَيَأْخُذُ الصَّدَقٰتِ"], correctAnswer: 0, surahInfo: "QS. At-Taubah: 103" },
-        { level: "sulit", question: "لَقَدْ جَاۤءَكُمْ رَسُوْلٌ مِّنْ اَنْفُسِكُمْ عَزِيْزٌ عَلَيْهِ مَا عَنِتُّمْ", options: ["حَرِيْصٌ عَلَيْكُمْ بِالْمُؤْمِنِيْنَ رَءُوْفٌ رَّحِيْمٌ", "فَاِنْ تَوَلَّوْا فَقُلْ حَسْبِيَ اللّٰهُ", "لَآ اِلٰهَ اِلَّا هُوَۗ عَلَيْهِ تَوَكَّلْتُ", "وَهُوَ رَبُّ الْعَرْشِ الْعَظِيْمِ"], correctAnswer: 0, surahInfo: "QS. At-Taubah: 128" },
-        { level: "sulit", question: "وَلَوْ اَنَّ اَهْلَ الْقُرٰٓى اٰمَنُوْا وَاتَّقَوْا لَفَتَحْنَا عَلَيْهِمْ بَرَكٰتٍ مِّنَ السَّمَاۤءِ وَالْاَرْضِ", options: ["وَلٰكِنْ كَذَّبُوْا فَاَخَذْنٰهُمْ بِمَا كَانُوْا يَكْسِبُوْنَ", "اَفَاَمِنَ اَهْلُ الْقُرٰٓى اَنْ يَّأْتِيَهُمْ بَأْسُنَا بَيَاتًا وَّهُمْ نَاۤىِٕمُوْنَۗ", "اَوَاَمِنَ اَهْلُ الْقُرٰٓى اَنْ يَّأْتِيَهُمْ بَأْسُنَا ضُحًى وَّهُمْ يَلْعَبُوْنَ", "اَفَاَمِنُوْا مَكْرَ اللّٰهِۚ"], correctAnswer: 0, surahInfo: "QS. Al-A'raf: 96" },
-        { level: "sulit", question: "وَاِذْ تَاَذَّنَ رَبُّكَ لَيَبْعَثَنَّ عَلَيْهِمْ اِلٰى يَوْمِ الْقِيٰمَةِ", options: ["مَنْ يَّسُوْمُهُمْ سُوْۤءَ الْعَذَابِۗ", "اِنَّ رَبَّكَ لَسَرِيْعُ الْعِقَابِۖ", "وَاِنَّهٗ لَغَفُوْرٌ رَّحِيْمٌ", "وَقَطَّعْنٰهُمْ فِى الْاَرْضِ اُمَمًاۚ"], correctAnswer: 0, surahInfo: "QS. Al-A'raf: 167" },
-        { level: "sulit", question: "فَلَمَّا نَسُوْا مَا ذُكِّرُوْا بِهٖٓ اَنْجَيْنَا الَّذِيْنَ يَنْهَوْنَ عَنِ السُّوْۤءِ", options: ["وَاَخَذْنَا الَّذِيْنَ ظَلَمُوْا بِعَذَابٍۢ بَـِٔيْسٍۢ بِمَا كَانُوْا يَفْسُقُوْنَ", "فَلَمَّا عَتَوْا عَنْ مَّا نُهُوْا عَنْهُ", "قُلْنَا لَهُمْ كُوْنُوْا قِرَدَةً خَاسِـِٕيْنَ", "وَإِذْ تَأَذَّنَ رَبُّكَ"], correctAnswer: 0, surahInfo: "QS. Al-A'raf: 165" },
-        { level: "sulit", question: "وَمَنْ اَظْلَمُ مِمَّنِ افْتَرٰى عَلَى اللّٰهِ كَذِبًا اَوْ كَذَّبَ بِاٰيٰتِهٖۗ", options: ["اِنَّهٗ لَا يُفْلِحُ الظّٰلِمُوْنَ", "وَيَوْمَ نَحْشُرُهُمْ جَمِيْعًا", "ثُمَّ نَقُوْلُ لِلَّذِيْنَ اَشْرَكُوْٓا اَيْنَ شُرَكَاۤؤُكُمُ", "الَّذِيْنَ كُنْتُمْ تَزْعُمُوْنَ"], correctAnswer: 0, surahInfo: "QS. Al-An'am: 21" },
-        { level: "sulit", question: "اَللّٰهُ نُوْرُ السَّمٰوٰتِ وَالْاَرْضِۗ مَثَلُ نُوْرِهٖ كَمِشْكٰوةٍ فِيْهَا مِصْبَاحٌۗ", options: ["اَلْمِصْبَاحُ فِيْ زُجَاجَةٍۗ", "اَلزُّجَاجَةُ كَاَنَّهَا كَوْكَبٌ دُرِّيٌّ", "يُّوْقَدُ مِنْ شَجَرَةٍ مُّبٰرَكَةٍ زَيْتُوْنَةٍ", "لَّا شَرْقِيَّةٍ وَّلَا غَرْبِيَّةٍۙ"], correctAnswer: 0, surahInfo: "QS. An-Nur: 35" },
-        { level: "sulit", question: "فِيْ بُيُوْتٍ اَذِنَ اللّٰهُ اَنْ تُرْفَعَ وَيُذْكَرَ فِيْهَا اسْمُهٗۙ", options: ["يُسَبِّحُ لَهٗ فِيْهَا بِالْغُدُوِّ وَالْاٰصَالِۙ", "رِجَالٌ لَّا تُلْهِيْهِمْ تِجَارَةٌ وَّلَا بَيْعٌ عَنْ ذِكْرِ اللّٰهِ", "وَاِقَامِ الصَّلٰوةِ وَاِيْتَاۤءِ الزَكٰوةِۙ", "يَخَافُوْنَ يَوْمًا تَتَقَلَّبُ فِيْهِ الْقُلُوْبُ وَالْاَبْصَارُۙ"], correctAnswer: 0, surahInfo: "QS. An-Nur: 36" },
-        { level: "sulit", question: "وَاَوْفُوْا بِعَهْدِ اللّٰهِ اِذَا عَاهَدْتُّمْ", options: ["وَلَا تَنْقُضُوا الْاَيْمَانَ بَعْدَ تَوْكِيْدِهَا", "وَقَدْ جَعَلْتُمُ اللّٰهَ عَلَيْكُمْ كَفِيْلًاۗ", "اِنَّ اللّٰهَ يَعْلَمُ مَا تَفْعَلُوْنَ", "وَلَا تَكُوْنُوْا كَالَّتِيْ نَقَضَتْ غَزْلَهَا"], correctAnswer: 0, surahInfo: "QS. An-Nahl: 91" },
-        { level: "sulit", question: "اِنَّمَا حَرَّمَ عَلَيْكُمُ الْمَيْتَةَ وَالدَّمَ وَلَحْمَ الْخِنْزِيْرِ", options: ["وَمَآ اُهِلَّ لِغَيْرِ اللّٰهِ بِهٖۚ", "فَمَنِ اضْطُرَّ غَيْرَ بَاغٍ وَّلَا عَادٍ", "فَاِنَّ اللّٰهَ غَفُوْرٌ رَّحِيْمٌ", "وَلَا تَقُوْلُوْا لِمَا تَصِفُ اَلْسِنَتُكُمُ الْكَذِبَ"], correctAnswer: 0, surahInfo: "QS. An-Nahl: 115" }
-    ];
+    // --- QS. Al-Falaq ---
+    { level: "mudah", question: "قُلْ اَعُوْذُ بِرَبِّ الْفَلَقِۙ ۝١", options: ["مِنْ شَرِّ مَا خَلَقَۙ ۝٢", "وَمِنْ شَرِّ النَّفّٰثٰتِ فِى الْعُقَدِۙ ۝٤", "وَمِنْ شَرِّ غَاسِقٍ اِذَا وَقَبَۙ ۝٣", "وَمِنْ شَرِّ حَاسِدٍ اِذَا حَسَدَ ۝٥"], correctAnswer: 0, surahInfo: "QS. Al-Falaq: 2" },
+    { level: "mudah", question: "مِنْ شَرِّ مَا خَلَقَۙ ۝٢", options: ["وَمِنْ شَرِّ النَّفّٰثٰتِ فِى الْعُقَدِۙ ۝٤", "وَمِنْ شَرِّ حَاسِدٍ اِذَا حَسَدَ ۝٥", "قُلْ اَعُوْذُ بِرَبِّ الْفَلَقِۙ ۝١", "وَمِنْ شَرِّ غَاسِقٍ اِذَا وَقَبَۙ ۝٣"], correctAnswer: 3, surahInfo: "QS. Al-Falaq: 3" },
+
+    // --- QS. Al-Ikhlas ---
+    { level: "mudah", question: "قُلْ هُوَ اللّٰهُ اَحَدٌۚ ۝١", options: ["لَمْ يَلِدْ وَلَمْ يُوْلَدْۙ ۝٣", "اَللّٰهُ الصَّمَدُۚ ۝٢", "وَلَمْ يَكُنْ لَّهٗ كُفُوًا اَحَدٌ ۝٤", "مِنْ شَرِّ مَا خَلَقَۙ"], correctAnswer: 1, surahInfo: "QS. Al-Ikhlas: 2" },
+    { level: "mudah", question: "اَللّٰهُ الصَّمَدُۚ ۝٢", options: ["قُلْ هُوَ اللّٰهُ اَحَدٌۚ ۝١", "وَلَمْ يَكُنْ لَّهٗ كُفُوًا اَحَدٌ ۝٤", "لَمْ يَلِدْ وَلَمْ يُوْلَدْۙ ۝٣", "اِيَّاكَ نَعْبُدُ وَاِيَّاكَ نَسْتَعِيْنُۗ"], correctAnswer: 2, surahInfo: "QS. Al-Ikhlas: 3" },
+
+    // --- QS. Al-Lahab ---
+    { level: "mudah", question: "تَبَّتْ يَدَآ اَبِيْ لَهَبٍ وَّتَبَّۗ ۝١", options: ["سَيَصْلٰى نَارًا ذَاتَ لَهَبٍۙ ۝٣", "مَآ اَغْنٰى عَنْهُ مَالُهٗ وَمَا كَسَبَۗ ۝٢", "وَّامْرَاَتُهٗ ۗ حَمَّالَةَ الْحَطَبِۚ ۝٤", "فِيْ جِيْدِهَا حَبْلٌ مِّنْ مَّسَدٍ ۝٥"], correctAnswer: 1, surahInfo: "QS. Al-Lahab: 2" },
+    { level: "mudah", question: "مَآ اَغْنٰى عَنْهُ مَالُهٗ وَمَا كَسَبَۗ ۝٢", options: ["تَبَّتْ يَدَآ اَبِيْ لَهَبٍ وَّتَبَّۗ ۝١", "وَّامْرَاَتُهٗ ۗ حَمَّالَةَ الْحَطَبِۚ ۝٤", "سَيَصْلٰى نَارًا ذَاتَ لَهَبٍۙ ۝٣", "فِيْ جِيْدِهَا حَبْلٌ مِّنْ مَّسَدٍ ۝٥"], correctAnswer: 2, surahInfo: "QS. Al-Lahab: 3" },
+    
+    // === LEVEL SEDANG ===
+
+    // --- QS. Al-Kafirun ---
+    { level: "sedang", question: "قُلْ يٰٓاَيُّهَا الْكٰفِرُوْنَۙ ۝١", options: ["وَلَآ اَنْتُمْ عٰبِدُوْنَ مَآ اَعْبُدُۚ ۝٣", "وَلَآ اَنَا۠ عَابِدٌ مَّا عَبَدْتُّمْۙ ۝٤", "لَآ اَعْبُدُ مَا تَعْبُدُوْنَۙ ۝٢", "لَكُمْ دِيْنُكُمْ وَلِيَ دِيْنِ ۝٦"], correctAnswer: 2, surahInfo: "QS. Al-Kafirun: 2" },
+    { level: "sedang", question: "لَآ اَعْبُدُ مَا تَعْبُدُوْنَۙ ۝٢", options: ["وَلَآ اَنْتُمْ عٰبِدُوْنَ مَآ اَعْبُدُۚ ۝٣", "وَلَآ اَنَا۠ عَابِدٌ مَّا عَبَدْتُّمْۙ ۝٤", "وَلَآ اَنْتُمْ عٰبِدُوْنَ مَآ اَعْبُدُۚ ۝٥", "قُلْ يٰٓاَيُّهَا الْكٰفِرُوْنَۙ ۝١"], correctAnswer: 0, surahInfo: "QS. Al-Kafirun: 3" },
+    { level: "sedang", question: "وَلَآ اَنْتُمْ عٰبِدُوْنَ مَآ اَعْبُدُۚ ۝٣", options: ["لَكُمْ دِيْنُكُمْ وَلِيَ دِيْنِ ۝٦", "وَلَآ اَنَا۠ عَابِدٌ مَّا عَبَدْتُّمْۙ ۝٤", "لَآ اَعْبُدُ مَا تَعْبُدُوْنَۙ ۝٢", "وَلَآ اَنْتُمْ عٰبِدُوْنَ مَآ اَعْبُدُۚ ۝٥"], correctAnswer: 1, surahInfo: "QS. Al-Kafirun: 4" },
+
+    // --- QS. Al-Ma'un ---
+    { level: "sedang", question: "اَرَءَيْتَ الَّذِيْ يُكَذِّبُ بِالدِّيْنِۗ ۝١", options: ["وَلَا يَحُضُّ عَلٰى طَعَامِ الْمِسْكِيْنِۗ ۝٣", "فَوَيْلٌ لِّلْمُصَلِّيْنَۙ ۝٤", "فَذٰلِكَ الَّذِيْ يَدُعُّ الْيَتِيْمَۙ ۝٢", "الَّذِيْنَ هُمْ عَنْ صَلَاتِهِمْ سَاهُوْنَۙ ۝٥"], correctAnswer: 2, surahInfo: "QS. Al-Ma'un: 2" },
+    { level: "sedang", question: "فَذٰلِكَ الَّذِيْ يَدُعُّ الْيَتِيْمَۙ ۝٢", options: ["وَيَمْنَعُوْنَ الْمَاعُوْنَ ۝٧", "وَلَا يَحُضُّ عَلٰى طَعَامِ الْمِسْكِيْنِۗ ۝٣", "فَوَيْلٌ لِّلْمُصَلِّيْنَۙ ۝٤", "اَرَءَيْتَ الَّذِيْ يُكَذِّبُ بِالدِّيْنِۗ ۝١"], correctAnswer: 1, surahInfo: "QS. Al-Ma'un: 3" },
+    { level: "sedang", question: "وَلَا يَحُضُّ عَلٰى طَعَامِ الْمِسْكِيْنِۗ ۝٣", options: ["الَّذِيْنَ هُمْ عَنْ صَلَاتِهِمْ سَاهُوْنَۙ ۝٥", "فَذٰلِكَ الَّذِيْ يَدُعُّ الْيَتِيْمَۙ ۝٢", "فَوَيْلٌ لِّلْمُصَلِّيْنَۙ ۝٤", "الَّذِيْنَ هُمْ يُرَاۤءُوْنَۙ ۝٦"], correctAnswer: 2, surahInfo: "QS. Al-Ma'un: 4" },
+
+    // --- QS. Al-Fil ---
+    { level: "sedang", question: "اَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِاَصْحٰبِ الْفِيْلِۗ ۝١", options: ["وَّاَرْسَلَ عَلَيْهِمْ طَيْرًا اَبَابِيْلَۙ ۝٣", "تَرْمِيْهِمْ بِحِجَارَةٍ مِّنْ سِجِّيْلٍۙ ۝٤", "فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُوْلٍ ۝٥", "اَلَمْ يَجْعَلْ كَيْدَهُمْ فِيْ تَضْلِيْلٍۙ ۝٢"], correctAnswer: 3, surahInfo: "QS. Al-Fil: 2" },
+    { level: "sedang", question: "اَلَمْ يَجْعَلْ كَيْدَهُمْ فِيْ تَضْلِيْلٍۙ ۝٢", options: ["تَرْمِيْهِمْ بِحِجَارَةٍ مِّنْ سِجِّيْلٍۙ ۝٤", "فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُوْلٍ ۝٥", "وَّاَرْسَلَ عَلَيْهِمْ طَيْرًا اَبَابِيْلَۙ ۝٣", "اَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِاَصْحٰبِ الْفِيْلِۗ ۝١"], correctAnswer: 2, surahInfo: "QS. Al-Fil: 3" },
+    
+    // --- QS. At-Takasur ---
+    { level: "sedang", question: "اَلْهَاكُمُ التَّكَاثُرُۙ ۝١", options: ["ثُمَّ كَلَّا سَوْفَ تَعْلَمُوْنَ ۝٤", "حَتّٰى زُرْتُمُ الْمَقَابِرَۗ ۝٢", "كَلَّا سَوْفَ تَعْلَمُوْنَۙ ۝٣", "لَتَرَوُنَّ الْجَحِيْمَۙ ۝٦"], correctAnswer: 1, surahInfo: "QS. At-Takasur: 2" },
+    { level: "sedang", question: "حَتّٰى زُرْتُمُ الْمَقَابِرَۗ ۝٢", options: ["كَلَّا لَوْ تَعْلَمُوْنَ عِلْمَ الْيَقِيْنِۗ ۝٥", "لَتَرَوُنَّ الْجَحِيْمَۙ ۝٦", "كَلَّا سَوْفَ تَعْلَمُوْنَۙ ۝٣", "اَلْهَاكُمُ التَّكَاثُرُۙ ۝١"], correctAnswer: 2, surahInfo: "QS. At-Takasur: 3" },
+    { level: "sedang", question: "كَلَّا سَوْفَ تَعْلَمُوْنَۙ ۝٣", options: ["ثُمَّ كَلَّا سَوْفَ تَعْلَمُوْنَ ۝٤", "كَلَّا لَوْ تَعْلَمُوْنَ عِلْمَ الْيَقِيْنِۗ ۝٥", "حَتّٰى زُرْتُمُ الْمَقَابِرَۗ ۝٢", "لَتَرَوُنَّ الْجَحِيْمَۙ ۝٦"], correctAnswer: 0, surahInfo: "QS. At-Takasur: 4" },
+    
+    // --- QS. Al-Qadr ---
+    { level: "sedang", question: "اِنَّآ اَنْزَلْنٰهُ فِيْ لَيْلَةِ الْقَدْرِ ۝١", options: ["تَنَزَّلُ الْمَلٰۤىِٕكَةُ وَالرُّوْحُ فِيْهَا", "وَمَآ اَدْرٰىكَ مَا لَيْلَةُ الْقَدْرِۗ ۝٢", "لَيْلَةُ الْقَدْرِ ەۙ خَيْرٌ مِّنْ اَلْفِ شَهْرٍۗ ۝٣", "سَلٰمٌ ۛهِيَ حَتّٰى مَطْلَعِ الْفَجْرِ ۝٥"], correctAnswer: 1, surahInfo: "QS. Al-Qadr: 2" },
+    { level: "sedang", question: "وَمَآ اَدْرٰىكَ مَا لَيْلَةُ الْقَدْرِۗ ۝٢", options: ["لَيْلَةُ الْقَدْرِ ەۙ خَيْرٌ مِّنْ اَلْفِ شَهْرٍۗ ۝٣", "اِنَّآ اَنْزَلْنٰهُ فِيْ لَيْلَةِ الْقَدْرِ ۝١", "تَنَزَّلُ الْمَلٰۤىِٕكَةُ وَالرُّوْحُ فِيْهَا", "سَلٰمٌ ۛهِيَ حَتّٰى مَطْلَعِ الْفَجْرِ ۝٥"], correctAnswer: 0, surahInfo: "QS. Al-Qadr: 3" },
+    { level: "sedang", question: "لَيْلَةُ الْقَدْرِ ەۙ خَيْرٌ مِّنْ اَلْفِ شَهْرٍۗ ۝٣", options: ["وَمَآ اَدْرٰىكَ مَا لَيْلَةُ الْقَدْرِۗ ۝٢", "سَلٰمٌ ۛهِيَ حَتّٰى مَطْلَعِ الْفَجْرِ ۝٥", "اِنَّآ اَنْزَلْنٰهُ فِيْ لَيْلَةِ الْقَدْرِ ۝١", "تَنَزَّلُ الْمَلٰۤىِٕكَةُ وَالرُّوْحُ فِيْهَا بِاِذْنِ رَبِّهِمْ مِّنْ كُلِّ اَمْرٍۛ ۝٤"], correctAnswer: 3, surahInfo: "QS. Al-Qadr: 4" },
+
+    // === LEVEL SULIT ===
+    
+    // --- QS. An-Naba' ---
+    { level: "sulit", question: "عَمَّ يَتَسَاۤءَلُوْنَۚ ۝١", options: ["عَنِ النَّبَاِ الْعَظِيْمِۙ ۝٢", "الَّذِيْ هُمْ فِيْهِ مُخْتَلِفُوْنَۗ ۝٣", "كَلَّا سَيَعْلَمُوْنَۙ ۝٤", "اَلَمْ نَجْعَلِ الْاَرْضَ مِهٰدًاۙ ۝٦"], correctAnswer: 0, surahInfo: "QS. An-Naba': 2" },
+    { level: "sulit", question: "عَنِ النَّبَاِ الْعَظِيْمِۙ ۝٢", options: ["ثُمَّ كَلَّا سَيَعْلَمُوْنَ ۝٥", "كَلَّا سَيَعْلَمُوْنَۙ ۝٤", "اَلَمْ نَجْعَلِ الْاَرْضَ مِهٰدًاۙ ۝٦", "الَّذِيْ هُمْ فِيْهِ مُخْتَلِفُوْنَۗ ۝٣"], correctAnswer: 3, surahInfo: "QS. An-Naba': 3" },
+    { level: "sulit", question: "الَّذِيْ هُمْ فِيْهِ مُخْتَلِفُوْنَۗ ۝٣", options: ["عَنِ النَّبَاِ الْعَظِيْمِۙ ۝٢", "كَلَّا سَيَعْلَمُوْنَۙ ۝٤", "ثُمَّ كَلَّا سَيَعْلَمُوْنَ ۝٥", "وَالْجِبَالَ اَوْتَادًاۙ ۝٧"], correctAnswer: 1, surahInfo: "QS. An-Naba': 4" },
+    { level: "sulit", question: "كَلَّا سَيَعْلَمُوْنَۙ ۝٤", options: ["الَّذِيْ هُمْ فِيْهِ مُخْتَلِفُوْنَۗ ۝٣", "اَلَمْ نَجْعَلِ الْاَرْضَ مِهٰدًاۙ ۝٦", "عَنِ النَّبَاِ الْعَظِيْمِۙ ۝٢", "ثُمَّ كَلَّا سَيَعْلَمُوْنَ ۝٥"], correctAnswer: 3, surahInfo: "QS. An-Naba': 5" },
+    
+    // --- QS. Al-Buruj ---
+    { level: "sulit", question: "وَالسَّمَاۤءِ ذَاتِ الْبُرُوْجِۙ ۝١", options: ["وَالْيَوْمِ الْمَوْعُوْدِۙ ۝٢", "وَشَاهِدٍ وَّمَشْهُوْدٍۗ ۝٣", "قُتِلَ اَصْحٰبُ الْاُخْدُوْدِۙ ۝٤", "اِنَّ بَطْشَ رَبِّكَ لَشَدِيْدٌۗ ۝١٢"], correctAnswer: 0, surahInfo: "QS. Al-Buruj: 2" },
+    { level: "sulit", question: "وَالْيَوْمِ الْمَوْعُوْدِۙ ۝٢", options: ["قُتِلَ اَصْحٰبُ الْاُخْدُوْدِۙ ۝٤", "النَّارِ ذَاتِ الْوَقُوْدِۙ ۝٥", "وَشَاهِدٍ وَّمَشْهُوْدٍۗ ۝٣", "اِذْ هُمْ عَلَيْهَا قُعُوْدٌۙ ۝٦"], correctAnswer: 2, surahInfo: "QS. Al-Buruj: 3" },
+    { level: "sulit", question: "وَشَاهِدٍ وَّمَشْهُوْدٍۗ ۝٣", options: ["النَّارِ ذَاتِ الْوَقُوْدِۙ ۝٥", "قُتِلَ اَصْحٰبُ الْاُخْدُوْدِۙ ۝٤", "اِذْ هُمْ عَلَيْهَا قُعُوْدٌۙ ۝٦", "وَالْيَوْمِ الْمَوْعُوْدِۙ ۝٢"], correctAnswer: 1, surahInfo: "QS. Al-Buruj: 4" },
+
+    // --- QS. At-Tariq ---
+    { level: "sulit", question: "وَالسَّمَاۤءِ وَالطَّارِقِۙ ۝١", options: ["اَلنَّجْمُ الثَّاقِبُۙ ۝٣", "اِنْ كُلُّ نَفْسٍ لَّمَّا عَلَيْهَا حَافِظٌۗ ۝٤", "وَمَآ اَدْرٰىكَ مَا الطَّارِقُۙ ۝٢", "فَلْيَنْظُرِ الْاِنْسَانُ مِمَّ خُلِقَ ۝٥"], correctAnswer: 2, surahInfo: "QS. At-Tariq: 2" },
+    { level: "sulit", question: "وَمَآ اَدْرٰىكَ مَا الطَّارِقُۙ ۝٢", options: ["خُلِقَ مِنْ مَّاۤءٍ دَافِقٍۙ ۝٦", "اِنْ كُلُّ نَفْسٍ لَّمَّا عَلَيْهَا حَافِظٌۗ ۝٤", "اَلنَّجْمُ الثَّاقِبُۙ ۝٣", "يَخْرُجُ مِنْۢ بَيْنِ الصُّلْبِ وَالتَّرَاۤىِٕبِۗ ۝٧"], correctAnswer: 2, surahInfo: "QS. At-Tariq: 3" },
+    { level: "sulit", question: "اَلنَّجْمُ الثَّاقِبُۙ ۝٣", options: ["فَلْيَنْظُرِ الْاِنْسَانُ مِمَّ خُلِقَ ۝٥", "وَمَآ اَدْرٰىكَ مَا الطَّارِقُۙ ۝٢", "خُلِقَ مِنْ مَّاۤءٍ دَافِقٍۙ ۝٦", "اِنْ كُلُّ نَفْسٍ لَّمَّا عَلَيْهَا حَافِظٌۗ ۝٤"], correctAnswer: 3, surahInfo: "QS. At-Tariq: 4" },
+    
+    // --- QS. Al-A'la ---
+    { level: "sulit", question: "سَبِّحِ اسْمَ رَبِّكَ الْاَعْلَىۙ ۝١", options: ["وَالَّذِيْ قَدَّرَ فَهَدٰىۖ ۝٣", "الَّذِيْ خَلَقَ فَسَوّٰىۖ ۝٢", "وَالَّذِيْٓ اَخْرَجَ الْمَرْعٰىۖ ۝٤", "فَجَعَلَهٗ غُثَاۤءً اَحْوٰىۗ ۝٥"], correctAnswer: 1, surahInfo: "QS. Al-A'la: 2" },
+    { level: "sulit", question: "الَّذِيْ خَلَقَ فَسَوّٰىۖ ۝٢", options: ["وَالَّذِيْ قَدَّرَ فَهَدٰىۖ ۝٣", "سَنُقْرِئُكَ فَلَا تَنْسٰىٓ ۝٦", "وَالَّذِيْٓ اَخْرَجَ الْمَرْعٰىۖ ۝٤", "اِلَّا مَا شَاۤءَ اللّٰهُ ۗاِنَّهٗ يَعْلَمُ الْجَهْرَ وَمَا يَخْفٰىۗ ۝٧"], correctAnswer: 0, surahInfo: "QS. Al-A'la: 3" },
+    { level: "sulit", question: "وَالَّذِيْ قَدَّرَ فَهَدٰىۖ ۝٣", options: ["فَجَعَلَهٗ غُثَاۤءً اَحْوٰىۗ ۝٥", "اِلَّا مَا شَاۤءَ اللّٰهُ ۗاِنَّهٗ يَعْلَمُ الْجَهْرَ وَمَا يَخْفٰىۗ ۝٧", "وَالَّذِيْٓ اَخْرَجَ الْمَرْعٰىۖ ۝٤", "سَنُقْرِئُكَ فَلَا تَنْسٰىٓ ۝٦"], correctAnswer: 2, surahInfo: "QS. Al-A'la: 4" },
+    { level: "sulit", question: "وَالَّذِيْٓ اَخْرَجَ الْمَرْعٰىۖ ۝٤", options: ["سَنُقْرِئُكَ فَلَا تَنْسٰىٓ ۝٦", "فَجَعَلَهٗ غُثَاۤءً اَحْوٰىۗ ۝٥", "وَالَّذِيْ قَدَّرَ فَهَدٰىۖ ۝٣", "اِلَّا مَا شَاۤءَ اللّٰهُ ۗاِنَّهٗ يَعْلَمُ الْجَهْرَ وَمَا يَخْفٰىۗ ۝٧"], correctAnswer: 1, surahInfo: "QS. Al-A'la: 5" }
+];
     
 // [MODIFIKASI] Data untuk Toko Tema diubah agar lebih lengkap
 const themes = [
@@ -2319,19 +2395,37 @@ const motivationData = [
     { id: 40, text: "Saat duniamu terasa sempit, ingatlah bahwa rahmat Allah itu seluas langit. Jangan pernah berhenti berharap dan berusaha.", author: "Ridho Sandhika", category: "Semangat" },
     { id: 41, text: "Ujian itu bukan untuk menjatuhkanmu, tapi untuk meningkatkan levelmu. Hadapi dengan sabar, jalani dengan ikhlas.", author: "Ridho Sandhika", category: "Semangat" },
     { id: 42, text: "Jangan menunggu sempurna untuk memulai, tapi mulailah untuk menjadi lebih baik setiap harinya karena Allah.", author: "Ridho Sandhika", category: "Semangat" },
-    
-    // --- [TAMBAHAN BARU: JODOH OLEH RIDHO SANDHIKA] ---
     { id: 43, text: "Menantimu dalam doa adalah cara terbaikku memantaskan diri. Sebab aku percaya, janji Allah tak akan pernah salah alamat.", author: "Ridho Sandhika", category: "Jodoh", featured: true },
     { id: 44, text: "Jodoh bukan tentang siapa yang datang paling cepat, tapi siapa yang datang dengan niat ibadah dan siap membersamai hingga ke Jannah.", author: "Ridho Sandhika", category: "Jodoh" },
     { id: 45, text: "Fokus perbaiki diri untuk-Nya, maka Allah akan datangkan seseorang yang baik untukmu. Karena jodoh adalah cerminan, bukan sekadar pilihan.", author: "Ridho Sandhika", category: "Jodoh" },
     { id: 46, text: "Jika penantian ini terasa berat, mungkin Allah sedang merindukan rintihan doamu. Teruslah meminta yang terbaik, Dia Maha Mendengar.", author: "Ridho Sandhika", category: "Jodoh" },
-    
-    // --- [TAMBAHAN BARU: SABAR OLEH ANANDA PRATAMA] ---
     { id: 47, text: "Sabar itu bukan hanya tentang menunggu, tapi tentang bagaimana kita bersikap saat sedang menunggu.", author: "Ananda Pratama", category: "Sabar" },
     { id: 48, text: "Dalam setiap ujian kesabaran, ada kekuatan baru yang sedang Allah tanamkan di dalam dirimu.", author: "Ananda Pratama", category: "Sabar", featured: true },
     { id: 49, text: "Sabar adalah seni mengelola hati agar tetap tenang di tengah badai, percaya bahwa pelangi akan segera datang.", author: "Ananda Pratama", category: "Sabar" },
-    { id: 50, text: "Jangan lelah untuk bersabar dan berdoa. Karena Allah lebih tahu kapan waktu yang paling tepat untuk mengabulkan semuanya.", author: "Ananda Pratama", category: "Sabar" }
+    { id: 50, text: "Jangan lelah untuk bersabar dan berdoa. Karena Allah lebih tahu kapan waktu yang paling tepat untuk mengabulkan semuanya.", author: "Ananda Pratama", category: "Sabar" },
+    { id: 51, text: "Sabar itu bukan berarti diam tak berbuat. Sabar adalah caramu berdialog dengan Allah, percaya penuh bahwa setiap detik penantianmu bernilai ibadah.", author: "Tirta", category: "Sabar" },
+    { id: 52, text: "Saat sabarmu terasa habis, coba temukan satu hal kecil untuk disyukuri. Di situlah pintu kekuatan sabar akan kembali terbuka.", author: "Tirta", category: "Sabar", featured: true },
+    { id: 53, text: "Allah tidak hanya memberimu ujian, tapi juga memberimu sabar untuk melaluinya. Anggaplah ini proses pembentukan terindah dari-Nya.", author: "Tirta", category: "Sabar" },
+    { id: 54, text: "Sabar itu mungkin pahit di awal, tapi percayalah, buahnya lebih manis dari madu. Janji Allah tak pernah ingkar.", author: "Tirta", category: "Sabar" },
+    { id: 55, text: "Do’a mu tidak akan ditolak cuma dikabulkan di waktu yang tepat, ingat cinta allah lebih besar dari kekecewaanmu", author: "Tirta", category: "Sabar" },
+    { id: 56, text: "Jika Allah membuatmu menunggu, bersiaplah untuk menerima lebih dari apa yang kamu minta.", author: "Annur Islamic", category: "Sabar & Tawakal" },
+    { id: 57, text: "Jangan takut gagal, karena kegagalan adalah awal dari kesuksesan.", author: "Natasya leslie", category: "Semangat" },
+    { id: 58, text: "Berdoa dan berusaha, maka Allah akan memberikan yang terbaik.", author: "Natasya leslie", category: "Semangat" },
+    { id: 59, text: "Jangan menyerah, karena setiap kesulitan pasti ada kemudahan.", author: "Natasya leslie", category: "Semangat" },
+    { id: 60, text: "Percayalah pada Allah, dan Allah akan memberikan jalan keluar.", author: "Natasya leslie", category: "Sabar" },
+    { id: 61, text: "Jangan lupa bersyukur, karena setiap nikmat adalah anugerah dari Allah.", author: "Natasya leslie", category: "Syukur" },
+
+    // --- [TAMBAHAN BARU: SABAR & TAWAKAL] ---
+    { id: 62, text: "Tawakal bukan berarti pasrah tanpa usaha. Ia adalah puncak dari ikhtiar yang diiringi keyakinan penuh bahwa hasil terbaik ada di tangan-Nya.", author: "Ridho Sandhika", category: "Sabar & Tawakal" },
+    { id: 63, text: "Saat hatimu gelisah, letakkan tanganmu di dada dan katakan: 'Hasbunallah wa ni'mal wakil'. Cukuplah Allah sebagai penolongku.", author: "Ridho Sandhika", category: "Sabar & Tawakal", featured: true },
+    { id: 64, text: "Jangan terlalu khawatir tentang masa depan. Bersabarlah hari ini, berdoalah, dan bertawakallah. Allah adalah perencana terbaik.", author: "Ridho Sandhika", category: "Sabar & Tawakal" },
+    { id: 65, text: "Sabar dalam penantian dan tawakal dalam ketidakpastian adalah bentuk ibadah hati yang paling indah.", author: "Ridho Sandhika", category: "Sabar & Tawakal" },
+    { id: 66, text: "Semakin kuat tawakalku pada-Mu, semakin ringan bebanku. Karena aku tahu, Engkau selalu bersamaku, ya Allah.", author: "Ananda Pratama", category: "Sabar & Tawakal" }
 ];
+
+
+
+
 
 
 const sahabatAnnurData = [
@@ -2961,6 +3055,80 @@ function applyTajwidRules(arabicText) {
             }
         }
     
+    // Letakkan ini di dalam event listener DOMContentLoaded,
+// di dalam fungsi setupSettings() atau di bawahnya.
+
+function setupManualAlarms() {
+    const saveBtn = document.getElementById('save-manual-alarms-btn');
+    const prayerKeys = ['Imsak', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+    // Fungsi untuk memuat status toggle dari localStorage
+    function loadAlarmStates() {
+        const savedStates = JSON.parse(localStorage.getItem('manual_alarm_states')) || {};
+        prayerKeys.forEach(key => {
+            const toggle = document.getElementById(`alarm-toggle-${key}`);
+            if (toggle) {
+                // Set default Subuh aktif jika belum ada pengaturan
+                const isEnabled = savedStates[key] !== undefined ? savedStates[key] : (key === 'Fajr');
+                toggle.checked = isEnabled;
+            }
+        });
+    }
+
+    // Panggil fungsi load saat modal pengaturan dibuka
+    document.getElementById('settings-btn').addEventListener('click', loadAlarmStates);
+
+    // Event listener untuk tombol Simpan
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            // Cek apakah jembatan ke Android tersedia
+            if (window.Android && typeof window.Android.setManualAlarms === 'function') {
+                
+                // Pastikan data jadwal sholat sudah ada
+                if (!window.latestPrayerTimes) {
+                    alert('Jadwal sholat belum dimuat. Silakan tunggu sebentar dan coba lagi.');
+                    return;
+                }
+
+                const alarmsData = [];
+                const savedStates = {};
+
+                prayerKeys.forEach(key => {
+                    const toggle = document.getElementById(`alarm-toggle-${key}`);
+                    const time = window.latestPrayerTimes[key];
+                    const isEnabled = toggle.checked;
+
+                    if (time) {
+                        alarmsData.push({
+                            name: key,
+                            time: time,
+                            isEnabled: isEnabled
+                        });
+                    }
+                    // Simpan status toggle ke localStorage
+                    savedStates[key] = isEnabled;
+                });
+
+                localStorage.setItem('manual_alarm_states', JSON.stringify(savedStates));
+
+                // Kirim data ke MainActivity melalui jembatan
+                const jsonData = JSON.stringify(alarmsData);
+                console.log("Mengirim data alarm ke Android:", jsonData);
+                window.Android.setManualAlarms(jsonData);
+
+                alert('Pengaturan alarm native telah disimpan!');
+
+            } else {
+                alert('Fitur ini hanya berfungsi di dalam aplikasi Annur Islamic. Silakan perbarui aplikasi Anda jika perlu.');
+            }
+        });
+    }
+
+    // Muat status saat pertama kali script dijalankan
+    loadAlarmStates();
+}
+
+
         // Fungsi utama yang menangani semua alur permintaan lokasi
         function requestLocationAndFetchData() {
             document.getElementById('city-name').textContent = "Mencari lokasi...";
@@ -3456,7 +3624,7 @@ card.innerHTML = `
                 window.Android.shareImageFromBase64(base64ImageData);
             } else {
                 // Pesan jika dibuka di browser biasa untuk testing
-                showToast("Fitur ini hanya berfungsi di aplikasi Android.");
+                showToast("Fitur ini berfungsi di versi terbaru.");
                 console.log("Base64 Data:", base64ImageData); // Untuk debug
             }
         }).catch(err => {
@@ -4564,155 +4732,202 @@ if (availableQuestions.length === 0) {
         }
         
         // --- [BARU] FUNGSI UNTUK TOKO TEMA ---
-        function setupThemeStore() {
-            const themeStoreBtn = document.getElementById('theme-store-btn');
-            const themeStoreModal = document.getElementById('theme-store-modal');
-            const closeModalBtn = themeStoreModal.querySelector('.close-button');
-            const storeUserPointsEl = document.getElementById('store-user-points');
-            const themeGrid = document.getElementById('theme-grid');
-            const mainUserPointsEl = document.getElementById('user-points');
-            
-            // Memuat data tema dari localStorage
-            let purchasedThemes = JSON.parse(localStorage.getItem('purchased_themes')) || ['default'];
-            let appliedThemeId = localStorage.getItem('applied_theme') || 'default';
+// GANTI SELURUH FUNGSI LAMA ANDA DENGAN YANG INI
+function setupThemeStore() {
+    const themeStoreBtn = document.getElementById('theme-store-btn');
+    const themeStoreModal = document.getElementById('theme-store-modal');
+    const closeModalBtn = themeStoreModal.querySelector('.close-button');
+    const storeUserPointsEl = document.getElementById('store-user-points');
+    const themeGrid = document.getElementById('theme-grid');
+    const mainUserPointsEl = document.getElementById('user-points');
     
-            function saveThemeData() {
-                localStorage.setItem('purchased_themes', JSON.stringify(purchasedThemes));
-                localStorage.setItem('applied_theme', appliedThemeId);
-            }
-    
-            function saveUserPoints() {
-                 localStorage.setItem('user_points', userPoints);
-                 mainUserPointsEl.textContent = userPoints;
-                 storeUserPointsEl.textContent = `Poin Anda: ${userPoints} 💎`;
-            }
-    
-            function renderThemes() {
-                storeUserPointsEl.textContent = `Poin Anda: ${userPoints} 💎`;
-                themeGrid.innerHTML = '';
-    
-                themes.forEach(theme => {
-                    const isUnlocked = purchasedThemes.includes(theme.id);
-                    const isApplied = theme.id === appliedThemeId;
-                    const canAfford = userPoints >= theme.price;
-    
-                    let buttonHtml = '';
-                    let cardClasses = 'theme-card';
-    
-                    if (isApplied) {
-                        buttonHtml = `<button class="theme-action-btn apply" disabled>Digunakan</button>`;
-                        cardClasses += ' applied';
-                    } else if (isUnlocked) {
-                        buttonHtml = `<button class="theme-action-btn apply" data-theme-id="${theme.id}">Terapkan</button>`;
-                    } else if (canAfford) {
-                        buttonHtml = `<button class="theme-action-btn buy" data-theme-id="${theme.id}">Beli</button>`;
-                    } else {
-                        buttonHtml = `<button class="theme-action-btn insufficient" disabled>Poin Kurang</button>`;
-                    }
-    
-                    const card = document.createElement('div');
-                    card.className = cardClasses;
-                    card.innerHTML = `
-                        <div class="theme-preview">
-                            <div class="color-swatch" style="background-color: ${theme.colors[0]}"></div>
-                            <div class="color-swatch" style="background-color: ${theme.colors[1]}"></div>
-                            <div class="color-swatch" style="background-color: ${theme.colors[2]}"></div>
-                            <div class="color-swatch" style="background-color: ${theme.colors[3]}"></div>
-                        </div>
-                        <div class="theme-name">${theme.name}</div>
-                        <div class="theme-price">${theme.price > 0 ? `${theme.price} 💎` : 'Gratis'}</div>
-                        ${buttonHtml}
-                    `;
-                    themeGrid.appendChild(card);
-                });
-            }
-    
-            themeGrid.addEventListener('click', (e) => {
-                const btn = e.target;
-                const themeId = btn.dataset.themeId;
-                if (!themeId) return;
-    
-                // Logika untuk membeli tema
-if (btn.classList.contains('buy')) {
-                    const theme = themes.find(t => t.id === themeId);
-                    if (theme && userPoints >= theme.price) {
-                        const themePurchaseModal = document.getElementById('theme-purchase-modal');
-                        
-                        // Isi konten modal konfirmasi
-                        document.getElementById('theme-purchase-info').innerHTML = `Anda akan membeli tema <strong>"${theme.name}"</strong> seharga <strong>${theme.price} 💎</strong>. Lanjutkan?`;
-                        
-                        // Tampilkan modal
-                        themePurchaseModal.style.display = 'flex';
+    // [BARU] Ambil elemen modal konfirmasi di sini
+    const themePurchaseModal = document.getElementById('theme-purchase-modal');
+    const themeSuccessModal = document.getElementById('theme-success-modal');
 
-// Fungsi tombol konfirmasi beli
-            document.getElementById('confirm-purchase-btn').onclick = () => {
-                themePurchaseModal.style.display = 'none'; // Sembunyikan modal konfirmasi
-                
-                // 1. Lakukan proses pembelian
-                userPoints -= theme.price;
-                purchasedThemes.push(themeId);
-                saveUserPoints();
-                saveThemeData();
-                
-                // 2. Siapkan dan tampilkan modal sukses
-                const successModal = document.getElementById('theme-success-modal');
-                const successInfo = document.getElementById('theme-success-info');
-                const successOkBtn = document.getElementById('theme-success-ok-btn');
-
-                successInfo.innerHTML = `Anda telah berhasil membeli tema <strong>"${theme.name}"</strong>. Anda bisa langsung menerapkannya sekarang di Toko Tema.`;
-                successModal.style.display = 'flex';
-
-                // 3. Fungsi tombol OK pada modal sukses
-                successOkBtn.onclick = () => {
-                    successModal.style.display = 'none';
-                    renderThemes(); // Render ulang toko SETELAH notifikasi ditutup
-                };
-            };
-                    }
-                }
-                
-                // Logika untuk menerapkan tema
-                else if (btn.classList.contains('apply')) {
-                    appliedThemeId = themeId;
-                    saveThemeData();
-                    applyThemeCss(themeId); 
-                    renderThemes();
-                }
-            });
+    let purchasedThemes = JSON.parse(localStorage.getItem('purchased_themes')) || ['default'];
+    let appliedThemeId = localStorage.getItem('applied_theme') || 'default';
     
-            themeStoreBtn.addEventListener('click', () => {
-                renderThemes();
-                themeStoreModal.style.display = 'flex';
-            });
-    
-            closeModalBtn.addEventListener('click', () => {
-                themeStoreModal.style.display = 'none';
-            });
-            
-            // Panggil ini agar tema yang terakhir dipilih diterapkan saat aplikasi dibuka
-            applyThemeCss(appliedThemeId);
+    // Variabel sementara untuk menyimpan info tema yang akan dibeli
+    let pendingPurchase = {};
+
+    function saveThemeData() {
+        localStorage.setItem('purchased_themes', JSON.stringify(purchasedThemes));
+        localStorage.setItem('applied_theme', appliedThemeId);
+    }
+
+    function saveUserPoints() {
+        localStorage.setItem('user_points', userPoints);
+        mainUserPointsEl.textContent = userPoints;
+        storeUserPointsEl.textContent = `Poin Anda: ${userPoints} 💎`;
+    }
+
+    function renderThemes() {
+        storeUserPointsEl.textContent = `Poin Anda: ${userPoints} 💎`;
+        themeGrid.innerHTML = '';
+        themes.forEach(theme => {
+            const isUnlocked = purchasedThemes.includes(theme.id);
+            const isApplied = theme.id === appliedThemeId;
+            const canAfford = userPoints >= theme.price;
+            let buttonHtml = '';
+            let cardClasses = 'theme-card';
+
+            if (isApplied) {
+                buttonHtml = `<button class="theme-action-btn apply" disabled>Digunakan</button>`;
+                cardClasses += ' applied';
+            } else if (isUnlocked) {
+                buttonHtml = `<button class="theme-action-btn apply" data-theme-id="${theme.id}">Terapkan</button>`;
+            } else if (canAfford) {
+                buttonHtml = `<button class="theme-action-btn buy" data-theme-id="${theme.id}">Beli</button>`;
+            } else {
+                buttonHtml = `<button class="theme-action-btn insufficient" disabled>Poin Kurang</button>`;
+            }
+
+            const card = document.createElement('div');
+            card.className = cardClasses;
+            card.innerHTML = `
+                <div class="theme-preview">
+                    <div class="color-swatch" style="background-color: ${theme.colors[0]}"></div>
+                    <div class="color-swatch" style="background-color: ${theme.colors[1]}"></div>
+                    <div class="color-swatch" style="background-color: ${theme.colors[2]}"></div>
+                    <div class="color-swatch" style="background-color: ${theme.colors[3]}"></div>
+                </div>
+                <div class="theme-name">${theme.name}</div>
+                <div class="theme-price">${theme.price > 0 ? `${theme.price} 💎` : 'Gratis'}</div>
+                ${buttonHtml}
+            `;
+            themeGrid.appendChild(card);
+        });
+    }
+
+    themeGrid.addEventListener('click', (e) => {
+        const btn = e.target;
+        const themeId = btn.dataset.themeId;
+        if (!themeId) return;
+
+        if (btn.classList.contains('buy')) {
+            const theme = themes.find(t => t.id === themeId);
+            if (theme) {
+                // Simpan informasi tema ke variabel sementara
+                pendingPurchase = { id: theme.id, name: theme.name, price: theme.price };
+                
+                document.getElementById('theme-purchase-info').innerHTML = `Apakah antum yakin ingin membeli tema  <strong>${theme.name}?.</strong> seharga <strong>${theme.price} 💎</strong>. Lanjutkan?`;
+                themePurchaseModal.style.display = 'flex';
+                
+                // HAPUS definisi .onclick dari sini
+            }
+        } else if (btn.classList.contains('apply')) {
+            appliedThemeId = themeId;
+            saveThemeData();
+            applyThemeCss(themeId);
+            renderThemes();
         }
+    });
+    
+    // [DIPINDAHKAN KE SINI] Logika untuk tombol modal ditempatkan di sini, SATU KALI SAJA
+    document.getElementById('confirm-purchase-btn').onclick = () => {
+        if (!pendingPurchase.id) return; // Pastikan ada tema yang akan dibeli
+        
+        themePurchaseModal.style.display = 'none';
+        
+        userPoints -= pendingPurchase.price;
+        purchasedThemes.push(pendingPurchase.id);
+        saveUserPoints();
+        saveThemeData();
+        
+        const successInfo = document.getElementById('theme-success-info');
+        successInfo.innerHTML = `Antum telah berhasil membeli tema <strong>"${pendingPurchase.name}"</strong>.`;
+        themeSuccessModal.style.display = 'flex';
+        
+        pendingPurchase = {}; // Kosongkan setelah selesai
+    };
+
+    document.getElementById('cancel-purchase-btn').onclick = () => {
+        themePurchaseModal.style.display = 'none';
+        pendingPurchase = {}; // Kosongkan juga saat dibatalkan
+    };
+
+    document.getElementById('theme-success-ok-btn').onclick = () => {
+        themeSuccessModal.style.display = 'none';
+        renderThemes(); // Render ulang toko
+    };
+
+    themeStoreBtn.addEventListener('click', () => {
+        renderThemes();
+        themeStoreModal.style.display = 'flex';
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        themeStoreModal.style.display = 'none';
+    });
+    
+    applyThemeCss(appliedThemeId);
+}
+
+/**
+ * Determines the best contrasting text color (black or white) for a given background color.
+ * @param {string} hexColor - The background color in hex format (e.g., "#0d264a").
+ * @returns {string} - Returns '#000000' (black) for light backgrounds or '#FFFFFF' (white) for dark backgrounds.
+ */
+function getTextColorForBackground(hexColor) {
+    // Remove the '#' if it exists
+    const cleanHex = hexColor.startsWith('#') ? hexColor.slice(1) : hexColor;
+
+    // Convert hex to R, G, B
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+
+    // Calculate the perceived brightness using a standard formula
+    const brightness = Math.round(((r * 299) + (g * 587) + (b * 114)) / 1000);
+
+    // Return black for bright colors, white for dark colors
+    return (brightness > 149) ? '#333333' : '#FFFFFF';
+}
         
         // [BARU] Fungsi untuk menerapkan CSS tema secara global
-        function applyThemeCss(themeId) {
-            const theme = themes.find(t => t.id === themeId);
-            if (!theme) {
-                console.error(`Tema dengan ID "${themeId}" tidak ditemukan.`);
-                return;
-            }
+// GANTI FUNGSI LAMA ANDA DENGAN YANG BARU INI
+function applyThemeCss(themeId) {
+    const theme = themes.find(t => t.id === themeId);
+    if (!theme) {
+        console.error(`Tema dengan ID "${themeId}" tidak ditemukan.`);
+        return;
+    }
+
+    console.log(`Menerapkan tema: ${theme.name}`);
+    const root = document.documentElement;
+
+    // 1. Ambil warna dasar dari tema
+    const headerBg = theme.colors[0];
+    const primaryBg = theme.colors[1];
+    const accentColor = theme.colors[2];
+    const cardBg = theme.colors[3];
+
+    // 2. Setel warna-warna background seperti sebelumnya
+    root.style.setProperty('--header-bg', headerBg);
+    root.style.setProperty('--primary-bg', primaryBg);
+    root.style.setProperty('--accent-color', accentColor);
+    root.style.setProperty('--card-bg', cardBg);
+
+    // 3. [INI LOGIKA BARUNYA] Hitung dan setel warna teks yang kontras
+    // Teks untuk di atas header (dan tombol utama)
+    root.style.setProperty('--header-text', getTextColorForBackground(headerBg));
+    root.style.setProperty('--button-text', getTextColorForBackground(headerBg));
+
+    // Warna teks utama untuk di atas background primer dan background kartu
+    const mainTextColor = getTextColorForBackground(primaryBg);
+    root.style.setProperty('--text-color', mainTextColor);
     
-            console.log(`Menerapkan tema: ${theme.name}`);
-            const root = document.documentElement;
-            root.style.setProperty('--header-bg', theme.colors[0]);
-            root.style.setProperty('--primary-bg', theme.colors[1]);
-            root.style.setProperty('--accent-color', theme.colors[2]);
-            root.style.setProperty('--card-bg', theme.colors[3]);
-            
+    // Tentukan warna teks yang lebih terang/gelap dari warna teks utama
+    root.style.setProperty('--text-light', mainTextColor === '#FFFFFF' ? 'rgba(255, 255, 255, 0.7)' : '#888');
+
+    // Khusus untuk tombol, jika background-nya adalah warna aksen
+    // Anda bisa menambahkan logika ini jika diperlukan
+    // root.style.setProperty('--button-text', getTextColorForBackground(accentColor));
+}
             // Anda bisa menambahkan logika lain di sini jika dibutuhkan,
             // misalnya mengubah warna teks agar kontrasnya tetap baik.
             // Untuk saat ini, kita hanya mengubah warna dasar.
-        }
-    
     
         // --- Pengaturan Suara Adzan ---
         function renderFullAdhanSettingsPage() {
@@ -5044,6 +5259,7 @@ if (addWidgetBtn) {
         setupCustomPermissionModals();
         setupMotivationFeature();
         setupSahabatAnnurFeature();
+        setupManualAlarms();
     
         // Panggil fungsi inisialisasi utama yang baru
         initLocationAndPrayerTimes();
