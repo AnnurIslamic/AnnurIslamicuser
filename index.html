@@ -3466,7 +3466,7 @@ function setupManualAlarms() {
         function generateCalendar() {
             if (!calendarContainerEl) return;
             const dayNamesList = {
-                id: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ar: ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"], tr: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"], fr: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"], ru: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"], ur: ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"], bn: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"]
+                id: ["Ahad", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ar: ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"], tr: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"], fr: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"], ru: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"], ur: ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"], bn: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"]
             };
             const today = new Date();
             const todayDayIndex = today.getDay();
@@ -3485,7 +3485,12 @@ function setupManualAlarms() {
             const now = new Date();
             const localeMap = { id: 'id-ID', en: 'en-US', ar: 'ar-SA', tr: 'tr-TR', fr: 'fr-FR', es: 'es-ES', de: 'de-DE', ru: 'ru-RU', ur: 'ur-PK', bn: 'bn-BD' };
             const locale = localeMap[currentLanguage] || 'en-US';
-            gregorianDateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+// GANTI baris 'gregorianDateEl.textContent' yang lama dengan kode ini
+let dateString = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+if (locale === 'id-ID') {
+    dateString = dateString.replace('Minggu', 'Ahad');
+}
+gregorianDateEl.textContent = dateString;
         }
 
 
