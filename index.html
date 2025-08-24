@@ -1878,6 +1878,39 @@ body.dark-mode .quote-footer {
     </button>
 </div>
 <div class="settings-group">
+    <h4>Alarm Dering (Layar Penuh)</h4>
+    <p style="font-size: 0.85rem; color: var(--text-light); line-height: 1.5; margin-bottom: 1rem;">
+        Gunakan alarm ini untuk dering adzan yang akan menyalakan layar dan berbunyi penuh seperti alarm jam. Sangat direkomendasikan untuk Subuh.
+    </p>
+    <div class="settings-item">
+        <label for="ringing-alarm-toggle-Imsak">Dering Imsak</label>
+        <label class="switch"><input type="checkbox" id="ringing-alarm-toggle-Imsak"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="ringing-alarm-toggle-Fajr">Dering Subuh</label>
+        <label class="switch"><input type="checkbox" id="ringing-alarm-toggle-Fajr"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="ringing-alarm-toggle-Dhuhr">Dering Dzuhur</label>
+        <label class="switch"><input type="checkbox" id="ringing-alarm-toggle-Dhuhr"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="ringing-alarm-toggle-Asr">Dering Ashar</label>
+        <label class="switch"><input type="checkbox" id="ringing-alarm-toggle-Asr"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="ringing-alarm-toggle-Maghrib">Dering Maghrib</label>
+        <label class="switch"><input type="checkbox" id="ringing-alarm-toggle-Maghrib"><span class="slider"></span></label>
+    </div>
+    <div class="settings-item">
+        <label for="ringing-alarm-toggle-Isha">Dering Isya</label>
+        <label class="switch"><input type="checkbox" id="ringing-alarm-toggle-Isha"><span class="slider"></span></label>
+    </div>
+    <button id="save-ringing-alarms-btn" class="modal-action-btn" style="margin-top: 1.5rem;">
+        Simpan Pengaturan Dering
+    </button>
+</div>
+<div class="settings-group">
     <h4>Tampilan Alarm</h4>
     <div class="settings-item">
         <label for="popup-alarm-btn">Izinkan Pop-up Alarm</label>
@@ -1885,6 +1918,19 @@ body.dark-mode .quote-footer {
     </div>
     <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
         Agar layar alarm bisa langsung muncul di atas aplikasi lain saat adzan berkumandang.
+    </p>
+</div>
+<div class="settings-group">
+    <h4>Privasi & Iklan</h4>
+    <div class="settings-item">
+        <label for="adblock-toggle">Blokir Iklan (Beta)</label>
+        <label class="switch">
+            <input type="checkbox" id="adblock-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 0.5rem;">
+        Aktifkan untuk mencoba menyembunyikan iklan di dalam WebView. Mungkin tidak memblokir semua iklan.
     </p>
 </div>
 <div class="settings-group">
@@ -1897,6 +1943,7 @@ body.dark-mode .quote-footer {
         Gunakan DNS pemblokir iklan untuk pengalaman browsing yang lebih nyaman di semua aplikasi.
     </p>
 </div>
+
 
             <div class="settings-group" style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #ddd;">
               <div class="settings-item">
@@ -3079,7 +3126,35 @@ function applyTajwidRules(arabicText) {
     
     // Letakkan ini di dalam event listener DOMContentLoaded,
 // di dalam fungsi setupSettings() atau di bawahnya.
+// Letakkan ini di dalam fungsi setupSettings()
 
+function setupAdBlockToggle() {
+    const adblockToggle = document.getElementById('adblock-toggle');
+    if (!adblockToggle) return;
+
+    // 1. Saat pengaturan dibuka, sesuaikan status toggle dengan yang tersimpan
+    const savedAdBlockState = localStorage.getItem('adblock_enabled') === 'true';
+    adblockToggle.checked = savedAdBlockState;
+
+    // 2. Saat toggle diubah oleh pengguna
+    adblockToggle.addEventListener('change', () => {
+        const isEnabled = adblockToggle.checked;
+        
+        // Simpan status ke localStorage agar tampilan toggle konsisten
+        localStorage.setItem('adblock_enabled', isEnabled);
+        
+        // Panggil fungsi di MainActivity melalui JavaScript Interface
+        if (window.Android && typeof window.Android.setAdBlockEnabled === 'function') {
+            window.Android.setAdBlockEnabled(isEnabled);
+            showCustomToast(`AdBlock ${isEnabled ? 'Diaktifkan' : 'Dinonaktifkan'}. Muat ulang halaman untuk melihat efek.`);
+        } else {
+            console.warn("Fungsi AdBlock hanya berjalan di aplikasi Android.");
+        }
+    });
+}
+
+// Jangan lupa panggil fungsi ini di dalam init atau setupSettings
+setupAdBlockToggle();
 
 
 // GANTI FUNGSI setupManualAlarms LAMA ANDA DENGAN YANG INI
@@ -3161,6 +3236,84 @@ function setupManualAlarms() {
     }
     loadAlarmStates();
 }
+
+// [TAMBAHKAN FUNGSI BARU INI]
+function setupRingingAlarms() {
+    const saveBtn = document.getElementById('save-ringing-alarms-btn');
+    const prayerKeys = ['Imsak', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+    function showCustomToast(message) {
+        const toastElement = document.getElementById('custom-toast-notification');
+        if (!toastElement) return;
+        toastElement.textContent = message;
+        toastElement.classList.add('show');
+        setTimeout(() => {
+            toastElement.classList.remove('show');
+        }, 3000);
+    }
+
+    function loadRingingAlarmStates() {
+        const savedStates = JSON.parse(localStorage.getItem('ringing_alarm_states')) || {};
+        prayerKeys.forEach(key => {
+            const toggle = document.getElementById(`ringing-alarm-toggle-${key}`);
+            if (toggle) {
+                // Set default Dering Subuh aktif
+                const isEnabled = savedStates[key] !== undefined ? savedStates[key] : (key === 'Fajr');
+                toggle.checked = isEnabled;
+            }
+        });
+    }
+
+    document.getElementById('settings-btn').addEventListener('click', loadRingingAlarmStates);
+
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            if (window.Android && typeof window.Android.setRingingAlarms === 'function') {
+                if (!window.latestPrayerTimes) {
+                    showCustomToast('Jadwal sholat belum dimuat. Coba lagi.');
+                    return;
+                }
+
+                const alarmsData = [];
+                const savedStates = {};
+                prayerKeys.forEach(key => {
+                    const toggle = document.getElementById(`ringing-alarm-toggle-${key}`);
+                    if (toggle) {
+                        const time = window.latestPrayerTimes[key];
+                        const isEnabled = toggle.checked;
+                        const soundSetting = prayerAudioSettings[key] ? prayerAudioSettings[key].sound : 'none';
+
+                        if (time) {
+                            alarmsData.push({
+                                name: key,
+                                time: time,
+                                isEnabled: isEnabled,
+                                soundId: soundSetting,
+                                isRinging: true // Flag pembeda
+                            });
+                        }
+                        savedStates[key] = isEnabled;
+                    }
+                });
+
+                localStorage.setItem('ringing_alarm_states', JSON.stringify(savedStates));
+                const jsonData = JSON.stringify(alarmsData);
+                console.log("Mengirim data alarm DERING ke Android:", jsonData);
+                window.Android.setRingingAlarms(jsonData); // Memanggil fungsi native yang BARU
+                showCustomToast('Pengaturan Alarm Dering telah disimpan! 🔔');
+            } else {
+                showCustomToast('Fitur ini hanya berfungsi di aplikasi.');
+            }
+        });
+    }
+    loadRingingAlarmStates();
+}
+
+// Terakhir, panggil fungsi setup baru ini di dalam DOMContentLoaded
+// ...
+// setupManualAlarms();
+setupRingingAlarms(); // <--- TAMBAHKAN PEMANGGILAN INI
+// ...
 
 
 
