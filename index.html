@@ -3084,6 +3084,8 @@ function applyTajwidRules(arabicText) {
 
 // GANTI FUNGSI setupManualAlarms LAMA ANDA DENGAN YANG INI
 
+// GANTI FUNGSI setupManualAlarms LAMA ANDA DENGAN YANG INI
+
 function setupManualAlarms() {
     const saveBtn = document.getElementById('save-manual-alarms-btn');
     const prayerKeys = ['Imsak', 'Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -3473,7 +3475,7 @@ function setupManualAlarms() {
         function generateCalendar() {
             if (!calendarContainerEl) return;
             const dayNamesList = {
-                id: ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ar: ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"], tr: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"], fr: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"], ru: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"], ur: ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"], bn: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"]
+                id: ["Ahad", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], ar: ["أحد", "إثن", "ثلا", "أرب", "خمي", "جمع", "سبت"], tr: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"], fr: ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], de: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"], ru: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"], ur: ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"], bn: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহ", "শুক্র", "শনি"]
             };
             const today = new Date();
             const todayDayIndex = today.getDay();
@@ -3487,13 +3489,23 @@ function setupManualAlarms() {
             calendarContainerEl.innerHTML = calendarHtml;
         }
     
-        function updateDates() {
-            if (!gregorianDateEl) return;
-            const now = new Date();
-            const localeMap = { id: 'id-ID', en: 'en-US', ar: 'ar-SA', tr: 'tr-TR', fr: 'fr-FR', es: 'es-ES', de: 'de-DE', ru: 'ru-RU', ur: 'ur-PK', bn: 'bn-BD' };
-            const locale = localeMap[currentLanguage] || 'en-US';
-            gregorianDateEl.textContent = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        }
+function updateDates() {
+          if (!gregorianDateEl) return;
+          const now = new Date();
+          const localeMap = { id: 'id-ID', en: 'en-US', ar: 'ar-SA', tr: 'tr-TR', fr: 'fr-FR', es: 'es-ES', de: 'de-DE', ru: 'ru-RU', ur: 'ur-PK', bn: 'bn-BD' };
+          const locale = localeMap[currentLanguage] || 'en-US';
+          
+          // 1. Generate tanggal seperti biasa
+          let formattedDate = now.toLocaleDateString(locale, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+          // 2. [INI PERUBAHANNYA] Ganti kata "Minggu" menjadi "Ahad" jika bahasa adalah Indonesia
+          if (currentLanguage === 'id') {
+              formattedDate = formattedDate.replace('Minggu', 'Ahad');
+          }
+
+          // 3. Tampilkan tanggal yang sudah dimodifikasi
+          gregorianDateEl.textContent = formattedDate;
+      }
 
 
 
