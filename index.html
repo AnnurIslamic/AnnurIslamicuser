@@ -1519,8 +1519,11 @@ body.dark-mode .quote-footer {
           <li><a href="#" id="quran-btn" data-key="nav_quran">📖 Al-Qur'an</a></li>
           <li><a href="#" id="dzikir-btn" data-key="nav_dzikir">📿 Dzikir & Tasbih</a></li>
           <li><a href="#" id="qibla-btn" data-key="nav_kiblat">🕋 Kiblat</a></li>
-          <li><a href="#" id="quiz-btn">🧠 Kuis Ayat</a></li>
-          <li><a href="#" id="motivasi-btn">🌟 Motivasi Islami</a></li> 
+<li><a href="#" id="quiz-btn">🧠 Kuis Ayat</a></li>
+        
+        <li><a href="#" id="murajaah-btn">🔄 Murajaah Hafalan</a></li>
+        
+        <li><a href="#" id="motivasi-btn">🌟 Motivasi Islami</a></li>
           <li><a href="#" id="sahabat-annur-btn">🤖 Sahabat Annur</a></li>
           <li><a href="#" id="settings-btn" data-key="nav_settings">⚙️ Pengaturan</a></li>
         </ul>
@@ -1708,6 +1711,23 @@ body.dark-mode .quote-footer {
             <div id="duet-feedback" class="quiz-feedback"></div>
           </div>
         </div>
+        
+        <div id="murajaah-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
+  <div class="view-header">
+    <span class="back-button" data-target-view="prayer-times-view">‹</span>
+    <h2>Murajaah Hafalan</h2>
+  </div>
+
+  <div class="quiz-intro">
+    <h3>Uji & Lancarkan Hafalan Anda</h3>
+    <p>Pilih mode murajaah untuk memulai. Fitur ini dirancang untuk membantu Anda mengulang hafalan surah secara interaktif.</p>
+  </div>
+
+  <div class="quiz-mode-card" style="text-align: center; border-left-color: #f39c12; opacity: 0.8;">
+    <h4>🚧 Fitur Sedang Dikembangkan 🚧</h4>
+    <p>Fitur Murajaah akan segera hadir pada <strong>tanggal 29 September 2025</strong>!. Nantikan pembaruan selanjutnya untuk pengalaman menghafal yang lebih baik.</p>
+  </div>
+</div>
         
         <div id="motivation-view" class="main-view" style="display: none; padding: 1.5rem 1rem;">
             <div class="view-header">
@@ -3579,6 +3599,9 @@ function setupRingingAlarms() {
             document.getElementById('doa-harian-btn').addEventListener('click', (e) => { e.preventDefault(); showView('doa-view'); renderDoaListView('all'); closeSidebar(); });
             document.getElementById('quran-btn').addEventListener('click', (e) => { e.preventDefault(); showView('quran-view'); renderQuranView('surah'); closeSidebar(); });
             document.getElementById('dzikir-btn').addEventListener('click', (e) => { e.preventDefault(); showView('dzikir-view'); renderDzikirList(); closeSidebar(); });
+    document.getElementById('murajaah-btn').addEventListener('click', (e) => { e.preventDefault(); showView('murajaah-view'); closeSidebar(); });
+
+   
             document.getElementById('settings-btn').addEventListener('click', (e) => {
                 e.preventDefault();
                 document.getElementById('settings-modal').style.display = 'flex';
